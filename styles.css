@@ -549,7 +549,12 @@ body.menu-open {
   justify-content: center;
   color: var(--teal-light);
   flex-shrink: 0;
-  padding: 0 0.25rem;
+  padding: 0 0.75rem;
+}
+
+.about-cards-arrow svg {
+  width: 120px;
+  height: 60px;
 }
 
 .info-card {
