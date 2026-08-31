@@ -529,13 +529,30 @@ body.menu-open {
 }
 
 .about-cards-grid-duo {
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  max-width: 900px;
+  grid-template-columns: minmax(0, 0.82fr) auto minmax(0, 1.28fr);
+  max-width: 1080px;
   margin-inline: auto;
+  align-items: stretch;
 }
 
 .about-cards-grid-duo .info-card ul {
   max-width: none;
+}
+
+.about-cards-grid-duo .info-card-wide {
+  padding: 2.25rem 2.5rem;
+}
+
+.about-cards-grid-duo .info-card-wide ul {
+  line-height: 1.7;
+}
+
+.about-cards-grid-duo .info-card-wide li {
+  margin-bottom: 0.35rem;
+}
+
+.about-cards-grid-duo .info-card-wide li:last-child {
+  margin-bottom: 0;
 }
 
 .about-cards-grid-duo .info-card li strong {
