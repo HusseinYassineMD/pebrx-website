@@ -529,8 +529,8 @@ body.menu-open {
 }
 
 .about-cards-grid-duo {
-  grid-template-columns: minmax(0, 0.82fr) auto minmax(0, 1.28fr);
-  max-width: 1080px;
+  grid-template-columns: minmax(0, 0.75fr) auto minmax(0, 1.4fr);
+  max-width: 1140px;
   margin-inline: auto;
   align-items: stretch;
 }
