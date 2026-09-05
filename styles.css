@@ -99,8 +99,7 @@ ul {
   z-index: 101;
 }
 
-.nav-logo-mark,
-.contact-footer-logo {
+.nav-logo-mark {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -2586,7 +2585,18 @@ body.menu-open {
 }
 
 .contact-footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin: 0 auto;
+  text-decoration: none;
+}
+
+.contact-footer-logo img {
+  height: 52px;
+  width: auto;
+  display: block;
+  mix-blend-mode: lighten;
 }
 
 /* ─── FOOTER ─── */
