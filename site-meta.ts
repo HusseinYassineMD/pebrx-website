@@ -164,7 +164,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
       path: '/',
       title: 'PebRx | Personalized Brain Health for Precision Therapeutics',
       description:
-        'PebRx develops precision therapeutics and PET diagnostics targeting neurovascular inflammation in Alzheimer\'s disease, APOE4 carriers, and related neurodegenerative disorders.',
+        'PebRx develops precision therapeutics and diagnostics targeting neurovascular inflammation in Alzheimer\'s disease and related neurodegenerative disorders.',
       ogType: 'website',
       jsonLd: [
         {
@@ -181,8 +181,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'science.html': {
       path: '/science.html',
       title: 'Science | PebRx',
-      description:
-        'Explore PebRx\'s neuroinflammation platform: APOE4-driven lipid signaling, cPLA2 biology, and precision therapeutics for neurovascular disease in Alzheimer\'s.',
+      description: 'PebRx science — neuroinflammation platform and APOE4 research.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
@@ -198,8 +197,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'pipeline.html': {
       path: '/pipeline.html',
       title: 'Pipeline | PebRx',
-      description:
-        'PebRx pipeline: BRI-50460, a selective BBB-penetrant cPLA2 inhibitor, and proprietary PET tracers for neuroinflammation and APOE4-associated Alzheimer\'s disease.',
+      description: 'PebRx pipeline — BRI-Series and diagnostic PET programs.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
@@ -220,8 +218,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'leadership.html': {
       path: '/leadership.html',
       title: 'Leadership | PebRx',
-      description:
-        'Meet the PebRx leadership team: translational scientists, drug discovery experts, and clinical strategists advancing BRI-50460 and PET tracer programs.',
+      description: 'PebRx leadership team and advisors.',
       ogType: 'profile',
       jsonLd: [
         { '@context': 'https://schema.org', ...org },
@@ -240,8 +237,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'publications.html': {
       path: '/publications.html',
       title: 'Publications | PebRx',
-      description:
-        'Selected PebRx research publications on cPLA2, APOE4 neuroinflammation, DHA brain uptake, and PET imaging in Alzheimer\'s disease and neurodegeneration.',
+      description: 'Selected PebRx research publications.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
@@ -258,8 +254,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'contact.html': {
       path: '/contact.html',
       title: 'Contact | PebRx',
-      description:
-        'Contact PebRx for partnership inquiries, research collaborations, licensing discussions, and general questions about our neuroinflammation programs.',
+      description: 'Contact PebRx for partnerships and inquiries.',
       ogType: 'website',
       jsonLd: {
         '@context': 'https://schema.org',
