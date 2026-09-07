@@ -12,6 +12,16 @@ export function initNavigation(): void {
   const toggleEl = toggle;
   const navLinksEl = navLinks;
 
+  let backdrop = document.querySelector<HTMLButtonElement>('.nav-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('button');
+    backdrop.type = 'button';
+    backdrop.className = 'nav-backdrop';
+    backdrop.setAttribute('aria-label', 'Close menu');
+    document.body.appendChild(backdrop);
+  }
+  const backdropEl = backdrop;
+
   const currentPage = document.body.dataset.page ?? 'home';
 
   links.forEach((link) => {
@@ -32,12 +42,14 @@ export function initNavigation(): void {
     navLinksEl.classList.remove('open');
     toggleEl.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
+    backdropEl.classList.remove('visible');
   }
 
   function openMenu(): void {
     navLinksEl.classList.add('open');
     toggleEl.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
+    backdropEl.classList.add('visible');
   }
 
   toggleEl.addEventListener('click', () => {
@@ -47,6 +59,8 @@ export function initNavigation(): void {
       openMenu();
     }
   });
+
+  backdropEl.addEventListener('click', closeMenu);
 
   links.forEach((link) => {
     link.addEventListener('click', closeMenu);
