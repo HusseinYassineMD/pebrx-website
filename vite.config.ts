@@ -1,7 +1,9 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
+import { seoPlugin } from './vite-plugin-seo';
 
 export default defineConfig({
+  plugins: [seoPlugin()],
   base: process.env.GITHUB_PAGES === 'true' ? '/pebrx-website/' : '/',
   build: {
     rollupOptions: {

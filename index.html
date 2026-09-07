@@ -8,9 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- pebrx-seo -->
 
 </head>
 <body class="page-home" data-page="home">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
       <a href="index.html" class="nav-logo" aria-label="PebRx home">
@@ -33,7 +35,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="hero hero-landing" aria-labelledby="hero-heading">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-rings" aria-hidden="true">
@@ -46,6 +48,28 @@
         <div class="hero-actions">
           <a href="science.html" class="btn btn-primary">Our Mission</a>
           <a href="contact.html" class="btn btn-ghost">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section home-intro" aria-labelledby="home-intro-heading">
+      <div class="container">
+        <div class="home-intro-grid">
+          <div class="home-intro-copy">
+            <span class="section-label">About PebRx</span>
+            <h2 id="home-intro-heading">Targeting Neurovascular Inflammation in Alzheimer's Disease</h2>
+            <p>PebRx is a precision therapeutics company focused on neurovascular inflammation driven by APOE4 biology. Our science links lipid-mediated signaling in the brain to Alzheimer's disease progression, cerebral amyloid angiopathy (CAA), and complications from anti-amyloid therapies such as ARIA.</p>
+            <p>We are advancing BRI-50460, a proprietary blood-brain-barrier-penetrant inhibitor of cytosolic phospholipase A2 (cPLA2), alongside PET imaging tools that measure brain lipid uptake and neuroinflammatory activity. Together, these programs aim to deliver targeted therapies and diagnostics for patients at greatest risk.</p>
+          </div>
+          <div class="home-pillars">
+            <h3 class="home-pillars-title">Our Focus Areas</h3>
+            <ul class="home-pillars-list">
+              <li><strong>Precision therapeutics</strong> — selective cPLA2 inhibition to reduce neurovascular inflammation in APOE4 carriers.</li>
+              <li><strong>Early detection</strong> — PET tracers to monitor brain DHA uptake and inflammatory pathways.</li>
+              <li><strong>Translational science</strong> — decades of peer-reviewed research connecting APOE4, lipids, and cognitive decline.</li>
+            </ul>
+            <p class="home-pillars-cta"><a href="science.html" class="text-link">Explore our science &rarr;</a></p>
+          </div>
         </div>
       </div>
     </section>

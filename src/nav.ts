@@ -43,6 +43,7 @@ export function initNavigation(): void {
     toggleEl.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
     backdropEl.classList.remove('visible');
+    updateMenuInert(false);
   }
 
   function openMenu(): void {
@@ -50,6 +51,19 @@ export function initNavigation(): void {
     toggleEl.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
     backdropEl.classList.add('visible');
+    updateMenuInert(true);
+  }
+
+  function updateMenuInert(open: boolean): void {
+    if (!isMobile()) {
+      navLinksEl.removeAttribute('inert');
+      return;
+    }
+    if (open) {
+      navLinksEl.removeAttribute('inert');
+    } else {
+      navLinksEl.setAttribute('inert', '');
+    }
   }
 
   toggleEl.addEventListener('click', () => {
@@ -84,7 +98,12 @@ export function initNavigation(): void {
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
-    if (!isMobile()) closeMenu();
+    if (!isMobile()) {
+      closeMenu();
+      navLinksEl.removeAttribute('inert');
+    } else if (!navLinksEl.classList.contains('open')) {
+      navLinksEl.setAttribute('inert', '');
+    }
   });
 
   if (!isHome) {
@@ -92,5 +111,9 @@ export function initNavigation(): void {
     setNavScrolled(true);
   } else {
     onScroll();
+  }
+
+  if (isMobile() && !navLinksEl.classList.contains('open')) {
+    navLinksEl.setAttribute('inert', '');
   }
 }
