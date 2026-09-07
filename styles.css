@@ -25,6 +25,10 @@
   --shadow: 0 4px 24px rgba(10, 22, 40, 0.08);
   --shadow-lg: 0 12px 48px rgba(10, 22, 40, 0.12);
   --transition: 0.3s ease;
+  --section-pad-y: 4rem;
+  --section-pad-y-mobile: 2rem;
+  --block-gap: 2rem;
+  --block-gap-mobile: 1.25rem;
 }
 
 *, *::before, *::after {
@@ -35,7 +39,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 96px;
   font-size: 18px;
 }
 
@@ -46,6 +50,7 @@ body {
   color: var(--text-dark);
   background: var(--white);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 img {
@@ -405,7 +410,7 @@ body.menu-open {
 
 /* ─── SECTIONS ─── */
 .section {
-  padding: 6rem 0;
+  padding: var(--section-pad-y) 0;
 }
 
 .section-label {
@@ -707,7 +712,7 @@ body.menu-open {
 
 .science-unified .science-mission-top {
   margin-top: 0;
-  margin-bottom: 2.75rem;
+  margin-bottom: 2rem;
 }
 
 .science-unified {
@@ -745,11 +750,11 @@ body.menu-open {
 
 .science-unified .about-cards-grid {
   margin-top: 0.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .science-unified .stats-row-science-top {
-  margin-bottom: 2.75rem;
+  margin-bottom: 2rem;
 }
 
 .science-topic-heading {
@@ -2308,6 +2313,8 @@ body.menu-open {
   color: var(--header-text);
   margin-bottom: 0.4rem;
   line-height: 1.3;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .pub-authors {
@@ -2373,7 +2380,7 @@ body.menu-open {
 .section-contact {
   position: relative;
   background: linear-gradient(165deg, var(--navy) 0%, #0d2433 40%, #123a42 100%);
-  padding: 6rem 0 4rem;
+  padding: 3rem 0 2.5rem;
   overflow: hidden;
 }
 
@@ -2968,7 +2975,7 @@ body.menu-open {
 
 /* ─── INNER PAGE BANNERS ─── */
 body:not(.page-home) main {
-  padding-top: 72px;
+  padding-top: 96px;
 }
 
 .page-banner {
@@ -3002,7 +3009,15 @@ body:not(.page-home) main {
 }
 
 .page-section .section-intro {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+}
+
+.page-leadership .section-intro {
+  margin-bottom: 1.75rem;
+}
+
+.page-publications .section-intro {
+  display: none;
 }
 
 .page-contact .contact-header {
@@ -3043,10 +3058,14 @@ body:not(.page-home) main {
     font-size: 17px;
   }
 
+  body:not(.page-home) main {
+    padding-top: 88px;
+  }
+
   .hero-landing {
     min-height: auto;
     max-height: none;
-    padding: 7rem 0 3.25rem;
+    padding: 5.5rem 0 2rem;
   }
 
   .hero-landing .hero h1 {
@@ -3088,7 +3107,23 @@ body:not(.page-home) main {
   }
 
   .page-banner {
-    padding: 2.5rem 0 2rem;
+    padding: 1.75rem 0 1.25rem;
+  }
+
+  .page-contact .page-banner {
+    padding-bottom: 0.75rem;
+  }
+
+  .section {
+    padding: var(--section-pad-y-mobile) 0;
+  }
+
+  .section-contact {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .page-leadership .section-intro {
+    margin-bottom: 1.25rem;
   }
 
   .nav-links a {
@@ -3097,8 +3132,133 @@ body:not(.page-home) main {
     display: block;
   }
 
-  .section {
-    padding: 3.5rem 0;
+  .science-unified {
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .science-unified .science-mission-top {
+    margin-bottom: 1.5rem;
+    padding: 1.75rem 1.5rem;
+  }
+
+  .science-unified .stats-row-science-top {
+    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  .stat-item {
+    min-height: auto;
+    padding: 1.1rem 0.75rem;
+  }
+
+  .science-intro-block {
+    margin-bottom: 1.5rem;
+  }
+
+  .science-unified .about-cards-grid {
+    margin-bottom: 1.75rem;
+  }
+
+  .about-cards-grid-duo .info-card-wide {
+    padding: 1.75rem 1.5rem;
+  }
+
+  .about-cards-arrow svg {
+    width: 72px;
+    height: 36px;
+  }
+
+  .science-content-full {
+    margin-bottom: 1.75rem;
+  }
+
+  .science-columns {
+    margin-bottom: 1.75rem;
+    gap: 1.25rem;
+  }
+
+  .science-card {
+    padding: 1.5rem;
+  }
+
+  .science-callout {
+    padding: 1.35rem 1.5rem;
+  }
+
+  .discovery-band-light {
+    padding: 2rem 0 1.75rem;
+  }
+
+  .pipeline-dark {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .pipeline-light {
+    padding: 2rem 0 2.5rem;
+  }
+
+  .pipeline-strategy-intro {
+    margin-bottom: 1.75rem;
+  }
+
+  .pipeline-hero {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .clinical-strategy {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pipeline-table-wrap {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .pipeline-table {
+    min-width: 560px;
+  }
+
+  .program-name {
+    white-space: normal;
+  }
+
+  .team-executive {
+    margin-bottom: 2rem;
+  }
+
+  .team-group-label + .team-grid,
+  .team-grid-cofounders,
+  .team-grid-staff {
+    margin-bottom: 2rem;
+  }
+
+  .team-card-featured {
+    padding: 1.5rem;
+  }
+
+  .publication-item {
+    padding: 1rem 0;
+    gap: 0.5rem;
+  }
+
+  .publications-list {
+    margin-bottom: 1.5rem;
+  }
+
+  .ip-notice {
+    padding: 1.35rem 1.25rem;
+  }
+
+  .contact-card {
+    padding: 1.5rem;
+  }
+
+  .contact-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
   }
 }
 
@@ -3109,6 +3269,35 @@ body:not(.page-home) main {
 
   .container {
     width: min(1140px, 94vw);
+  }
+
+  .nav {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-logo-icon {
+    height: 52px;
+  }
+
+  .nav-logo-text {
+    height: 34px;
+  }
+
+  .about-cards-grid-duo {
+    grid-template-columns: 1fr;
+  }
+
+  .about-cards-arrow svg {
+    width: 56px;
+    height: 28px;
+  }
+
+  .science-intro-grid {
+    gap: 1rem;
+  }
+
+  .science-content-full .check-list {
+    grid-template-columns: 1fr;
   }
 
   .hero-actions {
