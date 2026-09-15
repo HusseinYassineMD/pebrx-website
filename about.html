@@ -2,13 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=science.html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About PebRx — discovering a target through APOE4 research, brain lipid profiling, PET imaging, and translational drug development.">
   <title>About | PebRx</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <!-- pebrx-seo -->
-  <script>location.replace('science.html');</script>
+
 </head>
-<body>
-  <p>Redirecting to <a href="science.html">Science</a>…</p>
+<body class="page-about" data-page="about">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a href="index.html" class="nav-logo" aria-label="PebRx home">
+        <span class="nav-logo-mark">
+          <img src="/images/logo-icon.png?v=2" alt="" class="nav-logo-icon" aria-hidden="true">
+          <img src="/images/logo-text.png?v=3" alt="PebRx" class="nav-logo-text">
+        </span>
+      </a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="about.html" data-nav="about">About</a></li>
+        <li><a href="science.html" data-nav="science">Science</a></li>
+        <li><a href="pipeline.html" data-nav="pipeline">Pipeline</a></li>
+        <li><a href="leadership.html" data-nav="leadership">Leadership</a></li>
+        <li><a href="publications.html" data-nav="publications">News &amp; Publications</a></li>
+        <li><a href="contact.html" data-nav="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <div class="page-banner">
+      <div class="container">
+        <span class="section-label">About</span>
+        <h1>Discovering a Target</h1>
+      </div>
+    </div>
+
+    <section class="section section-about page-section">
+      <div class="discovery-band discovery-band-light discovery-band-page">
+        <div class="container">
+          <div class="discovery-steps">
+            <article class="discovery-step">
+              <span class="discovery-step-num" aria-hidden="true">1</span>
+              <h4>Basic Cell &amp; Animal Models (APOE4)</h4>
+              <p>Foundational in vitro and in vivo work.</p>
+            </article>
+            <article class="discovery-step">
+              <span class="discovery-step-num" aria-hidden="true">2</span>
+              <h4>Brain Lipid Profiling</h4>
+              <p>Tracking changes in brain lipids across the Alzheimer's disease spectrum.</p>
+            </article>
+            <article class="discovery-step">
+              <span class="discovery-step-num" aria-hidden="true">3</span>
+              <h4>Advanced PET Imaging &amp; Modeling</h4>
+              <p>Observing neuroinflammation in human brain tissue and a human cohort.</p>
+            </article>
+            <article class="discovery-step">
+              <span class="discovery-step-num" aria-hidden="true">4</span>
+              <h4>Drug Development &amp; IND-Enabling Studies</h4>
+              <p>Target validation, behavioral rescue, and brain bleed risk assessment in animal models.</p>
+            </article>
+            <article class="discovery-step">
+              <span class="discovery-step-num" aria-hidden="true">5</span>
+              <h4>Human Clinical Trials</h4>
+              <p>Translating small molecule cPLA2 inhibitor (BRI-Series) and 18F-FDHA PET Tracer Diagnostic.</p>
+            </article>
+          </div>
+
+          <div class="about-platform">
+            <article class="pipeline-card-light pipeline-card-wide">
+              <h4>Platform Expansion</h4>
+              <p>Beyond Alzheimer's disease, PebRx sees future potential for cPLA2-targeted therapies in additional neurovascular and inflammatory conditions where blood-brain barrier disruption and lipid-mediated inflammation play a pathological role:</p>
+              <ul class="pipeline-indications">
+                <li>Traumatic brain injury (TBI)</li>
+                <li>Stroke</li>
+                <li>Acute neuroinflammatory disorders</li>
+                <li>CAA in Down Syndrome</li>
+                <li>Sporadic CAA</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 PebRx. All rights reserved.</p>
+      <nav aria-label="Footer navigation">
+        <a href="about.html">About</a>
+        <a href="science.html">Science</a>
+        <a href="pipeline.html">Pipeline</a>
+        <a href="leadership.html">Leadership</a>
+        <a href="publications.html">News &amp; Publications</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

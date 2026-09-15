@@ -236,13 +236,13 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     },
     'publications.html': {
       path: '/publications.html',
-      title: 'Publications | PebRx',
+      title: 'News & Publications | PebRx',
       description: 'Selected PebRx research publications.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
-        name: 'PebRx Selected Publications',
+        name: 'PebRx News & Publications',
         description: 'Peer-reviewed research supporting PebRx\'s therapeutic and diagnostic programs.',
         itemListElement: PUBLICATIONS.map((article, index) => ({
           '@type': 'ListItem',
@@ -269,8 +269,17 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
       path: '/about.html',
       title: 'About | PebRx',
       description:
-        'About PebRx — precision therapeutics and diagnostics for APOE4-driven neurovascular disease. Redirects to our Science page.',
+        'About PebRx — discovering a target through APOE4 research, brain lipid profiling, PET imaging, and translational drug development.',
       ogType: 'website',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'Discovering a Target',
+        url: `${siteUrl}/about.html`,
+        description: 'PebRx translational discovery workflow from APOE4 models to clinical trials.',
+        isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: siteUrl },
+        about: org,
+      },
     },
   };
 
