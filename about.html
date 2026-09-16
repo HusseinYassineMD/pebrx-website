@@ -36,15 +36,35 @@
   </header>
 
   <main id="main-content" tabindex="-1">
-    <div class="page-banner">
-      <div class="container">
+    <div class="page-hero-banner page-hero-about">
+      <img
+        class="page-hero-photo"
+        src="/images/heroes/about-hero.jpg"
+        srcset="/images/heroes/about-hero-1920.jpg 1920w, /images/heroes/about-hero.jpg 3840w"
+        sizes="100vw"
+        alt=""
+        width="3840"
+        height="960"
+        decoding="async"
+        fetchpriority="high"
+      >
+      <img
+        class="page-hero-neural"
+        src="/images/heroes/neural-overlay.svg?v=2"
+        alt=""
+        width="3840"
+        height="960"
+        aria-hidden="true"
+      >
+      <div class="page-hero-overlay" aria-hidden="true"></div>
+      <div class="container page-hero-content">
         <span class="section-label">About</span>
         <h1>Discovering a Target</h1>
       </div>
     </div>
 
     <section class="section section-about page-section">
-      <div class="discovery-band discovery-band-light discovery-band-page">
+      <div class="discovery-band discovery-band-light">
         <div class="container">
           <div class="discovery-steps">
             <article class="discovery-step">
@@ -94,7 +114,13 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p>&copy; 2026 PebRx. All rights reserved.</p>
+      <a href="index.html" class="footer-logo-link" aria-label="PebRx home">
+        <span class="footer-logo-mark">
+          <img src="/images/logo-icon.png?v=2" alt="" class="footer-logo-icon" aria-hidden="true">
+          <img src="/images/logo-text.png?v=3" alt="PebRx" class="footer-logo-text">
+        </span>
+      </a>
+      <p class="footer-copy">&copy; 2026 PebRx. All rights reserved.</p>
       <nav aria-label="Footer navigation">
         <a href="about.html">About</a>
         <a href="science.html">Science</a>
