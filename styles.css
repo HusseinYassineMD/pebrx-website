@@ -1307,6 +1307,12 @@ body.menu-open {
   min-height: auto;
 }
 
+.about-mission {
+  margin-top: 0;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  max-width: 920px;
+}
+
 .about-platform {
   max-width: 920px;
   margin: clamp(2rem, 4vw, 3rem) auto 0;
