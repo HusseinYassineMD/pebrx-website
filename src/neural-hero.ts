@@ -141,7 +141,7 @@ function scatterNeurons(width: number, height: number): Particle[] {
     );
   });
 
-  const clusterCount = Math.min(16, Math.max(11, Math.round(width / 210)));
+  const clusterCount = Math.min(22, Math.max(17, Math.round(width / 150)));
   const centers: Array<{ x: number; y: number }> = [];
   const aspect = width / height;
   const gridRows = Math.max(2, Math.round(Math.sqrt(clusterCount / aspect)));
@@ -177,7 +177,7 @@ function scatterNeurons(width: number, height: number): Particle[] {
       parent: -1,
       restDist: 0,
     });
-    addDendrites(particles, hubIndex, cluster, 6 + Math.floor(Math.random() * 2), dendriteSpread * 0.82);
+    addDendrites(particles, hubIndex, cluster, 7 + Math.floor(Math.random() * 3), dendriteSpread * 0.82);
   });
 
   return particles;
@@ -253,7 +253,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
-  const mouseReachCm = 5;
+  const mouseReachCm = 4;
   const cmToPx = 96 / 2.54;
   let frame = 0;
 
