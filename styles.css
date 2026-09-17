@@ -392,18 +392,18 @@ body.menu-open {
   filter: brightness(0.9) contrast(1.04);
 }
 
-.hero-landing-photo .hero-neural {
+.hero-landing-photo .hero-neural,
+.hero-landing-photo .neural-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 42%;
-  z-index: 1;
+  object-position: center center;
+  z-index: 3;
   pointer-events: none;
-  opacity: 0.5;
-  -webkit-mask-image: radial-gradient(ellipse 36% 50% at 50% 44%, transparent 28%, rgba(0, 0, 0, 0.35) 52%, black 82%);
-  mask-image: radial-gradient(ellipse 36% 50% at 50% 44%, transparent 28%, rgba(0, 0, 0, 0.35) 52%, black 82%);
+  opacity: 1;
+  filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
 }
 
 .hero-landing-photo .hero-photo-overlay {
@@ -1203,18 +1203,18 @@ body.menu-open {
   z-index: 0;
 }
 
-.page-hero-neural {
+.page-hero-neural,
+.page-hero-banner .neural-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
-  opacity: 0.88;
-  -webkit-mask-image: radial-gradient(ellipse 42% 58% at 50% 46%, transparent 6%, rgba(0, 0, 0, 0.45) 38%, black 72%);
-  mask-image: radial-gradient(ellipse 42% 58% at 50% 46%, transparent 6%, rgba(0, 0, 0, 0.45) 38%, black 72%);
+  opacity: 1;
+  filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
 }
 
 .page-hero-overlay {
@@ -1233,7 +1233,7 @@ body.menu-open {
 
 .page-hero-content {
   position: relative;
-  z-index: 3;
+  z-index: 4;
 }
 
 .page-hero-content .section-label {
