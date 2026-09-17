@@ -1220,8 +1220,8 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: clamp(280px, 42vw, 440px);
-  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3.25rem);
+  min-height: clamp(300px, 44vw, 470px);
+  padding: clamp(2.75rem, 6.5vw, 4.25rem) 0 clamp(2.25rem, 5.5vw, 3.5rem);
   overflow: hidden;
   text-align: center;
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
@@ -1284,23 +1284,25 @@ body.menu-open {
 
 .page-hero-content .section-label {
   color: var(--teal-light);
+  font-size: 0.92rem;
+  letter-spacing: 0.2em;
 }
 
 .page-hero-content h1 {
   font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-size: clamp(2.05rem, 4.6vw, 3.15rem);
   font-weight: 500;
   color: var(--white);
   line-height: 1.25;
-  max-width: 820px;
-  margin: 0.75rem auto 0;
+  max-width: 860px;
+  margin: 0.85rem auto 0;
   text-shadow: 0 2px 20px rgba(10, 22, 40, 0.35);
 }
 
 .page-hero-email {
   margin: 0.85rem auto 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
   font-weight: 500;
   line-height: 1.3;
   max-width: 820px;
@@ -3911,12 +3913,12 @@ body:not(.page-home) main {
 
 .page-banner h1 {
   font-family: var(--font-serif);
-  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-size: clamp(2.05rem, 4.6vw, 3.15rem);
   font-weight: 500;
   color: var(--white);
   line-height: 1.25;
-  max-width: 820px;
-  margin: 0.75rem auto 0;
+  max-width: 860px;
+  margin: 0.85rem auto 0;
 }
 
 .page-banner .section-label {
@@ -3988,8 +3990,13 @@ body:not(.page-home) main {
   }
 
   .page-hero-banner {
-    min-height: clamp(240px, 50vw, 340px);
-    padding: clamp(2rem, 5vw, 2.75rem) 0 clamp(1.5rem, 4vw, 2.25rem);
+    min-height: clamp(260px, 52vw, 360px);
+    padding: clamp(2.25rem, 5.5vw, 3rem) 0 clamp(1.75rem, 4.5vw, 2.5rem);
+  }
+
+  .page-hero-content h1,
+  .page-banner h1 {
+    font-size: clamp(1.95rem, 6.5vw, 2.65rem);
   }
 
   .hero-landing {
