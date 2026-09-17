@@ -37,10 +37,15 @@ function addDendrites(
   cluster: number,
   count: number,
   spread: number,
+  angleBias?: number,
+  angleSpread = Math.PI * 2,
 ): void {
   const hub = particles[hubIndex];
   for (let n = 0; n < count; n++) {
-    const angle = Math.random() * Math.PI * 2;
+    const angle =
+      angleBias === undefined
+        ? Math.random() * Math.PI * 2
+        : angleBias + (Math.random() - 0.5) * angleSpread;
     const dist = spread * (0.35 + Math.random() * 0.85);
     const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 16;
     const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 16;
@@ -64,9 +69,10 @@ function addDendrites(
 
 function scatterNeurons(width: number, height: number): Particle[] {
   const particles: Particle[] = [];
-  const pad = Math.max(42, Math.min(width, height) * 0.06);
-  const cornerInset = pad * 0.85;
+  const pad = Math.max(36, Math.min(width, height) * 0.05);
+  const cornerInset = pad * 0.55;
   const dendriteSpread = Math.max(48, Math.min(width, height) * 0.085);
+  const cornerSpread = dendriteSpread * 1.5;
 
   const corners = [
     { x: cornerInset, y: cornerInset },
@@ -94,7 +100,45 @@ function scatterNeurons(width: number, height: number): Particle[] {
       parent: -1,
       restDist: 0,
     });
-    addDendrites(particles, hubIndex, -1 - i, 7 + Math.floor(Math.random() * 2), dendriteSpread);
+    const outward = Math.atan2(corner.y - height * 0.5, corner.x - width * 0.5);
+    addDendrites(
+      particles,
+      hubIndex,
+      -1 - i,
+      13 + Math.floor(Math.random() * 3),
+      cornerSpread,
+      outward,
+      Math.PI * 1.35,
+    );
+
+    const miniHubIndex = particles.length;
+    const miniDist = cornerSpread * 0.42;
+    const miniX = corner.x + Math.cos(outward) * miniDist;
+    const miniY = corner.y + Math.sin(outward) * miniDist;
+    particles.push({
+      x: miniX,
+      y: miniY,
+      restX: miniX,
+      restY: miniY,
+      vx: (Math.random() - 0.5) * 0.14,
+      vy: (Math.random() - 0.5) * 0.12,
+      pulse: Math.random() * Math.PI * 2,
+      spark: Math.random() < 0.32,
+      cluster: -1 - i,
+      role: 'hub',
+      radius: 1.9,
+      parent: -1,
+      restDist: 0,
+    });
+    addDendrites(
+      particles,
+      miniHubIndex,
+      -1 - i,
+      5 + Math.floor(Math.random() * 2),
+      cornerSpread * 0.72,
+      outward,
+      Math.PI * 1.1,
+    );
   });
 
   const clusterCount = Math.min(16, Math.max(11, Math.round(width / 210)));
@@ -430,7 +474,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
       const stretch = dist / Math.max(link.restLimit, 1);
       const t = Math.max(0, 1 - dist / (link.restLimit + 8));
-      let alpha = (link.highlighted ? 0.58 + t * t * 0.32 : 0.48 + t * t * 0.34) / Math.max(1, stretch * 0.85);
+      let alpha = (link.highlighted ? 0.64 + t * t * 0.34 : 0.48 + t * t * 0.34) / Math.max(1, stretch * 0.85);
 
       if (smoothMouse.active) {
         const mx = (a.x + b.x) / 2;
