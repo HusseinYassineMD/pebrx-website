@@ -28,19 +28,7 @@
   --section-pad-y: clamp(2rem, 5vw, 4rem);
   --section-pad-y-mobile: clamp(1.5rem, 4vw, 2rem);
   --hero-fade-to: var(--mint);
-  --hero-fade-photo-mask: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 86%,
-    rgba(0, 0, 0, 0.55) 93%,
-    transparent 100%
-  );
-  --hero-fade-neural-mask: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 90%,
-    transparent 100%
-  );
+  --hero-blend-height: 148px;
   --block-gap: 2rem;
   --block-gap-mobile: 1.25rem;
   --nav-height: clamp(72px, 11vw, 96px);
@@ -438,20 +426,8 @@ body.menu-open {
   font-size: 1rem;
 }
 
-.hero.hero-landing-photo {
-  overflow: visible;
-  margin-bottom: -1px;
-  z-index: 2;
-}
-
 .hero-landing-photo {
-  background: linear-gradient(
-    to bottom,
-    var(--navy) 0%,
-    var(--navy-light) 58%,
-    color-mix(in srgb, var(--navy-light) 35%, var(--hero-fade-to)) 82%,
-    var(--hero-fade-to) 100%
-  );
+  background: var(--navy);
 }
 
 .hero-landing-photo .hero-photo {
@@ -462,8 +438,6 @@ body.menu-open {
   object-fit: cover;
   object-position: center 42%;
   filter: brightness(0.9) contrast(1.04);
-  -webkit-mask-image: var(--hero-fade-photo-mask);
-  mask-image: var(--hero-fade-photo-mask);
 }
 
 .hero-landing-photo .hero-neural,
@@ -478,8 +452,6 @@ body.menu-open {
   pointer-events: none;
   opacity: 1;
   filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
-  -webkit-mask-image: var(--hero-fade-neural-mask);
-  mask-image: var(--hero-fade-neural-mask);
 }
 
 .hero-landing-photo .hero-photo-overlay {
@@ -488,13 +460,25 @@ body.menu-open {
   z-index: 2;
   background:
     radial-gradient(ellipse 72% 78% at 50% 42%, rgba(10, 22, 40, 0.78) 0%, rgba(10, 22, 40, 0.42) 42%, transparent 72%),
-    linear-gradient(
-      to bottom,
-      rgba(10, 22, 40, 0.35) 0%,
-      rgba(10, 22, 40, 0.48) 52%,
-      rgba(21, 42, 66, 0.16) 84%,
-      rgba(21, 42, 66, 0) 100%
-    );
+    linear-gradient(180deg, rgba(10, 22, 40, 0.35) 0%, rgba(10, 22, 40, 0.5) 50%, rgba(21, 42, 66, 0.45) 100%);
+  pointer-events: none;
+}
+
+.hero.hero-landing-photo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hero-blend-height);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--hero-fade-to) 14%, transparent) 52%,
+    color-mix(in srgb, var(--hero-fade-to) 58%, transparent) 80%,
+    var(--hero-fade-to) 100%
+  );
+  z-index: 3;
   pointer-events: none;
 }
 
@@ -1245,18 +1229,28 @@ body.menu-open {
   align-items: center;
   justify-content: center;
   min-height: clamp(280px, 42vw, 440px);
-  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2.5rem, 5.5vw, 3.75rem);
-  overflow: visible;
+  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3.25rem);
+  overflow: hidden;
   text-align: center;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+}
+
+.page-hero-banner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hero-blend-height);
   background: linear-gradient(
     to bottom,
-    var(--navy) 0%,
-    var(--navy-light) 58%,
-    color-mix(in srgb, var(--navy-light) 35%, var(--hero-fade-to)) 82%,
+    transparent 0%,
+    color-mix(in srgb, var(--hero-fade-to) 14%, transparent) 52%,
+    color-mix(in srgb, var(--hero-fade-to) 58%, transparent) 80%,
     var(--hero-fade-to) 100%
   );
-  margin-bottom: -1px;
-  z-index: 2;
+  z-index: 3;
+  pointer-events: none;
 }
 
 body.page-science,
@@ -1280,8 +1274,6 @@ body.page-contact {
   object-fit: cover;
   object-position: center center;
   z-index: 0;
-  -webkit-mask-image: var(--hero-fade-photo-mask);
-  mask-image: var(--hero-fade-photo-mask);
 }
 
 .page-hero-neural,
@@ -1296,8 +1288,6 @@ body.page-contact {
   pointer-events: none;
   opacity: 1;
   filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
-  -webkit-mask-image: var(--hero-fade-neural-mask);
-  mask-image: var(--hero-fade-neural-mask);
 }
 
 .page-hero-overlay {
@@ -1307,18 +1297,16 @@ body.page-contact {
   background:
     radial-gradient(ellipse 85% 80% at 50% 45%, rgba(10, 22, 40, 0.12) 0%, transparent 68%),
     linear-gradient(
-      to bottom,
-      rgba(10, 22, 40, 0.3) 0%,
-      rgba(21, 42, 66, 0.34) 55%,
-      rgba(21, 42, 66, 0.14) 82%,
-      rgba(21, 42, 66, 0) 100%
+      135deg,
+      rgba(10, 22, 40, 0.28) 0%,
+      rgba(21, 42, 66, 0.38) 100%
     );
   pointer-events: none;
 }
 
 .page-hero-content {
   position: relative;
-  z-index: 4;
+  z-index: 5;
 }
 
 .page-hero-content .section-label {
@@ -1376,43 +1364,21 @@ body.page-contact {
 .page-hero-about .page-hero-overlay {
   background:
     radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.55) 0%, transparent 72%),
-    linear-gradient(
-      to bottom,
-      rgba(10, 22, 40, 0.72) 0%,
-      rgba(15, 34, 56, 0.68) 55%,
-      rgba(15, 34, 56, 0.22) 84%,
-      rgba(15, 34, 56, 0) 100%
-    );
+    linear-gradient(135deg, rgba(10, 22, 40, 0.72) 0%, rgba(15, 34, 56, 0.82) 100%);
 }
 
 .page-hero-contact .page-hero-overlay {
   background:
     radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.22) 0%, transparent 72%),
-    linear-gradient(
-      to bottom,
-      rgba(10, 22, 40, 0.38) 0%,
-      rgba(21, 42, 66, 0.4) 55%,
-      rgba(21, 42, 66, 0.12) 84%,
-      rgba(21, 42, 66, 0) 100%
-    );
+    linear-gradient(135deg, rgba(10, 22, 40, 0.38) 0%, rgba(21, 42, 66, 0.48) 100%);
 }
 
 .page-hero-about.page-hero-banner {
-  background: linear-gradient(
-    to bottom,
-    var(--navy) 0%,
-    var(--navy-mid) 58%,
-    var(--hero-fade-to) 100%
-  );
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
 }
 
 .page-hero-contact.page-hero-banner {
-  background: linear-gradient(
-    to bottom,
-    var(--navy-light) 0%,
-    #1a3d4c 58%,
-    var(--hero-fade-to) 100%
-  );
+  background: linear-gradient(135deg, var(--navy-light) 0%, #1a3d4c 55%, #245860 100%);
 }
 
 .page-hero-science .page-hero-photo { object-position: 30% 45%; }
@@ -4017,11 +3983,6 @@ body:not(.page-home) main {
 
 .page-contact .contact-header {
   display: none;
-}
-
-body:not(.page-home) main > .section:first-of-type {
-  position: relative;
-  z-index: 1;
 }
 
 /* ─── MOBILE ENHANCEMENTS ─── */
