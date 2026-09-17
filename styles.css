@@ -3078,6 +3078,8 @@ body.menu-open {
 
 .section-publications {
   background: var(--white);
+  border-top: 1px solid rgba(13, 21, 38, 0.12);
+  padding-top: clamp(2.5rem, 5vw, 3.75rem);
 }
 
 .publications-list {
@@ -3911,6 +3913,25 @@ body:not(.page-home) main {
 .science-top-block .section-intro .section-label,
 .science-top-block .section-intro h2 {
   display: block;
+}
+
+.page-publications .section-news .section-intro.centered .section-label {
+  display: inline-flex;
+}
+
+.page-publications .section-news .section-intro h2,
+.page-publications .section-publications .section-intro .section-label,
+.page-publications .section-publications .section-intro h2 {
+  display: block;
+}
+
+.page-publications .section-publications .section-intro .section-label {
+  display: inline-block;
+}
+
+.page-publications .section-news .section-intro,
+.page-publications .section-publications .section-intro {
+  margin-bottom: 2rem;
 }
 
 .page-section .section-intro {
