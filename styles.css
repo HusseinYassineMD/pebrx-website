@@ -28,7 +28,8 @@
   --section-pad-y: clamp(2rem, 5vw, 4rem);
   --section-pad-y-mobile: clamp(1.5rem, 4vw, 2rem);
   --hero-fade-to: var(--mint);
-  --hero-blend-height: 148px;
+  --hero-blend-height: 240px;
+  --hero-blend-overhang: 96px;
   --block-gap: 2rem;
   --block-gap-mobile: 1.25rem;
   --nav-height: clamp(72px, 11vw, 96px);
@@ -426,6 +427,11 @@ body.menu-open {
   font-size: 1rem;
 }
 
+.hero.hero-landing-photo {
+  overflow: visible;
+  z-index: 2;
+}
+
 .hero-landing-photo {
   background: var(--navy);
 }
@@ -469,16 +475,19 @@ body.menu-open {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: calc(-1 * var(--hero-blend-overhang));
   height: var(--hero-blend-height);
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in srgb, var(--hero-fade-to) 14%, transparent) 52%,
-    color-mix(in srgb, var(--hero-fade-to) 58%, transparent) 80%,
+    color-mix(in srgb, var(--hero-fade-to) 6%, transparent) 28%,
+    color-mix(in srgb, var(--hero-fade-to) 18%, transparent) 48%,
+    color-mix(in srgb, var(--hero-fade-to) 38%, transparent) 64%,
+    color-mix(in srgb, var(--hero-fade-to) 62%, transparent) 78%,
+    color-mix(in srgb, var(--hero-fade-to) 84%, transparent) 90%,
     var(--hero-fade-to) 100%
   );
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
 }
 
@@ -1230,9 +1239,10 @@ body.menu-open {
   justify-content: center;
   min-height: clamp(280px, 42vw, 440px);
   padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3.25rem);
-  overflow: hidden;
+  overflow: visible;
   text-align: center;
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  z-index: 2;
 }
 
 .page-hero-banner::after {
@@ -1240,16 +1250,19 @@ body.menu-open {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: calc(-1 * var(--hero-blend-overhang));
   height: var(--hero-blend-height);
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    color-mix(in srgb, var(--hero-fade-to) 14%, transparent) 52%,
-    color-mix(in srgb, var(--hero-fade-to) 58%, transparent) 80%,
+    color-mix(in srgb, var(--hero-fade-to) 6%, transparent) 28%,
+    color-mix(in srgb, var(--hero-fade-to) 18%, transparent) 48%,
+    color-mix(in srgb, var(--hero-fade-to) 38%, transparent) 64%,
+    color-mix(in srgb, var(--hero-fade-to) 62%, transparent) 78%,
+    color-mix(in srgb, var(--hero-fade-to) 84%, transparent) 90%,
     var(--hero-fade-to) 100%
   );
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
 }
 
@@ -3791,6 +3804,8 @@ body.page-contact {
 
 /* ─── LANDING PAGE ─── */
 .page-home .landing-explore {
+  position: relative;
+  z-index: 1;
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(42, 157, 143, 0.08) 0%, transparent 55%),
     linear-gradient(180deg, var(--mint) 0%, var(--seafoam) 100%);
@@ -3983,6 +3998,11 @@ body:not(.page-home) main {
 
 .page-contact .contact-header {
   display: none;
+}
+
+body:not(.page-home) main > .section:first-of-type {
+  position: relative;
+  z-index: 1;
 }
 
 /* ─── MOBILE ENHANCEMENTS ─── */
