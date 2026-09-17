@@ -2873,6 +2873,16 @@ body.menu-open {
   background: var(--white);
 }
 
+.section-intro-spaced {
+  margin-top: 1rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(13, 21, 38, 0.1);
+}
+
+.news-list {
+  margin-bottom: 0;
+}
+
 .publications-list {
   display: flex;
   flex-direction: column;

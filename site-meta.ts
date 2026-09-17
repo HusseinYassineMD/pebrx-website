@@ -237,7 +237,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'publications.html': {
       path: '/publications.html',
       title: 'News & Publications | PebRx',
-      description: 'Selected PebRx research publications.',
+      description: 'PebRx news and selected research publications on APOE4, neuroinflammation, and cPLA2.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
