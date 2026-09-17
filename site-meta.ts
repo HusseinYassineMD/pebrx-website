@@ -162,7 +162,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
   const pages: Record<string, PageMeta> = {
     'index.html': {
       path: '/',
-      title: 'PebRx | Personalized Brain Health for Precision Therapeutics',
+      title: 'PebRx | Precision Medicine for APOE4-Driven Brain Health',
       description:
         'PebRx develops precision therapeutics and diagnostics targeting neurovascular inflammation in Alzheimer\'s disease and related neurodegenerative disorders.',
       ogType: 'website',
