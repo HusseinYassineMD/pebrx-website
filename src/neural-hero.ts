@@ -68,70 +68,101 @@ function addDendrites(
   }
 }
 
-function evenHubCenters(
-  width: number,
-  height: number,
-  count: number,
-  pad: number,
-): Array<{ x: number; y: number }> {
-  const minSpacing = Math.max(92, Math.min(width, height) * 0.125);
-  const usableW = width - pad * 2;
-  const usableH = height - pad * 2;
-  let cols = Math.max(4, Math.round(usableW / minSpacing));
-  let rows = Math.max(3, Math.round(usableH / minSpacing));
+function scatterNeurons(width: number, height: number): Particle[] {
+  const particles: Particle[] = [];
+  const pad = Math.max(36, Math.min(width, height) * 0.05);
+  const cornerInset = pad * 0.55;
+  const dendriteSpread = Math.max(58, Math.min(width, height) * 0.105);
+  const cornerSpread = dendriteSpread * 1.55;
 
-  while (cols * rows < count && cols * rows < 96) {
-    if (usableW / cols >= usableH / rows) cols += 1;
-    else rows += 1;
-  }
+  const corners = [
+    { x: cornerInset, y: cornerInset },
+    { x: width - cornerInset, y: cornerInset },
+    { x: cornerInset, y: height - cornerInset },
+    { x: width - cornerInset, y: height - cornerInset },
+  ];
 
-  const cellW = usableW / cols;
-  const cellH = usableH / rows;
-  const cells: Array<{ x: number; y: number }> = [];
+  corners.forEach((corner, i) => {
+    const hubIndex = particles.length;
+    const x = corner.x + (Math.random() - 0.5) * 8;
+    const y = corner.y + (Math.random() - 0.5) * 8;
+    particles.push({
+      x,
+      y,
+      restX: x,
+      restY: y,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.16,
+      pulse: Math.random() * Math.PI * 2,
+      spark: true,
+      cluster: -1 - i,
+      role: 'corner',
+      radius: 3.8,
+      parent: -1,
+      restDist: 0,
+    });
+    const outward = Math.atan2(corner.y - height * 0.5, corner.x - width * 0.5);
+    addDendrites(
+      particles,
+      hubIndex,
+      -1 - i,
+      13 + Math.floor(Math.random() * 3),
+      cornerSpread,
+      outward,
+      Math.PI * 1.35,
+    );
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const stagger = row % 2 === 1 ? cellW * 0.5 : 0;
-      const jitterX = (Math.random() - 0.5) * cellW * 0.18;
-      const jitterY = (Math.random() - 0.5) * cellH * 0.18;
-      cells.push({
-        x: Math.max(pad, Math.min(width - pad, pad + cellW * (col + 0.5) + stagger + jitterX)),
-        y: Math.max(pad, Math.min(height - pad, pad + cellH * (row + 0.5) + jitterY)),
+    const miniHubIndex = particles.length;
+    const miniDist = cornerSpread * 0.42;
+    const miniX = corner.x + Math.cos(outward) * miniDist;
+    const miniY = corner.y + Math.sin(outward) * miniDist;
+    particles.push({
+      x: miniX,
+      y: miniY,
+      restX: miniX,
+      restY: miniY,
+      vx: (Math.random() - 0.5) * 0.14,
+      vy: (Math.random() - 0.5) * 0.12,
+      pulse: Math.random() * Math.PI * 2,
+      spark: Math.random() < 0.32,
+      cluster: -1 - i,
+      role: 'hub',
+      radius: 1.9,
+      parent: -1,
+      restDist: 0,
+    });
+    addDendrites(
+      particles,
+      miniHubIndex,
+      -1 - i,
+      5 + Math.floor(Math.random() * 2),
+      cornerSpread * 0.72,
+      outward,
+      Math.PI * 1.1,
+    );
+  });
+
+  const clusterCount = Math.min(22, Math.max(17, Math.round(width / 150)));
+  const centers: Array<{ x: number; y: number }> = [];
+  const aspect = width / height;
+  const gridRows = Math.max(2, Math.round(Math.sqrt(clusterCount / aspect)));
+  const gridCols = Math.max(3, Math.ceil(clusterCount / gridRows));
+  const cellW = (width - pad * 2) / gridCols;
+  const cellH = (height - pad * 2) / gridRows;
+
+  for (let row = 0; row < gridRows && centers.length < clusterCount; row++) {
+    for (let col = 0; col < gridCols && centers.length < clusterCount; col++) {
+      centers.push({
+        x: pad + cellW * (col + 0.5) + (Math.random() - 0.5) * cellW * 0.38,
+        y: pad + cellH * (row + 0.5) + (Math.random() - 0.5) * cellH * 0.38,
       });
     }
   }
 
-  if (cells.length <= count) return cells.slice(0, count);
-
-  const picked: Array<{ x: number; y: number }> = [];
-  const stride = cells.length / count;
-  for (let i = 0; i < count; i++) {
-    picked.push(cells[Math.min(cells.length - 1, Math.floor(i * stride + stride * 0.5))]);
-  }
-  return picked;
-}
-
-function isNearCorner(x: number, y: number, width: number, height: number, inset: number): boolean {
-  const nearLeft = x < inset;
-  const nearRight = x > width - inset;
-  const nearTop = y < inset;
-  const nearBottom = y > height - inset;
-  return (nearLeft || nearRight) && (nearTop || nearBottom);
-}
-
-function scatterNeurons(width: number, height: number): Particle[] {
-  const particles: Particle[] = [];
-  const pad = Math.max(36, Math.min(width, height) * 0.05);
-  const cornerInset = Math.max(pad * 1.4, Math.min(width, height) * 0.08);
-  const dendriteSpread = Math.max(52, Math.min(width, height) * 0.095);
-  const clusterCount = Math.min(22, Math.max(17, Math.round((width * height) / 42000)));
-  const centers = evenHubCenters(width, height, clusterCount, pad);
-
   centers.forEach((center, cluster) => {
-    const nearCorner = isNearCorner(center.x, center.y, width, height, cornerInset);
     const hubIndex = particles.length;
-    const x = center.x + (Math.random() - 0.5) * 6;
-    const y = center.y + (Math.random() - 0.5) * 6;
+    const x = center.x + (Math.random() - 0.5) * 10;
+    const y = center.y + (Math.random() - 0.5) * 10;
     particles.push({
       x,
       y,
@@ -140,15 +171,14 @@ function scatterNeurons(width: number, height: number): Particle[] {
       vx: (Math.random() - 0.5) * 0.16,
       vy: (Math.random() - 0.5) * 0.14,
       pulse: Math.random() * Math.PI * 2,
-      spark: nearCorner || Math.random() < 0.28,
+      spark: Math.random() < 0.35,
       cluster,
-      role: nearCorner ? 'corner' : 'hub',
-      radius: nearCorner ? 2.8 : 2.4,
+      role: 'hub',
+      radius: 2.4,
       parent: -1,
       restDist: 0,
     });
-    const dendriteCount = nearCorner ? 8 + Math.floor(Math.random() * 2) : 6 + Math.floor(Math.random() * 2);
-    addDendrites(particles, hubIndex, cluster, dendriteCount, dendriteSpread);
+    addDendrites(particles, hubIndex, cluster, 7 + Math.floor(Math.random() * 3), dendriteSpread * 0.82);
   });
 
   return particles;
