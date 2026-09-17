@@ -726,7 +726,7 @@ body.menu-open {
 }
 
 .about-cards-grid-duo {
-  grid-template-columns: minmax(0, 0.75fr) auto minmax(0, 1.4fr);
+  grid-template-columns: minmax(0, 1.25fr) auto minmax(0, 1fr);
   max-width: 1140px;
   margin-inline: auto;
   align-items: stretch;
@@ -740,16 +740,10 @@ body.menu-open {
   padding: 2.25rem 2.5rem;
 }
 
-.about-cards-grid-duo .info-card-wide ul {
-  line-height: 1.7;
-}
-
-.about-cards-grid-duo .info-card-wide li {
-  margin-bottom: 0.35rem;
-}
-
-.about-cards-grid-duo .info-card-wide li:last-child {
-  margin-bottom: 0;
+.about-cards-grid-duo .info-card-wide ul,
+.about-cards-grid-duo .info-card-matter ul {
+  line-height: 1.45;
+  gap: 1rem;
 }
 
 .about-cards-grid-duo .info-card li strong {
@@ -767,8 +761,8 @@ body.menu-open {
 }
 
 .about-cards-arrow svg {
-  width: 120px;
-  height: 60px;
+  width: 40px;
+  height: 56px;
 }
 
 .info-card {
@@ -825,18 +819,49 @@ body.menu-open {
 }
 
 .info-card-accent {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-  border-color: transparent;
+  background: linear-gradient(135deg, #1e3a52 0%, #2a4d66 100%);
+  border-color: rgba(78, 205, 196, 0.15);
 }
 
-.info-card-accent h3,
+.info-card-accent h3 {
+  color: #ffffff;
+}
+
 .info-card-accent p,
 .info-card-accent li {
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .info-card-accent li::before {
   background: var(--teal-light);
+}
+
+.info-card-focus {
+  text-align: left;
+}
+
+.info-card-focus h3 {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.info-card-focus .info-card-lead {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.15rem;
+  max-width: none;
+}
+
+.info-card-focus ul {
+  gap: 0.9rem;
+}
+
+.info-card-focus li {
+  line-height: 1.45;
+}
+
+.info-card-matter ul {
+  gap: 1.15rem;
 }
 
 .stats-row {
