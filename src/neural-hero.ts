@@ -55,9 +55,9 @@ function addDendrites(
   const hub = particles[hubIndex];
   for (let n = 0; n < count; n++) {
     const angle = rand() * Math.PI * 2;
-    const dist = spread * (0.52 + rand() * 0.95);
-    const x = hub.x + Math.cos(angle) * dist + (rand() - 0.5) * 18;
-    const y = hub.y + Math.sin(angle) * dist + (rand() - 0.5) * 18;
+    const dist = spread * (0.58 + rand() * 1.05);
+    const x = hub.x + Math.cos(angle) * dist + (rand() - 0.5) * 22;
+    const y = hub.y + Math.sin(angle) * dist + (rand() - 0.5) * 22;
     particles.push({
       x,
       y,
@@ -80,10 +80,14 @@ function addDendrites(
 function scatterNeurons(width: number, height: number): Particle[] {
   const rand = createRng(0x50425278);
   const particles: Particle[] = [];
-  const pad = Math.max(42, Math.min(width, height) * 0.06);
-  const dendriteSpread = Math.max(58, Math.min(width, height) * 0.102);
-  const hubCount = Math.min(24, Math.max(18, Math.round(width / 145)));
-  const minSpacing = Math.max(86, Math.min(width, height) * 0.148);
+  const pad = Math.max(24, Math.min(width, height) * 0.034);
+  const dendriteSpread = Math.max(
+    74,
+    Math.min(width, height) * 0.118,
+    width * 0.044,
+  );
+  const hubCount = Math.min(30, Math.max(24, Math.round(width / 112)));
+  const minSpacing = Math.max(74, Math.min(width, height) * 0.122);
   const usableW = width - pad * 2;
   const usableH = height - pad * 2;
   const cols = Math.max(4, Math.round(usableW / minSpacing));
@@ -96,8 +100,8 @@ function scatterNeurons(width: number, height: number): Particle[] {
     for (let col = 0; col < cols; col++) {
       const stagger = row % 2 === 1 ? cellW * 0.5 : 0;
       cells.push({
-        x: pad + cellW * (col + 0.5) + stagger + (rand() - 0.5) * cellW * 0.28,
-        y: pad + cellH * (row + 0.5) + (rand() - 0.5) * cellH * 0.28,
+        x: pad + cellW * (col + 0.5) + stagger + (rand() - 0.5) * cellW * 0.36,
+        y: pad + cellH * (row + 0.5) + (rand() - 0.5) * cellH * 0.36,
       });
     }
   }
@@ -130,7 +134,7 @@ function scatterNeurons(width: number, height: number): Particle[] {
       particles,
       hubIndex,
       cluster,
-      9 + Math.floor(rand() * 4),
+      11 + Math.floor(rand() * 5),
       dendriteSpread,
       rand,
     );
@@ -152,7 +156,7 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
       i: child.parent,
       j: i,
       highlighted: parent.role === 'corner',
-      restLimit: child.restDist + 22,
+      restLimit: child.restDist + 28,
       bend: ((child.parent * 13 + i * 29) % 100) / 100 - 0.5,
       dynamic: false,
     });
@@ -164,7 +168,7 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
 function buildSoftBridgeLinks(particles: Particle[], width: number, height: number): NetworkLink[] {
   const links: NetworkLink[] = [];
   const seen = new Set<string>();
-  const bridgeDist = Math.max(112, Math.min(width, height) * 0.168);
+  const bridgeDist = Math.max(132, Math.min(width, height) * 0.198, width * 0.075);
   const bridgeDistSq = bridgeDist * bridgeDist;
   const hubs = particles
     .map((p, i) => ({ i, p }))
@@ -180,7 +184,7 @@ function buildSoftBridgeLinks(particles: Particle[], width: number, height: numb
       near.push({ j: b, d2 });
     }
     near.sort((x, y) => x.d2 - y.d2);
-    for (let n = 0; n < Math.min(2, near.length); n++) {
+    for (let n = 0; n < Math.min(3, near.length); n++) {
       const i = hubs[a].i;
       const j = hubs[near[n].j].i;
       const key = i < j ? `${i}-${j}` : `${j}-${i}`;
@@ -494,7 +498,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     };
 
     drawLinkSet(restLinks, 0.48, 0.18);
-    drawLinkSet(bridgeLinks, 0.2, 0.28);
+    drawLinkSet(bridgeLinks, 0.22, 0.3);
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
