@@ -76,40 +76,31 @@ function addDendrites(
   }
 }
 
-/** Reference layout: airy starburst hubs evenly spread across the full hero. */
+/** Two horizontal bands of evenly spaced starburst hubs across wide heroes. */
 function scatterNeurons(width: number, height: number): Particle[] {
   const rand = createRng(0x50425278);
   const particles: Particle[] = [];
-  const pad = Math.max(24, Math.min(width, height) * 0.034);
+  const pad = Math.max(36, Math.min(width, height) * 0.05);
   const dendriteSpread = Math.max(
-    74,
-    Math.min(width, height) * 0.118,
-    width * 0.044,
+    58,
+    Math.min(width, height) * 0.105,
+    width * 0.038,
   );
-  const hubCount = Math.min(30, Math.max(24, Math.round(width / 112)));
-  const minSpacing = Math.max(74, Math.min(width, height) * 0.122);
-  const usableW = width - pad * 2;
-  const usableH = height - pad * 2;
-  const cols = Math.max(4, Math.round(usableW / minSpacing));
-  const rows = Math.max(3, Math.round(usableH / minSpacing));
-  const cellW = usableW / cols;
-  const cellH = usableH / rows;
-  const cells: Array<{ x: number; y: number }> = [];
+  const hubCount = Math.min(22, Math.max(17, Math.round(width / 150)));
+  const gridRows = 2;
+  const gridCols = Math.ceil(hubCount / gridRows);
+  const cellW = (width - pad * 2) / gridCols;
+  const cellH = (height - pad * 2) / gridRows;
+  const centers: Array<{ x: number; y: number }> = [];
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const stagger = row % 2 === 1 ? cellW * 0.5 : 0;
-      cells.push({
-        x: pad + cellW * (col + 0.5) + stagger + (rand() - 0.5) * cellW * 0.36,
-        y: pad + cellH * (row + 0.5) + (rand() - 0.5) * cellH * 0.36,
+  for (let row = 0; row < gridRows && centers.length < hubCount; row++) {
+    for (let col = 0; col < gridCols && centers.length < hubCount; col++) {
+      centers.push({
+        x: pad + cellW * (col + 0.5) + (rand() - 0.5) * cellW * 0.22,
+        y: pad + cellH * (row + 0.5) + (rand() - 0.5) * cellH * 0.18,
       });
     }
   }
-
-  const stride = cells.length / hubCount;
-  const centers = Array.from({ length: hubCount }, (_, i) =>
-    cells[Math.min(cells.length - 1, Math.floor(i * stride + stride * 0.5))],
-  );
 
   centers.forEach((center, cluster) => {
     const hubIndex = particles.length;
@@ -134,8 +125,8 @@ function scatterNeurons(width: number, height: number): Particle[] {
       particles,
       hubIndex,
       cluster,
-      11 + Math.floor(rand() * 5),
-      dendriteSpread,
+      8 + Math.floor(rand() * 4),
+      dendriteSpread * 0.88,
       rand,
     );
   });
