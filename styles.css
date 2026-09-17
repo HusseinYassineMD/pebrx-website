@@ -27,6 +27,8 @@
   --transition: 0.3s ease;
   --section-pad-y: clamp(2rem, 5vw, 4rem);
   --section-pad-y-mobile: clamp(1.5rem, 4vw, 2rem);
+  --hero-fade-to: var(--mint);
+  --hero-fade-overlap: 52px;
   --block-gap: 2rem;
   --block-gap-mobile: 1.25rem;
   --nav-height: clamp(72px, 11vw, 96px);
@@ -517,8 +519,14 @@ body.menu-open {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, transparent, var(--mint));
+  height: 112px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--hero-fade-to) 22%, transparent) 38%,
+    color-mix(in srgb, var(--hero-fade-to) 78%, transparent) 72%,
+    var(--hero-fade-to) 100%
+  );
   z-index: 4;
   pointer-events: none;
 }
@@ -1233,10 +1241,29 @@ body.menu-open {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  background: linear-gradient(to bottom, transparent, var(--mint));
+  height: 112px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--hero-fade-to) 22%, transparent) 38%,
+    color-mix(in srgb, var(--hero-fade-to) 78%, transparent) 72%,
+    var(--hero-fade-to) 100%
+  );
   z-index: 4;
   pointer-events: none;
+}
+
+body.page-science,
+body.page-leadership {
+  --hero-fade-to: var(--white);
+}
+
+body.page-pipeline {
+  --hero-fade-to: #0f2438;
+}
+
+body.page-contact {
+  --hero-fade-to: #1e3a48;
 }
 
 .page-hero-photo {
@@ -3767,7 +3794,10 @@ body.menu-open {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(42, 157, 143, 0.08) 0%, transparent 55%),
     linear-gradient(180deg, var(--mint) 0%, var(--seafoam) 100%);
-  padding: 2rem 0 3rem;
+  margin-top: calc(-1 * var(--hero-fade-overlap));
+  padding: calc(2rem + var(--hero-fade-overlap)) 0 3rem;
+  position: relative;
+  z-index: 1;
 }
 
 .page-home .landing-explore .section-intro {
@@ -3956,6 +3986,39 @@ body:not(.page-home) main {
 
 .page-contact .contact-header {
   display: none;
+}
+
+/* Hero → content seamless blend (after section-specific padding) */
+body:not(.page-home):not(.page-publications):not(.page-contact) main > .section:first-of-type {
+  margin-top: calc(-1 * var(--hero-fade-overlap));
+  position: relative;
+  z-index: 1;
+}
+
+body.page-publications main > .section-news,
+body.page-contact .section-contact {
+  position: relative;
+  z-index: 1;
+}
+
+body.page-about main > .section:first-of-type,
+body.page-pipeline main > .section:first-of-type {
+  padding-top: var(--hero-fade-overlap);
+}
+
+body.page-science main > .section:first-of-type,
+body.page-leadership main > .section:first-of-type {
+  padding-top: calc(var(--section-pad-y) + var(--hero-fade-overlap));
+}
+
+body.page-publications main > .section-news {
+  margin-top: calc(-1 * var(--hero-fade-overlap));
+  padding-top: calc(clamp(2.5rem, 5vw, 3.5rem) + var(--hero-fade-overlap));
+}
+
+body.page-contact .section-contact {
+  margin-top: calc(-1 * var(--hero-fade-overlap));
+  padding-top: calc(3rem + var(--hero-fade-overlap));
 }
 
 /* ─── MOBILE ENHANCEMENTS ─── */
