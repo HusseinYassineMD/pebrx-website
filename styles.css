@@ -1322,23 +1322,36 @@ body.menu-open {
   border-radius: 4px;
 }
 
-.page-hero-about .page-hero-photo,
-.page-hero-contact .page-hero-photo {
+.page-hero-about .page-hero-photo {
   object-position: center 42%;
   filter: grayscale(0.42) saturate(0.28) brightness(0.68) contrast(1.06);
   opacity: 0.48;
 }
 
-.page-hero-about .page-hero-overlay,
-.page-hero-contact .page-hero-overlay {
+.page-hero-contact .page-hero-photo {
+  object-position: center 42%;
+  filter: grayscale(0.22) saturate(0.46) brightness(0.84) contrast(1.04);
+  opacity: 0.68;
+}
+
+.page-hero-about .page-hero-overlay {
   background:
     radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.55) 0%, transparent 72%),
     linear-gradient(135deg, rgba(10, 22, 40, 0.72) 0%, rgba(15, 34, 56, 0.82) 100%);
 }
 
-.page-hero-about.page-hero-banner,
-.page-hero-contact.page-hero-banner {
+.page-hero-contact .page-hero-overlay {
+  background:
+    radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.22) 0%, transparent 72%),
+    linear-gradient(135deg, rgba(10, 22, 40, 0.38) 0%, rgba(21, 42, 66, 0.48) 100%);
+}
+
+.page-hero-about.page-hero-banner {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
+}
+
+.page-hero-contact.page-hero-banner {
+  background: linear-gradient(135deg, var(--navy-light) 0%, #1a3d4c 55%, #245860 100%);
 }
 
 .page-hero-science .page-hero-photo { object-position: 30% 45%; }
@@ -3200,7 +3213,7 @@ body.menu-open {
 /* ─── CONTACT ─── */
 .section-contact {
   position: relative;
-  background: linear-gradient(165deg, var(--navy) 0%, #0d2433 40%, #123a42 100%);
+  background: linear-gradient(165deg, #1e3a48 0%, #245560 45%, #2f7268 100%);
   padding: 3rem 0 2.5rem;
   overflow: hidden;
 }
@@ -3215,7 +3228,7 @@ body.menu-open {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.45;
+  opacity: 0.55;
 }
 
 .contact-blob-1 {
@@ -3260,19 +3273,19 @@ body.menu-open {
 .contact-intro {
   font-size: 1rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.78);
   line-height: 1.7;
   max-width: 480px;
   margin: 0 auto;
 }
 
 .contact-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(126, 207, 196, 0.18);
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(126, 207, 196, 0.28);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
   backdrop-filter: blur(16px);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.14);
 }
 
 .contact-form {
