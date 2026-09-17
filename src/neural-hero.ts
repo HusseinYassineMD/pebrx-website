@@ -23,7 +23,6 @@ interface NetworkLink {
   restLimit: number;
   bend: number;
   dynamic: boolean;
-  bridge?: boolean;
 }
 
 interface MouseState {
@@ -38,18 +37,13 @@ function addDendrites(
   cluster: number,
   count: number,
   spread: number,
-  angleBias?: number,
-  angleSpread = Math.PI * 2,
 ): void {
   const hub = particles[hubIndex];
   for (let n = 0; n < count; n++) {
-    const angle =
-      angleBias === undefined
-        ? Math.random() * Math.PI * 2
-        : angleBias + (Math.random() - 0.5) * angleSpread;
-    const dist = spread * (0.52 + Math.random() * 0.95);
-    const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 20;
-    const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 20;
+    const angle = Math.random() * Math.PI * 2;
+    const dist = spread * (0.35 + Math.random() * 0.85);
+    const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 16;
+    const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 16;
     particles.push({
       x,
       y,
@@ -70,10 +64,9 @@ function addDendrites(
 
 function scatterNeurons(width: number, height: number): Particle[] {
   const particles: Particle[] = [];
-  const pad = Math.max(36, Math.min(width, height) * 0.05);
-  const cornerInset = pad * 0.55;
-  const dendriteSpread = Math.max(58, Math.min(width, height) * 0.105);
-  const cornerSpread = dendriteSpread * 1.55;
+  const pad = Math.max(42, Math.min(width, height) * 0.06);
+  const cornerInset = pad * 0.85;
+  const dendriteSpread = Math.max(48, Math.min(width, height) * 0.085);
 
   const corners = [
     { x: cornerInset, y: cornerInset },
@@ -101,61 +94,35 @@ function scatterNeurons(width: number, height: number): Particle[] {
       parent: -1,
       restDist: 0,
     });
-    const outward = Math.atan2(corner.y - height * 0.5, corner.x - width * 0.5);
-    addDendrites(
-      particles,
-      hubIndex,
-      -1 - i,
-      13 + Math.floor(Math.random() * 3),
-      cornerSpread,
-      outward,
-      Math.PI * 1.35,
-    );
-
-    const miniHubIndex = particles.length;
-    const miniDist = cornerSpread * 0.42;
-    const miniX = corner.x + Math.cos(outward) * miniDist;
-    const miniY = corner.y + Math.sin(outward) * miniDist;
-    particles.push({
-      x: miniX,
-      y: miniY,
-      restX: miniX,
-      restY: miniY,
-      vx: (Math.random() - 0.5) * 0.14,
-      vy: (Math.random() - 0.5) * 0.12,
-      pulse: Math.random() * Math.PI * 2,
-      spark: Math.random() < 0.32,
-      cluster: -1 - i,
-      role: 'hub',
-      radius: 1.9,
-      parent: -1,
-      restDist: 0,
-    });
-    addDendrites(
-      particles,
-      miniHubIndex,
-      -1 - i,
-      5 + Math.floor(Math.random() * 2),
-      cornerSpread * 0.72,
-      outward,
-      Math.PI * 1.1,
-    );
+    addDendrites(particles, hubIndex, -1 - i, 7 + Math.floor(Math.random() * 2), dendriteSpread);
   });
 
-  const clusterCount = Math.min(22, Math.max(17, Math.round(width / 150)));
+  const clusterCount = Math.min(16, Math.max(11, Math.round(width / 210)));
+  const minClusterDist = Math.max(100, Math.min(width, height) * 0.13);
   const centers: Array<{ x: number; y: number }> = [];
-  const aspect = width / height;
-  const gridRows = Math.max(2, Math.round(Math.sqrt(clusterCount / aspect)));
-  const gridCols = Math.max(3, Math.ceil(clusterCount / gridRows));
-  const cellW = (width - pad * 2) / gridCols;
-  const cellH = (height - pad * 2) / gridRows;
+  const midX = width / 2;
+  const leftQuota = Math.ceil(clusterCount * 0.55);
+  const zones = [
+    { minX: pad, maxX: midX - pad * 0.25, quota: leftQuota },
+    { minX: midX + pad * 0.25, maxX: width - pad, quota: clusterCount - leftQuota },
+  ];
 
-  for (let row = 0; row < gridRows && centers.length < clusterCount; row++) {
-    for (let col = 0; col < gridCols && centers.length < clusterCount; col++) {
-      centers.push({
-        x: pad + cellW * (col + 0.5) + (Math.random() - 0.5) * cellW * 0.38,
-        y: pad + cellH * (row + 0.5) + (Math.random() - 0.5) * cellH * 0.38,
-      });
+  const canPlace = (x: number, y: number): boolean => {
+    const tooClose = centers.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist);
+    const nearCorner = corners.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist * 0.65);
+    return !tooClose && !nearCorner;
+  };
+
+  for (const zone of zones) {
+    let placed = 0;
+    let attempts = 0;
+    while (placed < zone.quota && attempts < zone.quota * 90) {
+      attempts += 1;
+      const x = zone.minX + Math.random() * (zone.maxX - zone.minX);
+      const y = pad + Math.random() * (height - pad * 2);
+      if (!canPlace(x, y)) continue;
+      centers.push({ x, y });
+      placed += 1;
     }
   }
 
@@ -178,7 +145,7 @@ function scatterNeurons(width: number, height: number): Particle[] {
       parent: -1,
       restDist: 0,
     });
-    addDendrites(particles, hubIndex, cluster, 7 + Math.floor(Math.random() * 3), dendriteSpread * 0.82);
+    addDendrites(particles, hubIndex, cluster, 6 + Math.floor(Math.random() * 2), dendriteSpread * 0.82);
   });
 
   return particles;
@@ -197,51 +164,10 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
       i: child.parent,
       j: i,
       highlighted: parent.role === 'corner',
-      restLimit: child.restDist + 22,
+      restLimit: child.restDist + 12,
       bend: ((child.parent * 13 + i * 29) % 100) / 100 - 0.5,
       dynamic: false,
     });
-  }
-
-  return links;
-}
-
-function buildSoftBridgeLinks(particles: Particle[], width: number, height: number): NetworkLink[] {
-  const links: NetworkLink[] = [];
-  const seen = new Set<string>();
-  const bridgeDist = Math.max(92, Math.min(width, height) * 0.145);
-  const bridgeDistSq = bridgeDist * bridgeDist;
-  const nodes = particles
-    .map((p, i) => ({ i, p }))
-    .filter(({ p }) => p.role === 'hub' || p.role === 'satellite');
-
-  for (let a = 0; a < nodes.length; a++) {
-    const near: Array<{ j: number; d2: number }> = [];
-    for (let b = a + 1; b < nodes.length; b++) {
-      const dx = nodes[a].p.x - nodes[b].p.x;
-      const dy = nodes[a].p.y - nodes[b].p.y;
-      const d2 = dx * dx + dy * dy;
-      if (d2 > bridgeDistSq) continue;
-      if (nodes[a].p.cluster >= 0 && nodes[a].p.cluster === nodes[b].p.cluster) continue;
-      near.push({ j: b, d2 });
-    }
-    near.sort((x, y) => x.d2 - y.d2);
-    for (let n = 0; n < Math.min(2, near.length); n++) {
-      const i = nodes[a].i;
-      const j = nodes[near[n].j].i; // particle index via nodes array slot
-      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      links.push({
-        i: i < j ? i : j,
-        j: i < j ? j : i,
-        highlighted: false,
-        restLimit: bridgeDist,
-        bend: ((i * 17 + j * 31) % 100) / 100 - 0.5,
-        dynamic: false,
-        bridge: true,
-      });
-    }
   }
 
   return links;
@@ -251,43 +177,33 @@ function buildMouseLinks(
   particles: Particle[],
   mouseX: number,
   mouseY: number,
-  influenceSq: number,
-  maxDistSq: number,
-  maxLinks: number,
+  influence: number,
+  maxDist: number,
 ): NetworkLink[] {
   const links: NetworkLink[] = [];
+  const seen = new Set<string>();
   const active: number[] = [];
-  const activeDist: number[] = [];
 
   for (let i = 0; i < particles.length; i++) {
-    const dx = particles[i].x - mouseX;
-    const dy = particles[i].y - mouseY;
-    const d2 = dx * dx + dy * dy;
-    if (d2 < influenceSq) {
+    if (Math.hypot(particles[i].x - mouseX, particles[i].y - mouseY) < influence) {
       active.push(i);
-      activeDist.push(d2);
     }
   }
 
-  if (active.length > 16) {
-    const order = active.map((idx, n) => ({ idx, d2: activeDist[n] }));
-    order.sort((a, b) => a.d2 - b.d2);
-    active.length = 0;
-    for (let n = 0; n < 16; n++) active.push(order[n].idx);
-  }
-
-  for (let a = 0; a < active.length && links.length < maxLinks; a++) {
-    for (let b = a + 1; b < active.length && links.length < maxLinks; b++) {
+  for (let a = 0; a < active.length; a++) {
+    for (let b = a + 1; b < active.length; b++) {
       const i = active[a];
       const j = active[b];
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      if (dx * dx + dy * dy > maxDistSq) continue;
+      const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+      if (dist > maxDist) continue;
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
       links.push({
         i: i < j ? i : j,
         j: i < j ? j : i,
         highlighted: false,
-        restLimit: Math.sqrt(maxDistSq),
+        restLimit: maxDist,
         bend: ((i * 23 + j * 19) % 100) / 100 - 0.5,
         dynamic: true,
       });
@@ -298,48 +214,35 @@ function buildMouseLinks(
 }
 
 function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
-  const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
+  const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
-  let restLinks: NetworkLink[] = [];
-  let bridgeLinks: NetworkLink[] = [];
-  let hostLeft = 0;
-  let hostTop = 0;
-  const mouseReachCm = 4;
+  const mouseReachCm = 3;
   const cmToPx = 96 / 2.54;
-  const pullRadius = mouseReachCm * cmToPx;
-  const pullRadiusSq = pullRadius * pullRadius;
-  const mouseLinkDistanceSq = (pullRadius * 0.72) ** 2;
   let frame = 0;
 
   const mouse: MouseState = { x: 0, y: 0, active: false };
   const smoothMouse: MouseState = { x: 0, y: 0, active: false };
 
-  const syncHostRect = (): void => {
-    const rect = host.getBoundingClientRect();
-    hostLeft = rect.left;
-    hostTop = rect.top;
-  };
-
   host.addEventListener(
     'pointermove',
     (e) => {
-      mouse.x = e.clientX - hostLeft;
-      mouse.y = e.clientY - hostTop;
+      const rect = host.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
       mouse.active = true;
     },
-    { capture: true, passive: true },
+    true,
   );
   host.addEventListener('pointerleave', () => {
     mouse.active = false;
   }, true);
 
   const resize = (): void => {
-    syncHostRect();
     const rect = host.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
@@ -350,8 +253,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particles = scatterNeurons(width, height);
-    restLinks = buildRestLinks(particles);
-    bridgeLinks = buildSoftBridgeLinks(particles, width, height);
     mouse.x = width / 2;
     mouse.y = height / 2;
     smoothMouse.x = width / 2;
@@ -379,26 +280,37 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     const cy = my + ny * curve;
 
     ctx.lineCap = 'round';
+
+    ctx.save();
+    ctx.shadowBlur = 7;
+    ctx.shadowColor = 'rgba(78, 205, 196, 0.5)';
+    ctx.strokeStyle = `rgba(70, 190, 210, ${alpha * 0.4})`;
+    ctx.lineWidth = widthPx + 1;
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(cx, cy, bx, by);
-
-    ctx.strokeStyle = `rgba(70, 190, 210, ${alpha * 0.38})`;
-    ctx.lineWidth = widthPx + 2.2;
     ctx.stroke();
+    ctx.restore();
 
     ctx.strokeStyle = `rgba(130, 230, 240, ${alpha})`;
     ctx.lineWidth = widthPx;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.quadraticCurveTo(cx, cy, bx, by);
     ctx.stroke();
   };
 
   const drawSpark = (mx: number, my: number, pulse: number, a: Particle, b: Particle): void => {
     if (!(a.spark || b.spark) || pulse <= 0.56) return;
     const sparkAlpha = (pulse - 0.56) * 1.4;
+    ctx.save();
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = 'rgba(255, 130, 70, 0.65)';
     ctx.fillStyle = `rgba(255, 150, 85, ${Math.min(0.72, sparkAlpha * 0.52)})`;
     ctx.beginPath();
     ctx.arc(mx, my, 0.65, 0, Math.PI * 2);
     ctx.fill();
+    ctx.restore();
   };
 
   const drawNode = (p: Particle, pullRadius: number): void => {
@@ -410,6 +322,9 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     }
 
     if (p.role === 'corner' || p.role === 'hub') {
+      ctx.save();
+      ctx.shadowBlur = p.role === 'corner' ? 14 : 9;
+      ctx.shadowColor = 'rgba(78, 205, 196, 0.55)';
       ctx.fillStyle = `rgba(78, 205, 196, ${0.14 * nodeAlpha})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 2.4, 0, Math.PI * 2);
@@ -427,14 +342,19 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 0.32, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
 
       if (p.role === 'corner' && p.spark) {
         const pulse = 0.5 + Math.sin(frame * 0.05 + p.pulse) * 0.5;
         if (pulse > 0.55) {
+          ctx.save();
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = 'rgba(255, 130, 70, 0.55)';
           ctx.fillStyle = `rgba(255, 145, 80, ${(pulse - 0.55) * 0.7})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 0.55, 0, Math.PI * 2);
           ctx.fill();
+          ctx.restore();
         }
       }
       return;
@@ -450,19 +370,19 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     ctx.clearRect(0, 0, width, height);
     frame += 1;
 
-    const targetX = mouse.active ? mouse.x : smoothMouse.x;
-    const targetY = mouse.active ? mouse.y : smoothMouse.y;
-    smoothMouse.x += (targetX - smoothMouse.x) * (mouse.active ? 0.55 : 0.22);
-    smoothMouse.y += (targetY - smoothMouse.y) * (mouse.active ? 0.55 : 0.22);
+    smoothMouse.x += (mouse.x - smoothMouse.x) * 0.22;
+    smoothMouse.y += (mouse.y - smoothMouse.y) * 0.22;
     smoothMouse.active = mouse.active;
+
+    const pullRadius = mouseReachCm * cmToPx;
+    const mouseLinkDistance = pullRadius * 0.72;
 
     for (const p of particles) {
       if (!reducedMotion) {
-        const mdx = p.x - smoothMouse.x;
-        const mdy = p.y - smoothMouse.y;
-        const mouseDistSq = smoothMouse.active ? mdx * mdx + mdy * mdy : Infinity;
-        const nearMouse = mouseDistSq < pullRadiusSq;
-        const mouseDist = nearMouse ? Math.sqrt(mouseDistSq) : Infinity;
+        const mouseDist = smoothMouse.active
+          ? Math.hypot(p.x - smoothMouse.x, p.y - smoothMouse.y)
+          : Infinity;
+        const nearMouse = mouseDist < pullRadius;
 
         if (smoothMouse.active && nearMouse) {
           const dx = smoothMouse.x - p.x;
@@ -499,52 +419,35 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
     }
 
+    const restLinks = buildRestLinks(particles);
     const mouseLinks = smoothMouse.active
-      ? buildMouseLinks(
-          particles,
-          smoothMouse.x,
-          smoothMouse.y,
-          pullRadiusSq,
-          mouseLinkDistanceSq,
-          14,
-        )
+      ? buildMouseLinks(particles, smoothMouse.x, smoothMouse.y, pullRadius, mouseLinkDistance)
       : [];
 
-    const drawLinkSet = (links: NetworkLink[], baseAlpha: number, hoverBoost: number): void => {
-      for (const link of links) {
-        const a = particles[link.i];
-        const b = particles[link.j];
-        const dist = Math.hypot(a.x - b.x, a.y - b.y);
-        const stretch = dist / Math.max(link.restLimit, 1);
-        const t = Math.max(0, 1 - dist / (link.restLimit + 8));
-        let alpha =
-          (link.highlighted ? baseAlpha + 0.16 + t * t * 0.34 : baseAlpha + t * t * 0.34) /
-          Math.max(1, stretch * 0.85);
-        let lineWidth = link.highlighted ? 0.5 + t * 0.32 : 0.44 + t * 0.28;
+    for (const link of restLinks) {
+      const a = particles[link.i];
+      const b = particles[link.j];
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      const stretch = dist / Math.max(link.restLimit, 1);
+      const t = Math.max(0, 1 - dist / (link.restLimit + 8));
+      let alpha = (link.highlighted ? 0.58 + t * t * 0.32 : 0.48 + t * t * 0.34) / Math.max(1, stretch * 0.85);
 
-        if (smoothMouse.active) {
-          const mx = (a.x + b.x) / 2;
-          const my = (a.y + b.y) / 2;
-          const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
-          const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
-          alpha += near * hoverBoost;
-          lineWidth += near * (link.bridge ? 0.34 : 0.42);
-        }
-
-        drawFiber(a.x, a.y, b.x, b.y, Math.min(0.96, alpha), lineWidth, link.bend);
-
-        if (!link.bridge) {
-          const mx = (a.x + b.x) / 2;
-          const my = (a.y + b.y) / 2;
-          const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
-          drawSpark(mx, my, pulse, a, b);
-        }
+      if (smoothMouse.active) {
+        const mx = (a.x + b.x) / 2;
+        const my = (a.y + b.y) / 2;
+        const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
+        const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
+        alpha += near * 0.18;
       }
-    };
 
-    drawLinkSet(restLinks, 0.48, 0.38);
+      const lineWidth = link.highlighted ? 0.5 + t * 0.32 : 0.44 + t * 0.28;
+      drawFiber(a.x, a.y, b.x, b.y, Math.min(0.92, alpha), lineWidth, link.bend);
 
-    drawLinkSet(bridgeLinks, 0.22, 0.48);
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2;
+      const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
+      drawSpark(mx, my, pulse, a, b);
+    }
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
@@ -556,31 +459,18 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         const my = (a.y + b.y) / 2;
         const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
         const near = Math.max(0, 1 - mouseDist / pullRadius);
-        const alpha = (0.38 + t * t * 0.52) * near;
+        const alpha = (0.32 + t * t * 0.42) * near;
         if (alpha < 0.08) continue;
 
-        drawFiber(a.x, a.y, b.x, b.y, Math.min(0.95, alpha), 0.46 + t * 0.32, link.bend);
+        drawFiber(a.x, a.y, b.x, b.y, alpha, 0.4 + t * 0.22, link.bend);
       }
 
       const tetherDist = pullRadius * 0.92;
-      const tetherDistSq = tetherDist * tetherDist;
-      const tethered: Array<{ idx: number; d: number }> = [];
-      for (let idx = 0; idx < particles.length; idx++) {
-        const p = particles[idx];
-        const dx = p.x - smoothMouse.x;
-        const dy = p.y - smoothMouse.y;
-        const d2 = dx * dx + dy * dy;
-        if (d2 > tetherDistSq) continue;
-        const d = Math.sqrt(d2);
-        if (tethered.length < 4) {
-          tethered.push({ idx, d });
-          if (tethered.length === 4) tethered.sort((a, b) => a.d - b.d);
-          continue;
-        }
-        if (d >= tethered[3].d) continue;
-        tethered[3] = { idx, d };
-        tethered.sort((a, b) => a.d - b.d);
-      }
+      const tethered = particles
+        .map((p, idx) => ({ idx, d: Math.hypot(p.x - smoothMouse.x, p.y - smoothMouse.y) }))
+        .filter(({ d }) => d <= tetherDist)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 4);
 
       for (const { idx, d } of tethered) {
         const p = particles[idx];
@@ -596,10 +486,14 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         );
       }
 
+      ctx.save();
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(255, 140, 75, 0.55)';
       ctx.fillStyle = 'rgba(255, 160, 95, 0.55)';
       ctx.beginPath();
       ctx.arc(smoothMouse.x, smoothMouse.y, 1.1, 0, Math.PI * 2);
       ctx.fill();
+      ctx.restore();
     }
 
     for (const p of particles) {
@@ -614,7 +508,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   resize();
   draw();
   window.addEventListener('resize', resize);
-  window.addEventListener('scroll', syncHostRect, { passive: true });
 }
 
 export function initNeuralHero(): void {
