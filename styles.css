@@ -232,7 +232,7 @@ ul {
 
 .nav-links {
   display: flex;
-  gap: clamp(0.85rem, 1.6vw, 2rem);
+  gap: clamp(0.65rem, 1.2vw, 1.5rem);
   align-items: center;
   flex-shrink: 1;
   justify-content: flex-end;
