@@ -184,6 +184,47 @@ ul {
   flex-shrink: 0;
 }
 
+.logo-dark {
+  display: none;
+}
+
+.footer-logo-mark .logo-light,
+.contact-footer-logo-mark .logo-light {
+  display: none;
+}
+
+.footer-logo-mark .logo-dark,
+.contact-footer-logo-mark .logo-dark {
+  display: block;
+}
+
+.page-home .nav:not(.scrolled) {
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+.page-home .nav:not(.scrolled) .nav-links a {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.page-home .nav:not(.scrolled) .nav-links a:hover,
+.page-home .nav:not(.scrolled) .nav-links a.active {
+  color: var(--teal-light);
+}
+
+.page-home .nav:not(.scrolled) .nav-toggle span {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.page-home .nav:not(.scrolled) .logo-light {
+  display: none;
+}
+
+.page-home .nav:not(.scrolled) .logo-dark {
+  display: block;
+}
+
 .nav-links {
   display: flex;
   gap: clamp(0.85rem, 1.6vw, 2rem);
@@ -1251,7 +1292,24 @@ body.menu-open {
   text-shadow: 0 2px 20px rgba(10, 22, 40, 0.35);
 }
 
-.page-hero-about .page-hero-photo { object-position: center 42%; }
+.page-hero-about .page-hero-photo,
+.page-hero-contact .page-hero-photo {
+  object-position: center 42%;
+  filter: grayscale(0.42) saturate(0.28) brightness(0.68) contrast(1.06);
+  opacity: 0.48;
+}
+
+.page-hero-about .page-hero-overlay,
+.page-hero-contact .page-hero-overlay {
+  background:
+    radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.55) 0%, transparent 72%),
+    linear-gradient(135deg, rgba(10, 22, 40, 0.72) 0%, rgba(15, 34, 56, 0.82) 100%);
+}
+
+.page-hero-about.page-hero-banner,
+.page-hero-contact.page-hero-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
+}
 
 .page-hero-science .page-hero-photo { object-position: 30% 45%; }
 .page-hero-pipeline .page-hero-photo { object-position: center 55%; }
@@ -1266,7 +1324,6 @@ body.menu-open {
     linear-gradient(180deg, rgba(10, 22, 40, 0.36) 0%, rgba(10, 22, 40, 0.5) 100%);
 }
 .page-hero-publications .page-hero-photo { object-position: 70% 35%; }
-.page-hero-contact .page-hero-photo { object-position: center 48%; }
 
 /* Hero comparison page (internal preview) */
 .page-hero-preview main {

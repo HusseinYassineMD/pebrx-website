@@ -23,6 +23,7 @@ interface NetworkLink {
   restLimit: number;
   bend: number;
   dynamic: boolean;
+  bridge?: boolean;
 }
 
 interface MouseState {
@@ -46,9 +47,9 @@ function addDendrites(
       angleBias === undefined
         ? Math.random() * Math.PI * 2
         : angleBias + (Math.random() - 0.5) * angleSpread;
-    const dist = spread * (0.35 + Math.random() * 0.85);
-    const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 16;
-    const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 16;
+    const dist = spread * (0.52 + Math.random() * 0.95);
+    const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 20;
+    const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 20;
     particles.push({
       x,
       y,
@@ -71,8 +72,8 @@ function scatterNeurons(width: number, height: number): Particle[] {
   const particles: Particle[] = [];
   const pad = Math.max(36, Math.min(width, height) * 0.05);
   const cornerInset = pad * 0.55;
-  const dendriteSpread = Math.max(48, Math.min(width, height) * 0.085);
-  const cornerSpread = dendriteSpread * 1.5;
+  const dendriteSpread = Math.max(58, Math.min(width, height) * 0.105);
+  const cornerSpread = dendriteSpread * 1.55;
 
   const corners = [
     { x: cornerInset, y: cornerInset },
@@ -196,10 +197,51 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
       i: child.parent,
       j: i,
       highlighted: parent.role === 'corner',
-      restLimit: child.restDist + 12,
+      restLimit: child.restDist + 22,
       bend: ((child.parent * 13 + i * 29) % 100) / 100 - 0.5,
       dynamic: false,
     });
+  }
+
+  return links;
+}
+
+function buildSoftBridgeLinks(particles: Particle[], width: number, height: number): NetworkLink[] {
+  const links: NetworkLink[] = [];
+  const seen = new Set<string>();
+  const bridgeDist = Math.max(92, Math.min(width, height) * 0.145);
+  const bridgeDistSq = bridgeDist * bridgeDist;
+  const nodes = particles
+    .map((p, i) => ({ i, p }))
+    .filter(({ p }) => p.role === 'hub' || p.role === 'satellite');
+
+  for (let a = 0; a < nodes.length; a++) {
+    const near: Array<{ j: number; d2: number }> = [];
+    for (let b = a + 1; b < nodes.length; b++) {
+      const dx = nodes[a].p.x - nodes[b].p.x;
+      const dy = nodes[a].p.y - nodes[b].p.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > bridgeDistSq) continue;
+      if (nodes[a].p.cluster >= 0 && nodes[a].p.cluster === nodes[b].p.cluster) continue;
+      near.push({ j: b, d2 });
+    }
+    near.sort((x, y) => x.d2 - y.d2);
+    for (let n = 0; n < Math.min(2, near.length); n++) {
+      const i = nodes[a].i;
+      const j = nodes[near[n].j].i; // particle index via nodes array slot
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      links.push({
+        i: i < j ? i : j,
+        j: i < j ? j : i,
+        highlighted: false,
+        restLimit: bridgeDist,
+        bend: ((i * 17 + j * 31) % 100) / 100 - 0.5,
+        dynamic: false,
+        bridge: true,
+      });
+    }
   }
 
   return links;
@@ -264,6 +306,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   let height = 0;
   let particles: Particle[] = [];
   let restLinks: NetworkLink[] = [];
+  let bridgeLinks: NetworkLink[] = [];
   let hostLeft = 0;
   let hostTop = 0;
   const mouseReachCm = 4;
@@ -308,6 +351,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particles = scatterNeurons(width, height);
     restLinks = buildRestLinks(particles);
+    bridgeLinks = buildSoftBridgeLinks(particles, width, height);
     mouse.x = width / 2;
     mouse.y = height / 2;
     smoothMouse.x = width / 2;
@@ -462,34 +506,45 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
           smoothMouse.y,
           pullRadiusSq,
           mouseLinkDistanceSq,
-          10,
+          14,
         )
       : [];
 
-    for (const link of restLinks) {
-      const a = particles[link.i];
-      const b = particles[link.j];
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      const stretch = dist / Math.max(link.restLimit, 1);
-      const t = Math.max(0, 1 - dist / (link.restLimit + 8));
-      let alpha = (link.highlighted ? 0.64 + t * t * 0.34 : 0.48 + t * t * 0.34) / Math.max(1, stretch * 0.85);
+    const drawLinkSet = (links: NetworkLink[], baseAlpha: number, hoverBoost: number): void => {
+      for (const link of links) {
+        const a = particles[link.i];
+        const b = particles[link.j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        const stretch = dist / Math.max(link.restLimit, 1);
+        const t = Math.max(0, 1 - dist / (link.restLimit + 8));
+        let alpha =
+          (link.highlighted ? baseAlpha + 0.16 + t * t * 0.34 : baseAlpha + t * t * 0.34) /
+          Math.max(1, stretch * 0.85);
+        let lineWidth = link.highlighted ? 0.5 + t * 0.32 : 0.44 + t * 0.28;
 
-      if (smoothMouse.active) {
-        const mx = (a.x + b.x) / 2;
-        const my = (a.y + b.y) / 2;
-        const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
-        const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
-        alpha += near * 0.18;
+        if (smoothMouse.active) {
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
+          const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
+          alpha += near * hoverBoost;
+          lineWidth += near * (link.bridge ? 0.34 : 0.42);
+        }
+
+        drawFiber(a.x, a.y, b.x, b.y, Math.min(0.96, alpha), lineWidth, link.bend);
+
+        if (!link.bridge) {
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
+          drawSpark(mx, my, pulse, a, b);
+        }
       }
+    };
 
-      const lineWidth = link.highlighted ? 0.5 + t * 0.32 : 0.44 + t * 0.28;
-      drawFiber(a.x, a.y, b.x, b.y, Math.min(0.92, alpha), lineWidth, link.bend);
+    drawLinkSet(restLinks, 0.48, 0.38);
 
-      const mx = (a.x + b.x) / 2;
-      const my = (a.y + b.y) / 2;
-      const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
-      drawSpark(mx, my, pulse, a, b);
-    }
+    drawLinkSet(bridgeLinks, 0.22, 0.48);
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
@@ -501,10 +556,10 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         const my = (a.y + b.y) / 2;
         const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
         const near = Math.max(0, 1 - mouseDist / pullRadius);
-        const alpha = (0.32 + t * t * 0.42) * near;
+        const alpha = (0.38 + t * t * 0.52) * near;
         if (alpha < 0.08) continue;
 
-        drawFiber(a.x, a.y, b.x, b.y, alpha, 0.4 + t * 0.22, link.bend);
+        drawFiber(a.x, a.y, b.x, b.y, Math.min(0.95, alpha), 0.46 + t * 0.32, link.bend);
       }
 
       const tetherDist = pullRadius * 0.92;
