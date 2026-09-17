@@ -2968,11 +2968,28 @@ body.menu-open {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(42, 157, 143, 0.08) 0%, transparent 55%),
     linear-gradient(180deg, var(--mint) 0%, var(--seafoam) 100%);
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
   padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
 
-.section-news .section-intro {
+.page-publications .section-news .section-intro,
+.page-publications .section-publications .section-intro {
   margin-bottom: 2rem;
+}
+
+.page-publications .section-news .section-intro.centered .section-label,
+.page-publications .section-publications .section-intro .section-label,
+.page-publications .section-news .section-intro h2,
+.page-publications .section-publications .section-intro h2 {
+  display: block;
+}
+
+.page-publications .section-news .section-intro.centered .section-label {
+  display: inline-flex;
+}
+
+.page-publications .section-publications .section-intro .section-label {
+  display: inline-block;
 }
 
 .news-grid {
@@ -3078,8 +3095,9 @@ body.menu-open {
 
 .section-publications {
   background: var(--white);
-  border-top: 1px solid rgba(13, 21, 38, 0.12);
-  padding-top: clamp(2.5rem, 5vw, 3.75rem);
+  border-top: 3px solid rgba(42, 157, 143, 0.22);
+  padding-top: clamp(3rem, 6vw, 4.25rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
 
 .publications-list {
@@ -3913,25 +3931,6 @@ body:not(.page-home) main {
 .science-top-block .section-intro .section-label,
 .science-top-block .section-intro h2 {
   display: block;
-}
-
-.page-publications .section-news .section-intro.centered .section-label {
-  display: inline-flex;
-}
-
-.page-publications .section-news .section-intro h2,
-.page-publications .section-publications .section-intro .section-label,
-.page-publications .section-publications .section-intro h2 {
-  display: block;
-}
-
-.page-publications .section-publications .section-intro .section-label {
-  display: inline-block;
-}
-
-.page-publications .section-news .section-intro,
-.page-publications .section-publications .section-intro {
-  margin-bottom: 2rem;
 }
 
 .page-section .section-intro {
