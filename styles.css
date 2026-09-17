@@ -961,25 +961,18 @@ body.menu-open {
 
 .science-intro-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  align-items: stretch;
-}
-
-.science-intro-cell {
-  padding: 1.35rem 1.5rem;
-  background: linear-gradient(165deg, var(--white) 0%, var(--mint) 100%);
-  border: 1px solid rgba(42, 157, 143, 0.18);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.35rem 2rem;
+  align-items: start;
 }
 
 .science-intro-cell p {
   margin: 0;
   font-size: 0.98rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--text-muted);
-  text-align: left;
+  text-align: justify;
+  hyphens: auto;
 }
 
 .science-intro-cell strong {
