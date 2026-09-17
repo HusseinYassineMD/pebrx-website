@@ -3535,6 +3535,9 @@ body.menu-open {
 .page-home .landing-explore .section-desc {
   font-size: 1.05rem;
   line-height: 1.6;
+  max-width: 46rem;
+  margin-inline: auto;
+  text-wrap: balance;
 }
 
 .page-home .landing-grid {
@@ -3554,6 +3557,7 @@ body.menu-open {
 .page-home .landing-card p {
   font-size: 0.95rem;
   line-height: 1.55;
+  text-wrap: balance;
 }
 
 .landing-explore {
