@@ -2751,30 +2751,42 @@ body.menu-open {
   margin-bottom: 3.5rem;
 }
 
-.team-grid-cofounders {
+.team-grid-cofounders,
+.team-grid-staff-trio {
   grid-template-columns: repeat(3, 1fr);
   margin-bottom: 3.5rem;
+  align-items: stretch;
 }
 
-.team-grid-cofounders .team-card {
+.team-grid-cofounders .team-card,
+.team-grid-staff-trio .team-card {
   flex-direction: column;
   align-items: stretch;
   text-align: left;
+  height: 100%;
 }
 
-.team-grid-cofounders .team-photo {
+.team-grid-cofounders .team-photo,
+.team-grid-staff-trio .team-photo {
   align-self: center;
   width: 110px;
   height: 110px;
 }
 
-.team-grid-cofounders .team-info {
+.team-grid-cofounders .team-info,
+.team-grid-staff-trio .team-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
 }
 
 .team-grid-cofounders .team-credentials,
-.team-grid-cofounders .team-info p:last-child {
+.team-grid-cofounders .team-info p:last-child,
+.team-grid-staff-trio .team-info p:last-child {
   width: 100%;
+  margin-top: auto;
+  padding-top: 0.35rem;
 }
 
 .team-grid-advisor-single {
@@ -2792,10 +2804,6 @@ body.menu-open {
   grid-column: 1 / -1;
   justify-self: center;
   width: calc(50% - 1rem);
-}
-
-.team-grid-staff-trio {
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .team-card {
@@ -3520,12 +3528,14 @@ body.menu-open {
     text-align: center;
   }
 
-  .team-grid-cofounders .team-card {
+  .team-grid-cofounders .team-card,
+  .team-grid-staff-trio .team-card {
     align-items: stretch;
     text-align: left;
   }
 
-  .team-grid-cofounders .team-photo {
+  .team-grid-cofounders .team-photo,
+  .team-grid-staff-trio .team-photo {
     align-self: center;
   }
 
@@ -4004,7 +4014,8 @@ body:not(.page-home) main {
 
   .team-group-label + .team-grid,
   .team-grid-cofounders,
-  .team-grid-staff {
+  .team-grid-staff,
+  .team-grid-staff-trio {
     margin-bottom: 2rem;
   }
 
