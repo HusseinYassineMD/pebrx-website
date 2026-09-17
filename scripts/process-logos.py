@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build logo variants: original colors on light bg, bright teal/blue on dark bg."""
+"""Build logo variants: original colors on light bg, mission teal on dark bg."""
 
 from __future__ import annotations
 
@@ -28,32 +28,24 @@ def _lerp(a: int, b: int, t: float) -> int:
     return int(a + (b - a) * t)
 
 
-def _target_color(h_deg: float, v: float, bright: float) -> tuple[int, int, int]:
+# Match site --teal / .btn-primary (Our Mission)
+MISSION_TEAL = (42, 157, 143)
+MISSION_TEAL_LIGHT = (78, 205, 196)
+
+
+def _mission_teal(v: float) -> tuple[int, int, int]:
+    """Map pixel brightness to mission teal, with a subtle lighter lift."""
     t = max(0.0, min(1.0, v))
-    boost = bright
-
-    if h_deg < 200:
-        base = (0, 119, 182)
-        accent = (42, 157, 143)
-    elif h_deg < 260:
-        base = (42, 157, 143)
-        accent = (78, 205, 196)
-    else:
-        base = (42, 157, 143)
-        accent = (130, 230, 240)
-
-    r = _lerp(base[0], accent[0], t)
-    g = _lerp(base[1], accent[1], t)
-    b = _lerp(base[2], accent[2], t)
-
-    r = min(255, int(r * boost + 18 * boost))
-    g = min(255, int(g * boost + 22 * boost))
-    b = min(255, int(b * boost + 26 * boost))
-    return r, g, b
+    lift = t * 0.42
+    return (
+        _lerp(MISSION_TEAL[0], MISSION_TEAL_LIGHT[0], lift),
+        _lerp(MISSION_TEAL[1], MISSION_TEAL_LIGHT[1], lift),
+        _lerp(MISSION_TEAL[2], MISSION_TEAL_LIGHT[2], lift),
+    )
 
 
-def recolor_for_dark_bg(im: Image.Image, bright: float = 1.35) -> Image.Image:
-    """Bright teal/blue wordmark for dark backgrounds — no pink/purple."""
+def recolor_for_dark_bg(im: Image.Image) -> Image.Image:
+    """Mission teal wordmark for dark backgrounds — matches Our Mission button."""
     im = im.convert("RGBA")
     px = im.load()
 
@@ -66,15 +58,8 @@ def recolor_for_dark_bg(im: Image.Image, bright: float = 1.35) -> Image.Image:
                 px[x, y] = (0, 0, 0, 0)
                 continue
 
-            h_deg = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[0] * 360
             v = colorsys.rgb_to_hsv(r / 255, g / 255, b / 255)[2]
-
-            if max(r, g, b) - min(r, g, b) < 18:
-                nr, ng, nb = _target_color(210, 0.55, bright * 0.95)
-                px[x, y] = (nr, ng, nb, a)
-                continue
-
-            nr, ng, nb = _target_color(h_deg, v, bright)
+            nr, ng, nb = _mission_teal(v)
             px[x, y] = (nr, ng, nb, a)
 
     return im
@@ -91,7 +76,7 @@ def save_pair(name: str) -> None:
 
     light.save(OUT / f"{name}-light.png", optimize=True)
     dark.save(OUT / f"{name}-dark.png", optimize=True)
-    print(f"wrote {name}-light.png (original), {name}-dark.png (bright teal)")
+    print(f"wrote {name}-light.png (original), {name}-dark.png (mission teal)")
 
 
 def main() -> None:
