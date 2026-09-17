@@ -47,6 +47,7 @@ export function initNavigation(): void {
   applyActiveNav();
   window.addEventListener('hashchange', applyActiveNav);
 
+  const currentPage = document.body.dataset.page ?? 'home';
   const isHome = currentPage === 'home';
   const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
