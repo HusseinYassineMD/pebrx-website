@@ -23,6 +23,19 @@ interface NetworkLink {
   restLimit: number;
   bend: number;
   dynamic: boolean;
+  bridge?: boolean;
+}
+
+/** Stable PRNG so the reference hero pattern stays consistent across loads. */
+function createRng(seed: number): () => number {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 interface MouseState {
@@ -37,22 +50,23 @@ function addDendrites(
   cluster: number,
   count: number,
   spread: number,
+  rand: () => number = Math.random,
 ): void {
   const hub = particles[hubIndex];
   for (let n = 0; n < count; n++) {
-    const angle = Math.random() * Math.PI * 2;
-    const dist = spread * (0.35 + Math.random() * 0.85);
-    const x = hub.x + Math.cos(angle) * dist + (Math.random() - 0.5) * 16;
-    const y = hub.y + Math.sin(angle) * dist + (Math.random() - 0.5) * 16;
+    const angle = rand() * Math.PI * 2;
+    const dist = spread * (0.35 + rand() * 0.85);
+    const x = hub.x + Math.cos(angle) * dist + (rand() - 0.5) * 14;
+    const y = hub.y + Math.sin(angle) * dist + (rand() - 0.5) * 14;
     particles.push({
       x,
       y,
       restX: x,
       restY: y,
-      vx: (Math.random() - 0.5) * 0.2,
-      vy: (Math.random() - 0.5) * 0.17,
-      pulse: Math.random() * Math.PI * 2,
-      spark: Math.random() < 0.28,
+      vx: (rand() - 0.5) * 0.2,
+      vy: (rand() - 0.5) * 0.17,
+      pulse: rand() * Math.PI * 2,
+      spark: rand() < 0.24,
       cluster,
       role: 'satellite',
       radius: 0.75,
@@ -62,90 +76,64 @@ function addDendrites(
   }
 }
 
+/** Reference layout: airy starburst hubs evenly spread across the full hero. */
 function scatterNeurons(width: number, height: number): Particle[] {
+  const rand = createRng(0x50425278);
   const particles: Particle[] = [];
   const pad = Math.max(42, Math.min(width, height) * 0.06);
-  const cornerInset = pad * 0.85;
-  const dendriteSpread = Math.max(48, Math.min(width, height) * 0.085);
+  const dendriteSpread = Math.max(44, Math.min(width, height) * 0.078);
+  const hubCount = Math.min(16, Math.max(12, Math.round(width / 185)));
+  const minSpacing = Math.max(108, Math.min(width, height) * 0.19);
+  const usableW = width - pad * 2;
+  const usableH = height - pad * 2;
+  const cols = Math.max(4, Math.round(usableW / minSpacing));
+  const rows = Math.max(3, Math.round(usableH / minSpacing));
+  const cellW = usableW / cols;
+  const cellH = usableH / rows;
+  const cells: Array<{ x: number; y: number }> = [];
 
-  const corners = [
-    { x: cornerInset, y: cornerInset },
-    { x: width - cornerInset, y: cornerInset },
-    { x: cornerInset, y: height - cornerInset },
-    { x: width - cornerInset, y: height - cornerInset },
-  ];
-
-  corners.forEach((corner, i) => {
-    const hubIndex = particles.length;
-    const x = corner.x + (Math.random() - 0.5) * 8;
-    const y = corner.y + (Math.random() - 0.5) * 8;
-    particles.push({
-      x,
-      y,
-      restX: x,
-      restY: y,
-      vx: (Math.random() - 0.5) * 0.18,
-      vy: (Math.random() - 0.5) * 0.16,
-      pulse: Math.random() * Math.PI * 2,
-      spark: true,
-      cluster: -1 - i,
-      role: 'corner',
-      radius: 3.8,
-      parent: -1,
-      restDist: 0,
-    });
-    addDendrites(particles, hubIndex, -1 - i, 7 + Math.floor(Math.random() * 2), dendriteSpread);
-  });
-
-  const clusterCount = Math.min(16, Math.max(11, Math.round(width / 210)));
-  const minClusterDist = Math.max(100, Math.min(width, height) * 0.13);
-  const centers: Array<{ x: number; y: number }> = [];
-  const midX = width / 2;
-  const leftQuota = Math.ceil(clusterCount * 0.55);
-  const zones = [
-    { minX: pad, maxX: midX - pad * 0.25, quota: leftQuota },
-    { minX: midX + pad * 0.25, maxX: width - pad, quota: clusterCount - leftQuota },
-  ];
-
-  const canPlace = (x: number, y: number): boolean => {
-    const tooClose = centers.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist);
-    const nearCorner = corners.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist * 0.65);
-    return !tooClose && !nearCorner;
-  };
-
-  for (const zone of zones) {
-    let placed = 0;
-    let attempts = 0;
-    while (placed < zone.quota && attempts < zone.quota * 90) {
-      attempts += 1;
-      const x = zone.minX + Math.random() * (zone.maxX - zone.minX);
-      const y = pad + Math.random() * (height - pad * 2);
-      if (!canPlace(x, y)) continue;
-      centers.push({ x, y });
-      placed += 1;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const stagger = row % 2 === 1 ? cellW * 0.5 : 0;
+      cells.push({
+        x: pad + cellW * (col + 0.5) + stagger + (rand() - 0.5) * cellW * 0.28,
+        y: pad + cellH * (row + 0.5) + (rand() - 0.5) * cellH * 0.28,
+      });
     }
   }
 
+  const stride = cells.length / hubCount;
+  const centers = Array.from({ length: hubCount }, (_, i) =>
+    cells[Math.min(cells.length - 1, Math.floor(i * stride + stride * 0.5))],
+  );
+
   centers.forEach((center, cluster) => {
     const hubIndex = particles.length;
-    const x = center.x + (Math.random() - 0.5) * 10;
-    const y = center.y + (Math.random() - 0.5) * 10;
+    const x = center.x + (rand() - 0.5) * 8;
+    const y = center.y + (rand() - 0.5) * 8;
     particles.push({
       x,
       y,
       restX: x,
       restY: y,
-      vx: (Math.random() - 0.5) * 0.16,
-      vy: (Math.random() - 0.5) * 0.14,
-      pulse: Math.random() * Math.PI * 2,
-      spark: Math.random() < 0.35,
+      vx: (rand() - 0.5) * 0.16,
+      vy: (rand() - 0.5) * 0.14,
+      pulse: rand() * Math.PI * 2,
+      spark: rand() < 0.3,
       cluster,
       role: 'hub',
-      radius: 2.4,
+      radius: 2.2,
       parent: -1,
       restDist: 0,
     });
-    addDendrites(particles, hubIndex, cluster, 6 + Math.floor(Math.random() * 2), dendriteSpread * 0.82);
+    addDendrites(
+      particles,
+      hubIndex,
+      cluster,
+      6 + Math.floor(rand() * 3),
+      dendriteSpread,
+      rand,
+    );
   });
 
   return particles;
@@ -167,6 +155,45 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
       restLimit: child.restDist + 12,
       bend: ((child.parent * 13 + i * 29) % 100) / 100 - 0.5,
       dynamic: false,
+    });
+  }
+
+  return links;
+}
+
+function buildSoftBridgeLinks(particles: Particle[], width: number, height: number): NetworkLink[] {
+  const links: NetworkLink[] = [];
+  const seen = new Set<string>();
+  const bridgeDist = Math.max(88, Math.min(width, height) * 0.135);
+  const bridgeDistSq = bridgeDist * bridgeDist;
+  const hubs = particles
+    .map((p, i) => ({ i, p }))
+    .filter(({ p }) => p.role === 'hub');
+
+  for (let a = 0; a < hubs.length; a++) {
+    const near: Array<{ j: number; d2: number }> = [];
+    for (let b = a + 1; b < hubs.length; b++) {
+      const dx = hubs[a].p.x - hubs[b].p.x;
+      const dy = hubs[a].p.y - hubs[b].p.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 > bridgeDistSq) continue;
+      near.push({ j: b, d2 });
+    }
+    near.sort((x, y) => x.d2 - y.d2);
+    if (near.length === 0) continue;
+    const i = hubs[a].i;
+    const j = hubs[near[0].j].i;
+    const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    links.push({
+      i: i < j ? i : j,
+      j: i < j ? j : i,
+      highlighted: false,
+      restLimit: bridgeDist,
+      bend: ((i * 17 + j * 31) % 100) / 100 - 0.5,
+      dynamic: false,
+      bridge: true,
     });
   }
 
@@ -221,6 +248,10 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
+  let restLinks: NetworkLink[] = [];
+  let bridgeLinks: NetworkLink[] = [];
+  let hostLeft = 0;
+  let hostTop = 0;
   const mouseReachCm = 3;
   const cmToPx = 96 / 2.54;
   let frame = 0;
@@ -228,21 +259,27 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   const mouse: MouseState = { x: 0, y: 0, active: false };
   const smoothMouse: MouseState = { x: 0, y: 0, active: false };
 
+  const syncHostRect = (): void => {
+    const rect = host.getBoundingClientRect();
+    hostLeft = rect.left;
+    hostTop = rect.top;
+  };
+
   host.addEventListener(
     'pointermove',
     (e) => {
-      const rect = host.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      mouse.x = e.clientX - hostLeft;
+      mouse.y = e.clientY - hostTop;
       mouse.active = true;
     },
-    true,
+    { capture: true, passive: true },
   );
   host.addEventListener('pointerleave', () => {
     mouse.active = false;
   }, true);
 
   const resize = (): void => {
+    syncHostRect();
     const rect = host.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
@@ -253,6 +290,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particles = scatterNeurons(width, height);
+    restLinks = buildRestLinks(particles);
+    bridgeLinks = buildSoftBridgeLinks(particles, width, height);
     mouse.x = width / 2;
     mouse.y = height / 2;
     smoothMouse.x = width / 2;
@@ -419,35 +458,42 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
     }
 
-    const restLinks = buildRestLinks(particles);
     const mouseLinks = smoothMouse.active
       ? buildMouseLinks(particles, smoothMouse.x, smoothMouse.y, pullRadius, mouseLinkDistance)
       : [];
 
-    for (const link of restLinks) {
-      const a = particles[link.i];
-      const b = particles[link.j];
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      const stretch = dist / Math.max(link.restLimit, 1);
-      const t = Math.max(0, 1 - dist / (link.restLimit + 8));
-      let alpha = (link.highlighted ? 0.58 + t * t * 0.32 : 0.48 + t * t * 0.34) / Math.max(1, stretch * 0.85);
+    const drawLinkSet = (links: NetworkLink[], baseAlpha: number, hoverBoost: number): void => {
+      for (const link of links) {
+        const a = particles[link.i];
+        const b = particles[link.j];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        const stretch = dist / Math.max(link.restLimit, 1);
+        const t = Math.max(0, 1 - dist / (link.restLimit + 8));
+        let alpha = (baseAlpha + t * t * 0.34) / Math.max(1, stretch * 0.85);
+        let lineWidth = link.bridge ? 0.38 + t * 0.2 : 0.44 + t * 0.28;
 
-      if (smoothMouse.active) {
-        const mx = (a.x + b.x) / 2;
-        const my = (a.y + b.y) / 2;
-        const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
-        const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
-        alpha += near * 0.18;
+        if (smoothMouse.active) {
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          const mouseDist = Math.hypot(mx - smoothMouse.x, my - smoothMouse.y);
+          const near = Math.max(0, 1 - mouseDist / (pullRadius * 0.85));
+          alpha += near * hoverBoost;
+          lineWidth += near * (link.bridge ? 0.22 : 0.18);
+        }
+
+        drawFiber(a.x, a.y, b.x, b.y, Math.min(0.92, alpha), lineWidth, link.bend);
+
+        if (!link.bridge) {
+          const mx = (a.x + b.x) / 2;
+          const my = (a.y + b.y) / 2;
+          const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
+          drawSpark(mx, my, pulse, a, b);
+        }
       }
+    };
 
-      const lineWidth = link.highlighted ? 0.5 + t * 0.32 : 0.44 + t * 0.28;
-      drawFiber(a.x, a.y, b.x, b.y, Math.min(0.92, alpha), lineWidth, link.bend);
-
-      const mx = (a.x + b.x) / 2;
-      const my = (a.y + b.y) / 2;
-      const pulse = 0.5 + Math.sin(frame * 0.07 + a.pulse + b.pulse) * 0.5;
-      drawSpark(mx, my, pulse, a, b);
-    }
+    drawLinkSet(restLinks, 0.48, 0.18);
+    drawLinkSet(bridgeLinks, 0.16, 0.24);
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
@@ -508,6 +554,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   resize();
   draw();
   window.addEventListener('resize', resize);
+  window.addEventListener('scroll', syncHostRect, { passive: true });
 }
 
 export function initNeuralHero(): void {
