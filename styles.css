@@ -401,9 +401,11 @@ body.menu-open {
   object-position: center 42%;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.5;
-  -webkit-mask-image: radial-gradient(ellipse 36% 50% at 50% 44%, transparent 28%, rgba(0, 0, 0, 0.35) 52%, black 82%);
-  mask-image: radial-gradient(ellipse 36% 50% at 50% 44%, transparent 28%, rgba(0, 0, 0, 0.35) 52%, black 82%);
+  opacity: 0.82;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 2px rgba(200, 245, 240, 0.45));
+  -webkit-mask-image: radial-gradient(ellipse 62% 72% at 50% 44%, transparent 12%, rgba(0, 0, 0, 0.55) 42%, black 88%);
+  mask-image: radial-gradient(ellipse 62% 72% at 50% 44%, transparent 12%, rgba(0, 0, 0, 0.55) 42%, black 88%);
 }
 
 .hero-landing-photo .hero-photo-overlay {
@@ -1212,9 +1214,11 @@ body.menu-open {
   object-position: center center;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.88;
-  -webkit-mask-image: radial-gradient(ellipse 42% 58% at 50% 46%, transparent 6%, rgba(0, 0, 0, 0.45) 38%, black 72%);
-  mask-image: radial-gradient(ellipse 42% 58% at 50% 46%, transparent 6%, rgba(0, 0, 0, 0.45) 38%, black 72%);
+  opacity: 0.95;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 2px rgba(200, 245, 240, 0.5));
+  -webkit-mask-image: radial-gradient(ellipse 68% 78% at 50% 46%, transparent 4%, rgba(0, 0, 0, 0.5) 36%, black 84%);
+  mask-image: radial-gradient(ellipse 68% 78% at 50% 46%, transparent 4%, rgba(0, 0, 0, 0.5) 36%, black 84%);
 }
 
 .page-hero-overlay {
