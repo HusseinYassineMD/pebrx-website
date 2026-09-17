@@ -28,13 +28,12 @@
   --section-pad-y: clamp(2rem, 5vw, 4rem);
   --section-pad-y-mobile: clamp(1.5rem, 4vw, 2rem);
   --hero-fade-to: var(--mint);
-  --hero-fade-overlap: 96px;
   --hero-fade-mask: linear-gradient(
     to bottom,
     #000 0%,
-    #000 56%,
-    rgba(0, 0, 0, 0.82) 70%,
-    rgba(0, 0, 0, 0.38) 86%,
+    #000 80%,
+    rgba(0, 0, 0, 0.7) 88%,
+    rgba(0, 0, 0, 0.22) 96%,
     transparent 100%
   );
   --block-gap: 2rem;
@@ -435,7 +434,12 @@ body.menu-open {
 }
 
 .hero-landing-photo {
-  background: var(--hero-fade-to);
+  background: linear-gradient(
+    to bottom,
+    var(--navy) 0%,
+    var(--navy-light) 72%,
+    var(--hero-fade-to) 100%
+  );
 }
 
 .hero-landing-photo .hero-photo {
@@ -1225,10 +1229,15 @@ body.menu-open {
   align-items: center;
   justify-content: center;
   min-height: clamp(280px, 42vw, 440px);
-  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3.25rem);
+  padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2.5rem, 5.5vw, 3.75rem);
   overflow: hidden;
   text-align: center;
-  background: var(--hero-fade-to);
+  background: linear-gradient(
+    to bottom,
+    var(--navy) 0%,
+    var(--navy-light) 72%,
+    var(--hero-fade-to) 100%
+  );
 }
 
 body.page-science,
@@ -1357,6 +1366,23 @@ body.page-contact {
     linear-gradient(135deg, rgba(10, 22, 40, 0.38) 0%, rgba(21, 42, 66, 0.48) 100%);
 }
 
+.page-hero-about.page-hero-banner {
+  background: linear-gradient(
+    to bottom,
+    var(--navy) 0%,
+    var(--navy-mid) 58%,
+    var(--hero-fade-to) 100%
+  );
+}
+
+.page-hero-contact.page-hero-banner {
+  background: linear-gradient(
+    to bottom,
+    var(--navy-light) 0%,
+    #1a3d4c 58%,
+    var(--hero-fade-to) 100%
+  );
+}
 
 .page-hero-science .page-hero-photo { object-position: 30% 45%; }
 .page-hero-pipeline .page-hero-photo { object-position: center 55%; }
@@ -3771,10 +3797,7 @@ body.page-contact {
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(42, 157, 143, 0.08) 0%, transparent 55%),
     linear-gradient(180deg, var(--mint) 0%, var(--seafoam) 100%);
-  margin-top: calc(-1 * var(--hero-fade-overlap));
-  padding: calc(2rem + var(--hero-fade-overlap)) 0 3rem;
-  position: relative;
-  z-index: 1;
+  padding: 2rem 0 3rem;
 }
 
 .page-home .landing-explore .section-intro {
@@ -3963,39 +3986,6 @@ body:not(.page-home) main {
 
 .page-contact .contact-header {
   display: none;
-}
-
-/* Hero → content seamless blend (after section-specific padding) */
-body:not(.page-home):not(.page-publications):not(.page-contact) main > .section:first-of-type {
-  margin-top: calc(-1 * var(--hero-fade-overlap));
-  position: relative;
-  z-index: 1;
-}
-
-body.page-publications main > .section-news,
-body.page-contact .section-contact {
-  position: relative;
-  z-index: 1;
-}
-
-body.page-about main > .section:first-of-type,
-body.page-pipeline main > .section:first-of-type {
-  padding-top: var(--hero-fade-overlap);
-}
-
-body.page-science main > .section:first-of-type,
-body.page-leadership main > .section:first-of-type {
-  padding-top: calc(var(--section-pad-y) + var(--hero-fade-overlap));
-}
-
-body.page-publications main > .section-news {
-  margin-top: calc(-1 * var(--hero-fade-overlap));
-  padding-top: calc(clamp(2.5rem, 5vw, 3.5rem) + var(--hero-fade-overlap));
-}
-
-body.page-contact .section-contact {
-  margin-top: calc(-1 * var(--hero-fade-overlap));
-  padding-top: calc(3rem + var(--hero-fade-overlap));
 }
 
 /* ─── MOBILE ENHANCEMENTS ─── */
