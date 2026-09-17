@@ -142,31 +142,19 @@ function scatterNeurons(width: number, height: number): Particle[] {
   });
 
   const clusterCount = Math.min(16, Math.max(11, Math.round(width / 210)));
-  const minClusterDist = Math.max(100, Math.min(width, height) * 0.13);
   const centers: Array<{ x: number; y: number }> = [];
-  const midX = width / 2;
-  const leftQuota = Math.ceil(clusterCount * 0.55);
-  const zones = [
-    { minX: pad, maxX: midX - pad * 0.25, quota: leftQuota },
-    { minX: midX + pad * 0.25, maxX: width - pad, quota: clusterCount - leftQuota },
-  ];
+  const aspect = width / height;
+  const gridRows = Math.max(2, Math.round(Math.sqrt(clusterCount / aspect)));
+  const gridCols = Math.max(3, Math.ceil(clusterCount / gridRows));
+  const cellW = (width - pad * 2) / gridCols;
+  const cellH = (height - pad * 2) / gridRows;
 
-  const canPlace = (x: number, y: number): boolean => {
-    const tooClose = centers.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist);
-    const nearCorner = corners.some((c) => Math.hypot(c.x - x, c.y - y) < minClusterDist * 0.65);
-    return !tooClose && !nearCorner;
-  };
-
-  for (const zone of zones) {
-    let placed = 0;
-    let attempts = 0;
-    while (placed < zone.quota && attempts < zone.quota * 90) {
-      attempts += 1;
-      const x = zone.minX + Math.random() * (zone.maxX - zone.minX);
-      const y = pad + Math.random() * (height - pad * 2);
-      if (!canPlace(x, y)) continue;
-      centers.push({ x, y });
-      placed += 1;
+  for (let row = 0; row < gridRows && centers.length < clusterCount; row++) {
+    for (let col = 0; col < gridCols && centers.length < clusterCount; col++) {
+      centers.push({
+        x: pad + cellW * (col + 0.5) + (Math.random() - 0.5) * cellW * 0.38,
+        y: pad + cellH * (row + 0.5) + (Math.random() - 0.5) * cellH * 0.38,
+      });
     }
   }
 
@@ -265,7 +253,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
-  const mouseReachCm = 3;
+  const mouseReachCm = 5;
   const cmToPx = 96 / 2.54;
   let frame = 0;
 
