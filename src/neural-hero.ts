@@ -317,22 +317,26 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     ctx.lineCap = 'round';
 
     ctx.save();
-    ctx.shadowBlur = 7;
-    ctx.shadowColor = 'rgba(78, 205, 196, 0.5)';
-    ctx.strokeStyle = `rgba(70, 190, 210, ${alpha * 0.4})`;
-    ctx.lineWidth = widthPx + 1;
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = `rgba(190, 245, 250, ${alpha * 0.42})`;
+    ctx.strokeStyle = `rgba(175, 235, 245, ${alpha * 0.18})`;
+    ctx.lineWidth = widthPx + 3;
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(cx, cy, bx, by);
     ctx.stroke();
     ctx.restore();
 
-    ctx.strokeStyle = `rgba(130, 230, 240, ${alpha})`;
-    ctx.lineWidth = widthPx;
+    ctx.save();
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = `rgba(210, 250, 255, ${alpha * 0.3})`;
+    ctx.strokeStyle = `rgba(205, 245, 252, ${alpha * 0.52})`;
+    ctx.lineWidth = Math.max(0.35, widthPx * 0.82);
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(cx, cy, bx, by);
     ctx.stroke();
+    ctx.restore();
   };
 
   const drawSpark = (mx: number, my: number, pulse: number, a: Particle, b: Particle): void => {
@@ -395,10 +399,14 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       return;
     }
 
-    ctx.fillStyle = `rgba(210, 245, 255, ${Math.min(0.92, nodeAlpha)})`;
+    ctx.save();
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = `rgba(210, 250, 255, ${Math.min(0.45, nodeAlpha * 0.35)})`;
+    ctx.fillStyle = `rgba(225, 250, 255, ${Math.min(0.72, nodeAlpha * 0.78)})`;
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
     ctx.fill();
+    ctx.restore();
   };
 
   const draw = (): void => {
@@ -488,8 +496,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
     };
 
-    drawLinkSet(restLinks, 0.48, 0.18);
-    drawLinkSet(bridgeLinks, 0.22, 0.3);
+    drawLinkSet(restLinks, 0.38, 0.14);
+    drawLinkSet(bridgeLinks, 0.16, 0.22);
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
