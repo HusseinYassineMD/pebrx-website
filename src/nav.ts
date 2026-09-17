@@ -22,32 +22,15 @@ export function initNavigation(): void {
   }
   const backdropEl = backdrop;
 
-  const applyActiveNav = (): void => {
-    const currentPage = document.body.dataset.page ?? 'home';
-    const hash = window.location.hash.slice(1);
-
-    links.forEach((link) => {
-      link.classList.remove('active');
-      link.removeAttribute('aria-current');
-      const navId = link.dataset.nav;
-      if (!navId) return;
-
-      let isActive = navId === currentPage;
-      if (currentPage === 'publications' && (navId === 'news' || navId === 'publications')) {
-        isActive = hash === 'publications' ? navId === 'publications' : navId === 'news';
-      }
-
-      if (isActive) {
-        link.classList.add('active');
-        link.setAttribute('aria-current', 'page');
-      }
-    });
-  };
-
-  applyActiveNav();
-  window.addEventListener('hashchange', applyActiveNav);
-
   const currentPage = document.body.dataset.page ?? 'home';
+
+  links.forEach((link) => {
+    if (link.dataset.nav === currentPage) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+
   const isHome = currentPage === 'home';
   const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
