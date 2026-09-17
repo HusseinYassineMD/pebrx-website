@@ -55,9 +55,9 @@ function addDendrites(
   const hub = particles[hubIndex];
   for (let n = 0; n < count; n++) {
     const angle = rand() * Math.PI * 2;
-    const dist = spread * (0.35 + rand() * 0.85);
-    const x = hub.x + Math.cos(angle) * dist + (rand() - 0.5) * 14;
-    const y = hub.y + Math.sin(angle) * dist + (rand() - 0.5) * 14;
+    const dist = spread * (0.52 + rand() * 0.95);
+    const x = hub.x + Math.cos(angle) * dist + (rand() - 0.5) * 18;
+    const y = hub.y + Math.sin(angle) * dist + (rand() - 0.5) * 18;
     particles.push({
       x,
       y,
@@ -81,9 +81,9 @@ function scatterNeurons(width: number, height: number): Particle[] {
   const rand = createRng(0x50425278);
   const particles: Particle[] = [];
   const pad = Math.max(42, Math.min(width, height) * 0.06);
-  const dendriteSpread = Math.max(44, Math.min(width, height) * 0.078);
-  const hubCount = Math.min(16, Math.max(12, Math.round(width / 185)));
-  const minSpacing = Math.max(108, Math.min(width, height) * 0.19);
+  const dendriteSpread = Math.max(58, Math.min(width, height) * 0.102);
+  const hubCount = Math.min(24, Math.max(18, Math.round(width / 145)));
+  const minSpacing = Math.max(86, Math.min(width, height) * 0.148);
   const usableW = width - pad * 2;
   const usableH = height - pad * 2;
   const cols = Math.max(4, Math.round(usableW / minSpacing));
@@ -130,7 +130,7 @@ function scatterNeurons(width: number, height: number): Particle[] {
       particles,
       hubIndex,
       cluster,
-      6 + Math.floor(rand() * 3),
+      9 + Math.floor(rand() * 4),
       dendriteSpread,
       rand,
     );
@@ -152,7 +152,7 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
       i: child.parent,
       j: i,
       highlighted: parent.role === 'corner',
-      restLimit: child.restDist + 12,
+      restLimit: child.restDist + 22,
       bend: ((child.parent * 13 + i * 29) % 100) / 100 - 0.5,
       dynamic: false,
     });
@@ -164,7 +164,7 @@ function buildRestLinks(particles: Particle[]): NetworkLink[] {
 function buildSoftBridgeLinks(particles: Particle[], width: number, height: number): NetworkLink[] {
   const links: NetworkLink[] = [];
   const seen = new Set<string>();
-  const bridgeDist = Math.max(88, Math.min(width, height) * 0.135);
+  const bridgeDist = Math.max(112, Math.min(width, height) * 0.168);
   const bridgeDistSq = bridgeDist * bridgeDist;
   const hubs = particles
     .map((p, i) => ({ i, p }))
@@ -180,21 +180,22 @@ function buildSoftBridgeLinks(particles: Particle[], width: number, height: numb
       near.push({ j: b, d2 });
     }
     near.sort((x, y) => x.d2 - y.d2);
-    if (near.length === 0) continue;
-    const i = hubs[a].i;
-    const j = hubs[near[0].j].i;
-    const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    links.push({
-      i: i < j ? i : j,
-      j: i < j ? j : i,
-      highlighted: false,
-      restLimit: bridgeDist,
-      bend: ((i * 17 + j * 31) % 100) / 100 - 0.5,
-      dynamic: false,
-      bridge: true,
-    });
+    for (let n = 0; n < Math.min(2, near.length); n++) {
+      const i = hubs[a].i;
+      const j = hubs[near[n].j].i;
+      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      links.push({
+        i: i < j ? i : j,
+        j: i < j ? j : i,
+        highlighted: false,
+        restLimit: bridgeDist,
+        bend: ((i * 17 + j * 31) % 100) / 100 - 0.5,
+        dynamic: false,
+        bridge: true,
+      });
+    }
   }
 
   return links;
@@ -493,7 +494,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     };
 
     drawLinkSet(restLinks, 0.48, 0.18);
-    drawLinkSet(bridgeLinks, 0.16, 0.24);
+    drawLinkSet(bridgeLinks, 0.2, 0.28);
 
     if (smoothMouse.active) {
       for (const link of mouseLinks) {
