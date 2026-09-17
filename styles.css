@@ -2737,6 +2737,10 @@ body.menu-open {
   width: calc(50% - 1rem);
 }
 
+.team-grid-staff-trio {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .team-card {
   display: flex;
   gap: 1.5rem;
