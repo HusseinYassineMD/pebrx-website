@@ -1297,6 +1297,25 @@ body.menu-open {
   text-shadow: 0 2px 20px rgba(10, 22, 40, 0.35);
 }
 
+.page-hero-email {
+  margin: 0;
+}
+
+.page-hero-email a {
+  color: var(--white);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.page-hero-email a:hover {
+  color: var(--teal-light);
+}
+
+.page-hero-email a:focus-visible {
+  outline-color: var(--teal-light);
+  border-radius: 4px;
+}
+
 .page-hero-about .page-hero-photo,
 .page-hero-contact .page-hero-photo {
   object-position: center 42%;
