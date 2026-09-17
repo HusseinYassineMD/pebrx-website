@@ -209,33 +209,43 @@ function buildMouseLinks(
   particles: Particle[],
   mouseX: number,
   mouseY: number,
-  influence: number,
-  maxDist: number,
+  influenceSq: number,
+  maxDistSq: number,
+  maxLinks: number,
 ): NetworkLink[] {
   const links: NetworkLink[] = [];
-  const seen = new Set<string>();
   const active: number[] = [];
+  const activeDist: number[] = [];
 
   for (let i = 0; i < particles.length; i++) {
-    if (Math.hypot(particles[i].x - mouseX, particles[i].y - mouseY) < influence) {
+    const dx = particles[i].x - mouseX;
+    const dy = particles[i].y - mouseY;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < influenceSq) {
       active.push(i);
+      activeDist.push(d2);
     }
   }
 
-  for (let a = 0; a < active.length; a++) {
-    for (let b = a + 1; b < active.length; b++) {
+  if (active.length > 16) {
+    const order = active.map((idx, n) => ({ idx, d2: activeDist[n] }));
+    order.sort((a, b) => a.d2 - b.d2);
+    active.length = 0;
+    for (let n = 0; n < 16; n++) active.push(order[n].idx);
+  }
+
+  for (let a = 0; a < active.length && links.length < maxLinks; a++) {
+    for (let b = a + 1; b < active.length && links.length < maxLinks; b++) {
       const i = active[a];
       const j = active[b];
-      const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-      if (dist > maxDist) continue;
-      const key = i < j ? `${i}-${j}` : `${j}-${i}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      if (dx * dx + dy * dy > maxDistSq) continue;
       links.push({
         i: i < j ? i : j,
         j: i < j ? j : i,
         highlighted: false,
-        restLimit: maxDist,
+        restLimit: Math.sqrt(maxDistSq),
         bend: ((i * 23 + j * 19) % 100) / 100 - 0.5,
         dynamic: true,
       });
@@ -246,35 +256,47 @@ function buildMouseLinks(
 }
 
 function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
   if (!ctx) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
+  let restLinks: NetworkLink[] = [];
+  let hostLeft = 0;
+  let hostTop = 0;
   const mouseReachCm = 4;
   const cmToPx = 96 / 2.54;
+  const pullRadius = mouseReachCm * cmToPx;
+  const pullRadiusSq = pullRadius * pullRadius;
+  const mouseLinkDistanceSq = (pullRadius * 0.72) ** 2;
   let frame = 0;
 
   const mouse: MouseState = { x: 0, y: 0, active: false };
   const smoothMouse: MouseState = { x: 0, y: 0, active: false };
 
+  const syncHostRect = (): void => {
+    const rect = host.getBoundingClientRect();
+    hostLeft = rect.left;
+    hostTop = rect.top;
+  };
+
   host.addEventListener(
     'pointermove',
     (e) => {
-      const rect = host.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
+      mouse.x = e.clientX - hostLeft;
+      mouse.y = e.clientY - hostTop;
       mouse.active = true;
     },
-    true,
+    { capture: true, passive: true },
   );
   host.addEventListener('pointerleave', () => {
     mouse.active = false;
   }, true);
 
   const resize = (): void => {
+    syncHostRect();
     const rect = host.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
@@ -285,6 +307,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particles = scatterNeurons(width, height);
+    restLinks = buildRestLinks(particles);
     mouse.x = width / 2;
     mouse.y = height / 2;
     smoothMouse.x = width / 2;
@@ -312,37 +335,26 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     const cy = my + ny * curve;
 
     ctx.lineCap = 'round';
-
-    ctx.save();
-    ctx.shadowBlur = 7;
-    ctx.shadowColor = 'rgba(78, 205, 196, 0.5)';
-    ctx.strokeStyle = `rgba(70, 190, 210, ${alpha * 0.4})`;
-    ctx.lineWidth = widthPx + 1;
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(cx, cy, bx, by);
+
+    ctx.strokeStyle = `rgba(70, 190, 210, ${alpha * 0.38})`;
+    ctx.lineWidth = widthPx + 2.2;
     ctx.stroke();
-    ctx.restore();
 
     ctx.strokeStyle = `rgba(130, 230, 240, ${alpha})`;
     ctx.lineWidth = widthPx;
-    ctx.beginPath();
-    ctx.moveTo(ax, ay);
-    ctx.quadraticCurveTo(cx, cy, bx, by);
     ctx.stroke();
   };
 
   const drawSpark = (mx: number, my: number, pulse: number, a: Particle, b: Particle): void => {
     if (!(a.spark || b.spark) || pulse <= 0.56) return;
     const sparkAlpha = (pulse - 0.56) * 1.4;
-    ctx.save();
-    ctx.shadowBlur = 4;
-    ctx.shadowColor = 'rgba(255, 130, 70, 0.65)';
     ctx.fillStyle = `rgba(255, 150, 85, ${Math.min(0.72, sparkAlpha * 0.52)})`;
     ctx.beginPath();
     ctx.arc(mx, my, 0.65, 0, Math.PI * 2);
     ctx.fill();
-    ctx.restore();
   };
 
   const drawNode = (p: Particle, pullRadius: number): void => {
@@ -354,9 +366,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     }
 
     if (p.role === 'corner' || p.role === 'hub') {
-      ctx.save();
-      ctx.shadowBlur = p.role === 'corner' ? 14 : 9;
-      ctx.shadowColor = 'rgba(78, 205, 196, 0.55)';
       ctx.fillStyle = `rgba(78, 205, 196, ${0.14 * nodeAlpha})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 2.4, 0, Math.PI * 2);
@@ -374,19 +383,14 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 0.32, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
 
       if (p.role === 'corner' && p.spark) {
         const pulse = 0.5 + Math.sin(frame * 0.05 + p.pulse) * 0.5;
         if (pulse > 0.55) {
-          ctx.save();
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = 'rgba(255, 130, 70, 0.55)';
           ctx.fillStyle = `rgba(255, 145, 80, ${(pulse - 0.55) * 0.7})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 0.55, 0, Math.PI * 2);
           ctx.fill();
-          ctx.restore();
         }
       }
       return;
@@ -402,19 +406,19 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     ctx.clearRect(0, 0, width, height);
     frame += 1;
 
-    smoothMouse.x += (mouse.x - smoothMouse.x) * 0.22;
-    smoothMouse.y += (mouse.y - smoothMouse.y) * 0.22;
+    const targetX = mouse.active ? mouse.x : smoothMouse.x;
+    const targetY = mouse.active ? mouse.y : smoothMouse.y;
+    smoothMouse.x += (targetX - smoothMouse.x) * (mouse.active ? 0.55 : 0.22);
+    smoothMouse.y += (targetY - smoothMouse.y) * (mouse.active ? 0.55 : 0.22);
     smoothMouse.active = mouse.active;
-
-    const pullRadius = mouseReachCm * cmToPx;
-    const mouseLinkDistance = pullRadius * 0.72;
 
     for (const p of particles) {
       if (!reducedMotion) {
-        const mouseDist = smoothMouse.active
-          ? Math.hypot(p.x - smoothMouse.x, p.y - smoothMouse.y)
-          : Infinity;
-        const nearMouse = mouseDist < pullRadius;
+        const mdx = p.x - smoothMouse.x;
+        const mdy = p.y - smoothMouse.y;
+        const mouseDistSq = smoothMouse.active ? mdx * mdx + mdy * mdy : Infinity;
+        const nearMouse = mouseDistSq < pullRadiusSq;
+        const mouseDist = nearMouse ? Math.sqrt(mouseDistSq) : Infinity;
 
         if (smoothMouse.active && nearMouse) {
           const dx = smoothMouse.x - p.x;
@@ -451,9 +455,15 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
     }
 
-    const restLinks = buildRestLinks(particles);
     const mouseLinks = smoothMouse.active
-      ? buildMouseLinks(particles, smoothMouse.x, smoothMouse.y, pullRadius, mouseLinkDistance)
+      ? buildMouseLinks(
+          particles,
+          smoothMouse.x,
+          smoothMouse.y,
+          pullRadiusSq,
+          mouseLinkDistanceSq,
+          10,
+        )
       : [];
 
     for (const link of restLinks) {
@@ -498,11 +508,24 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
 
       const tetherDist = pullRadius * 0.92;
-      const tethered = particles
-        .map((p, idx) => ({ idx, d: Math.hypot(p.x - smoothMouse.x, p.y - smoothMouse.y) }))
-        .filter(({ d }) => d <= tetherDist)
-        .sort((a, b) => a.d - b.d)
-        .slice(0, 4);
+      const tetherDistSq = tetherDist * tetherDist;
+      const tethered: Array<{ idx: number; d: number }> = [];
+      for (let idx = 0; idx < particles.length; idx++) {
+        const p = particles[idx];
+        const dx = p.x - smoothMouse.x;
+        const dy = p.y - smoothMouse.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > tetherDistSq) continue;
+        const d = Math.sqrt(d2);
+        if (tethered.length < 4) {
+          tethered.push({ idx, d });
+          if (tethered.length === 4) tethered.sort((a, b) => a.d - b.d);
+          continue;
+        }
+        if (d >= tethered[3].d) continue;
+        tethered[3] = { idx, d };
+        tethered.sort((a, b) => a.d - b.d);
+      }
 
       for (const { idx, d } of tethered) {
         const p = particles[idx];
@@ -518,14 +541,10 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         );
       }
 
-      ctx.save();
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(255, 140, 75, 0.55)';
       ctx.fillStyle = 'rgba(255, 160, 95, 0.55)';
       ctx.beginPath();
       ctx.arc(smoothMouse.x, smoothMouse.y, 1.1, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
     }
 
     for (const p of particles) {
@@ -540,6 +559,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   resize();
   draw();
   window.addEventListener('resize', resize);
+  window.addEventListener('scroll', syncHostRect, { passive: true });
 }
 
 export function initNeuralHero(): void {
