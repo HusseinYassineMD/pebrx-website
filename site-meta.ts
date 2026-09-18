@@ -9,12 +9,7 @@ export interface PageMeta {
 export const SITE_NAME = 'PebRx';
 
 export function getSiteUrl(): string {
-  return (
-    process.env.SITE_URL ??
-    (process.env.GITHUB_PAGES === 'true'
-      ? 'https://husseinyassinemd.github.io/pebrx-website'
-      : 'https://www.pebrx.co')
-  );
+  return process.env.SITE_URL ?? 'https://www.pebrx.co';
 }
 
 const ORG_BASE = {
