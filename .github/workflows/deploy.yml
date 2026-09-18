@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          SITE_URL: 'https://www.pebrx.co'
+          SITE_URL: 'https://pebrx.co'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -1,0 +1,37 @@
+name: Enable HTTPS when ready
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  enable-https:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for DNS health check
+        id: health
+        run: |
+          for i in $(seq 1 5); do
+            gh api repos/${{ github.repository }}/pages/health > health.json 2>/dev/null || true
+            sleep 3
+            gh api repos/${{ github.repository }}/pages/health > health.json 2>/dev/null || true
+            if python3 -c "import json; d=json.load(open('health.json')); exit(0 if d.get('domain',{}).get('is_https_eligible') else 1)"; then
+              echo "eligible=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "eligible=false" >> "$GITHUB_OUTPUT"
+
+      - name: Enforce HTTPS
+        if: steps.health.outputs.eligible == 'true'
+        run: |
+          gh api --method PUT repos/${{ github.repository }}/pages \
+            -f build_type=workflow \
+            -f cname=pebrx.co \
+            -F https_enforced=true

@@ -9,7 +9,7 @@ export interface PageMeta {
 export const SITE_NAME = 'PebRx';
 
 export function getSiteUrl(): string {
-  return process.env.SITE_URL ?? 'https://www.pebrx.co';
+  return process.env.SITE_URL ?? 'https://pebrx.co';
 }
 
 const ORG_BASE = {
