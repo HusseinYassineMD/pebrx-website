@@ -42,6 +42,13 @@ const PUBLICATIONS: Record<string, unknown>[] = [
   },
   {
     '@type': 'ScholarlyArticle',
+    headline: 'Evidence for cPLA2 Activation in Alzheimer\'s Disease Synaptic Pathology',
+    author: 'Ma QL, Ebright B, Li B, et al.',
+    datePublished: '2026',
+    isPartOf: { '@type': 'Periodical', name: 'Acta Neuropathologica Communications' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
     headline:
       'Development of Potent, Selective cPLA2 Inhibitors for Targeting Neuroinflammation in Alzheimer\'s Disease and Other Neurodegenerative Disorders',
     author: 'Sadybekov AV, Duro MV, Wang S, et al.',
@@ -54,13 +61,6 @@ const PUBLICATIONS: Record<string, unknown>[] = [
     author: 'Kanwal A, Kerman BE, Wang S, et al.',
     datePublished: '2026',
     isPartOf: { '@type': 'Periodical', name: 'Alzheimer\'s & Dementia' },
-  },
-  {
-    '@type': 'ScholarlyArticle',
-    headline: 'Evidence for cPLA2 Activation in Alzheimer\'s Disease Synaptic Pathology',
-    author: 'Ma QL, Ebright B, Li B, et al.',
-    datePublished: '2026',
-    isPartOf: { '@type': 'Periodical', name: 'Acta Neuropathologica Communications' },
   },
   {
     '@type': 'ScholarlyArticle',
@@ -77,6 +77,14 @@ const PUBLICATIONS: Record<string, unknown>[] = [
     author: 'Wang S, Asante I, Ebright B, et al.',
     datePublished: '2022',
     isPartOf: { '@type': 'Periodical', name: 'Molecular Neurodegeneration' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
+    headline:
+      'Eicosanoid Lipidome Activation in Post-Mortem Brain Tissues of Individuals with APOE4 and Alzheimer\'s Dementia',
+    author: 'Ebright B, Assante I, Poblete RA, Wang S, Duro MV, et al.',
+    datePublished: '2022',
+    isPartOf: { '@type': 'Periodical', name: 'Alzheimer\'s Research & Therapy' },
   },
   {
     '@type': 'ScholarlyArticle',
