@@ -1,4 +1,12 @@
 /* PebRx — Calming teal/blue biomedical theme */
+@import '@fontsource/cormorant-garamond/latin-400.css';
+@import '@fontsource/cormorant-garamond/latin-500.css';
+@import '@fontsource/cormorant-garamond/latin-600.css';
+@import '@fontsource/cormorant-garamond/latin-400-italic.css';
+@import '@fontsource/inter/latin-300.css';
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
 
 :root {
   --navy: #0a1628;
@@ -428,6 +436,16 @@ body.menu-open {
   background: var(--navy);
 }
 
+.hero-landing-photo picture,
+.page-hero-banner picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
 .hero-landing-photo .hero-photo {
   position: absolute;
   inset: 0;
@@ -435,7 +453,6 @@ body.menu-open {
   height: 100%;
   object-fit: cover;
   object-position: center 42%;
-  filter: brightness(0.9) contrast(1.04);
 }
 
 .hero-landing-photo .hero-neural,
@@ -457,8 +474,8 @@ body.menu-open {
   inset: 0;
   z-index: 2;
   background:
-    radial-gradient(ellipse 72% 78% at 50% 42%, rgba(10, 22, 40, 0.78) 0%, rgba(10, 22, 40, 0.42) 42%, transparent 72%),
-    linear-gradient(180deg, rgba(10, 22, 40, 0.35) 0%, rgba(10, 22, 40, 0.5) 50%, rgba(21, 42, 66, 0.45) 100%);
+    radial-gradient(ellipse 72% 78% at 50% 42%, rgba(10, 22, 40, 0.82) 0%, rgba(10, 22, 40, 0.48) 42%, transparent 72%),
+    linear-gradient(180deg, rgba(10, 22, 40, 0.42) 0%, rgba(10, 22, 40, 0.58) 50%, rgba(21, 42, 66, 0.52) 100%);
   pointer-events: none;
 }
 

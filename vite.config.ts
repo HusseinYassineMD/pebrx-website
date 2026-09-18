@@ -15,7 +15,6 @@ export default defineConfig({
         leadership: resolve(__dirname, 'leadership.html'),
         publications: resolve(__dirname, 'publications.html'),
         contact: resolve(__dirname, 'contact.html'),
-        heroPreview: resolve(__dirname, 'hero-preview.html'),
       },
     },
   },

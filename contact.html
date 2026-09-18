@@ -17,10 +17,10 @@
     <nav class="nav container" aria-label="Main navigation">
       <a href="index.html" class="nav-logo" aria-label="PebRx home">
         <span class="nav-logo-mark">
-          <img src="/images/logo-icon-light.png?v=4" alt="" class="nav-logo-icon logo-light" aria-hidden="true">
-          <img src="/images/logo-icon-dark.png?v=4" alt="" class="nav-logo-icon logo-dark" aria-hidden="true">
-          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="nav-logo-text logo-light">
-          <img src="/images/logo-text-dark.png?v=4" alt="" class="nav-logo-text logo-dark" aria-hidden="true">
+          <img src="/images/logo-icon-light.png?v=4" alt="" class="nav-logo-icon logo-light" width="76" height="76" aria-hidden="true">
+          <img src="/images/logo-icon-dark.png?v=4" alt="" class="nav-logo-icon logo-dark" width="76" height="76" aria-hidden="true">
+          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="nav-logo-text logo-light" width="120" height="50">
+          <img src="/images/logo-text-dark.png?v=4" alt="" class="nav-logo-text logo-dark" width="120" height="50" aria-hidden="true">
         </span>
       </a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -39,17 +39,20 @@
 
   <main id="main-content" tabindex="-1">
     <div class="page-hero-banner page-hero-contact">
-      <img
-        class="page-hero-photo"
-        src="/images/heroes/contact-hero.jpg"
-        srcset="/images/heroes/contact-hero-1920.jpg 1920w, /images/heroes/contact-hero.jpg 3840w"
-        sizes="100vw"
-        alt=""
-        width="3840"
-        height="960"
-        decoding="async"
-        fetchpriority="high"
-      >
+      <picture>
+        <source type="image/webp" srcset="/images/heroes/contact-hero-960.webp 960w, /images/heroes/contact-hero-1280.webp 1280w, /images/heroes/contact-hero-1920.webp 1920w" sizes="100vw">
+        <img
+          class="page-hero-photo"
+          src="/images/heroes/contact-hero-960.webp"
+          srcset="/images/heroes/contact-hero-960.jpg 960w, /images/heroes/contact-hero-1280.jpg 1280w, /images/heroes/contact-hero-1920.jpg 1920w"
+          sizes="100vw"
+          alt=""
+          width="1920"
+          height="480"
+          decoding="async"
+          fetchpriority="high"
+        >
+      </picture>
       <div class="page-hero-overlay" aria-hidden="true"></div>
       <div class="container page-hero-content">
         <h1>Contact</h1>
@@ -118,10 +121,10 @@
     <div class="container footer-inner">
       <a href="index.html" class="footer-logo-link" aria-label="PebRx home">
         <span class="footer-logo-mark">
-          <img src="/images/logo-icon-light.png?v=4" alt="" class="footer-logo-icon logo-light" aria-hidden="true">
-          <img src="/images/logo-icon-dark.png?v=4" alt="" class="footer-logo-icon logo-dark" aria-hidden="true">
-          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="footer-logo-text logo-light">
-          <img src="/images/logo-text-dark.png?v=4" alt="" class="footer-logo-text logo-dark" aria-hidden="true">
+          <img src="/images/logo-icon-light.png?v=4" alt="" class="footer-logo-icon logo-light" width="48" height="48" aria-hidden="true">
+          <img src="/images/logo-icon-dark.png?v=4" alt="" class="footer-logo-icon logo-dark" width="48" height="48" aria-hidden="true">
+          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="footer-logo-text logo-light" width="96" height="40">
+          <img src="/images/logo-text-dark.png?v=4" alt="" class="footer-logo-text logo-dark" width="96" height="40" aria-hidden="true">
         </span>
       </a>
       <p class="footer-copy">&copy; 2026 PebRx. All rights reserved.</p>

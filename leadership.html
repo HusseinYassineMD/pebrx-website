@@ -17,10 +17,10 @@
     <nav class="nav container" aria-label="Main navigation">
       <a href="index.html" class="nav-logo" aria-label="PebRx home">
         <span class="nav-logo-mark">
-          <img src="/images/logo-icon-light.png?v=4" alt="" class="nav-logo-icon logo-light" aria-hidden="true">
-          <img src="/images/logo-icon-dark.png?v=4" alt="" class="nav-logo-icon logo-dark" aria-hidden="true">
-          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="nav-logo-text logo-light">
-          <img src="/images/logo-text-dark.png?v=4" alt="" class="nav-logo-text logo-dark" aria-hidden="true">
+          <img src="/images/logo-icon-light.png?v=4" alt="" class="nav-logo-icon logo-light" width="76" height="76" aria-hidden="true">
+          <img src="/images/logo-icon-dark.png?v=4" alt="" class="nav-logo-icon logo-dark" width="76" height="76" aria-hidden="true">
+          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="nav-logo-text logo-light" width="120" height="50">
+          <img src="/images/logo-text-dark.png?v=4" alt="" class="nav-logo-text logo-dark" width="120" height="50" aria-hidden="true">
         </span>
       </a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -39,17 +39,20 @@
 
   <main id="main-content" tabindex="-1">
     <div class="page-hero-banner page-hero-leadership">
-      <img
-        class="page-hero-photo"
-        src="/images/heroes/leadership-hero.jpg?v=3"
-        srcset="/images/heroes/leadership-hero-1920.jpg?v=3 1920w, /images/heroes/leadership-hero.jpg?v=3 3840w"
-        sizes="100vw"
-        alt=""
-        width="3840"
-        height="960"
-        decoding="async"
-        fetchpriority="high"
-      >
+      <picture>
+        <source type="image/webp" srcset="/images/heroes/leadership-hero-960.webp 960w, /images/heroes/leadership-hero-1280.webp 1280w, /images/heroes/leadership-hero-1920.webp 1920w" sizes="100vw">
+        <img
+          class="page-hero-photo"
+          src="/images/heroes/leadership-hero-960.webp"
+          srcset="/images/heroes/leadership-hero-960.jpg 960w, /images/heroes/leadership-hero-1280.jpg 1280w, /images/heroes/leadership-hero-1920.jpg 1920w"
+          sizes="100vw"
+          alt=""
+          width="1920"
+          height="480"
+          decoding="async"
+          fetchpriority="high"
+        >
+      </picture>
       <div class="page-hero-overlay" aria-hidden="true"></div>
       <div class="container page-hero-content">
         <span class="section-label">Leadership</span>
@@ -67,7 +70,7 @@
             <div class="team-executive">
               <article class="team-card team-card-featured">
                 <div class="team-photo team-photo-lg">
-                  <img src="/images/team/lillian-jin.png" alt="Amy Wang, PhD, MBA" loading="lazy">
+                  <img src="/images/team/lillian-jin.png" alt="Amy Wang, PhD, MBA" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Amy Wang, PhD, MBA</h3>
@@ -81,7 +84,7 @@
             <div class="team-grid team-grid-cofounders">
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/hussein-yassine.jpg" alt="Hussein Yassine, MD" loading="lazy">
+                  <img src="/images/team/hussein-yassine.jpg" alt="Hussein Yassine, MD" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Hussein Yassine, MD</h3>
@@ -92,7 +95,7 @@
 
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/stan-louie.jpg" alt="Stan Louie" loading="lazy">
+                  <img src="/images/team/stan-louie.jpg" alt="Stan Louie" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Stan Louie</h3>
@@ -103,7 +106,7 @@
 
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/seva-katritch.jpg" alt="Seva Katritch, PhD" loading="lazy">
+                  <img src="/images/team/seva-katritch.jpg" alt="Seva Katritch, PhD" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Seva Katritch, PhD</h3>
@@ -117,7 +120,7 @@
             <div class="team-grid team-grid-staff team-grid-staff-trio">
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/amy-wang.jpg" alt="Lillian Jin, PhD" loading="lazy">
+                  <img src="/images/team/amy-wang.jpg" alt="Lillian Jin, PhD" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Lillian Jin, PhD</h3>
@@ -128,7 +131,7 @@
     
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/marlon-duro.jpg" alt="Marlon Duro, PhD" loading="lazy">
+                  <img src="/images/team/marlon-duro.jpg" alt="Marlon Duro, PhD" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Marlon Duro, PhD</h3>
@@ -139,7 +142,7 @@
     
               <article class="team-card">
                 <div class="team-photo">
-                  <img src="/images/team/tiffany-kolchins.jpg" alt="Tiffany Kolchins, MBA" loading="lazy">
+                  <img src="/images/team/tiffany-kolchins.jpg" alt="Tiffany Kolchins, MBA" loading="lazy" width="120" height="120">
                 </div>
                 <div class="team-info">
                   <h3>Tiffany Kolchins, MBA</h3>
@@ -156,10 +159,10 @@
     <div class="container footer-inner">
       <a href="index.html" class="footer-logo-link" aria-label="PebRx home">
         <span class="footer-logo-mark">
-          <img src="/images/logo-icon-light.png?v=4" alt="" class="footer-logo-icon logo-light" aria-hidden="true">
-          <img src="/images/logo-icon-dark.png?v=4" alt="" class="footer-logo-icon logo-dark" aria-hidden="true">
-          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="footer-logo-text logo-light">
-          <img src="/images/logo-text-dark.png?v=4" alt="" class="footer-logo-text logo-dark" aria-hidden="true">
+          <img src="/images/logo-icon-light.png?v=4" alt="" class="footer-logo-icon logo-light" width="48" height="48" aria-hidden="true">
+          <img src="/images/logo-icon-dark.png?v=4" alt="" class="footer-logo-icon logo-dark" width="48" height="48" aria-hidden="true">
+          <img src="/images/logo-text-light.png?v=4" alt="PebRx" class="footer-logo-text logo-light" width="96" height="40">
+          <img src="/images/logo-text-dark.png?v=4" alt="" class="footer-logo-text logo-dark" width="96" height="40" aria-hidden="true">
         </span>
       </a>
       <p class="footer-copy">&copy; 2026 PebRx. All rights reserved.</p>
