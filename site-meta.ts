@@ -133,7 +133,7 @@ const TEAM: Record<string, unknown>[] = [
   },
   {
     '@type': 'Person',
-    name: 'Lillian Jin',
+    name: 'Lilian Jin',
     jobTitle: 'Pre-IND Project Manager',
     description: 'PhD, Scientist. Leads pre-IND planning and project management.',
   },
