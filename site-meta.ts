@@ -127,7 +127,7 @@ const TEAM: Record<string, unknown>[] = [
   },
   {
     '@type': 'Person',
-    name: 'Seva Katritch',
+    name: 'Vsevolod "Seva" Katritch',
     jobTitle: 'Co-Founder, Drug Discovery',
     description: 'PhD — Biophysics and Molecular Biology. Leads small molecule and computational drug discovery.',
   },
