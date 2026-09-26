@@ -3721,6 +3721,21 @@ body.menu-open {
     align-self: center;
   }
 
+  .page-leadership .team-card,
+  .page-leadership .team-card-featured {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .page-leadership .team-card-featured {
+    flex-direction: column;
+  }
+
+  .page-leadership .team-grid-cofounders .team-photo,
+  .page-leadership .team-grid-staff-trio .team-photo {
+    align-self: flex-start;
+  }
+
   .team-grid-staff .team-card-centered {
     width: 100%;
   }
@@ -3969,6 +3984,35 @@ body:not(.page-home) main {
 
 .page-leadership .section-intro {
   margin-bottom: 1.75rem;
+  text-align: left;
+  margin-inline: 0;
+  max-width: 820px;
+}
+
+.page-leadership .team-executive {
+  justify-content: flex-start;
+}
+
+.page-leadership .team-card-featured {
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 100%;
+}
+
+.page-leadership .team-group-label {
+  text-align: left;
+}
+
+.page-leadership .team-grid-cofounders .team-card,
+.page-leadership .team-grid-staff-trio .team-card {
+  text-align: left;
+  align-items: stretch;
+}
+
+.page-leadership .team-grid-cofounders .team-photo,
+.page-leadership .team-grid-staff-trio .team-photo {
+  align-self: flex-start;
 }
 
 .page-contact .contact-header {
