@@ -4008,15 +4008,41 @@ body:not(.page-home) main {
   text-align: center;
 }
 
+.page-leadership .team-grid-cofounders,
+.page-leadership .team-grid-staff-trio {
+  align-items: start;
+}
+
 .page-leadership .team-grid-cofounders .team-card,
 .page-leadership .team-grid-staff-trio .team-card {
-  text-align: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  text-align: center;
+  height: auto;
 }
 
 .page-leadership .team-grid-cofounders .team-photo,
 .page-leadership .team-grid-staff-trio .team-photo {
   align-self: center;
+}
+
+.page-leadership .team-grid-cofounders .team-info,
+.page-leadership .team-grid-staff-trio .team-info {
+  align-items: center;
+  text-align: center;
+  flex: 0 1 auto;
+  width: 100%;
+}
+
+.page-leadership .team-grid-cofounders .team-info p:last-child,
+.page-leadership .team-grid-staff-trio .team-info p:last-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.page-leadership .team-card-featured {
+  justify-content: flex-start;
 }
 
 .page-leadership .team-card .team-info > p:not(.team-role) {
