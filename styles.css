@@ -4010,7 +4010,7 @@ body:not(.page-home) main {
 
 .page-leadership .team-grid-cofounders,
 .page-leadership .team-grid-staff-trio {
-  align-items: start;
+  align-items: stretch;
 }
 
 .page-leadership .team-grid-cofounders .team-card,
@@ -4019,7 +4019,7 @@ body:not(.page-home) main {
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  height: auto;
+  height: 100%;
 }
 
 .page-leadership .team-grid-cofounders .team-photo,
