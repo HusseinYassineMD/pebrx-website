@@ -4031,8 +4031,9 @@ body:not(.page-home) main {
 .page-leadership .team-grid-staff-trio .team-info {
   align-items: center;
   text-align: center;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   width: 100%;
+  justify-content: flex-start;
 }
 
 .page-leadership .team-grid-cofounders .team-info p:last-child,
