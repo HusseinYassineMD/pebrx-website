@@ -4005,8 +4005,8 @@ body:not(.page-home) main {
 }
 
 .page-leadership .section-intro .section-desc {
-  text-align: justify;
-  text-align-last: center;
+  text-align: center;
+  line-height: 1.65;
 }
 
 .page-leadership .team-executive {
@@ -4056,20 +4056,24 @@ body:not(.page-home) main {
   justify-content: flex-start;
 }
 
-.page-leadership .team-grid-cofounders .team-credentials,
-.page-leadership .team-grid-cofounders .team-info p:last-child,
-.page-leadership .team-grid-staff-trio .team-info p:last-child {
-  margin-top: 0.65rem;
-  padding-top: 0;
-}
-
 .page-leadership .team-card-featured {
   justify-content: flex-start;
+  gap: 0.85rem;
+  padding: 1.35rem 1.25rem;
+}
+
+.page-leadership .team-card-featured .team-info h3 {
+  margin: 0;
+}
+
+.page-leadership .team-card-featured .team-role {
+  margin: 0 0 0.35rem;
 }
 
 .page-leadership .team-card .team-info > p:not(.team-role) {
-  text-align: justify;
-  text-align-last: center;
+  text-align: center;
+  margin: 0;
+  line-height: 1.55;
 }
 
 .page-contact .contact-header {
@@ -4378,40 +4382,78 @@ body:not(.page-home) main {
   }
 }
 
-/* Leadership cubicles: same row height; photo/name/role/bio top + centered */
+/* Leadership cubicles: equal height, tight rhythm, top-centered content */
+body.page-leadership .section-leadership .team-grid-cofounders,
+body.page-leadership .section-leadership .team-grid-staff-trio {
+  align-items: stretch;
+}
+
 body.page-leadership .section-leadership .team-grid-cofounders > .team-card,
 body.page-leadership .section-leadership .team-grid-staff-trio > .team-card {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-content: flex-start;
   align-items: center;
   align-self: stretch;
   text-align: center;
+  gap: 0.75rem;
   height: 100%;
+  padding: 1.35rem 1.15rem;
   box-sizing: border-box;
 }
 
-@media (min-width: 961px) {
-  body.page-leadership .section-leadership .team-grid-cofounders,
-  body.page-leadership .section-leadership .team-grid-staff-trio {
-    align-items: stretch;
-  }
+body.page-leadership .section-leadership .team-grid-cofounders .team-photo,
+body.page-leadership .section-leadership .team-grid-staff-trio .team-photo {
+  width: 104px;
+  height: 104px;
+  margin: 0;
 }
 
 body.page-leadership .section-leadership .team-grid-cofounders .team-info,
 body.page-leadership .section-leadership .team-grid-staff-trio .team-info {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  flex: 1 1 auto;
+  justify-content: flex-start;
+  flex: 0 1 auto;
   width: 100%;
+  gap: 0.25rem;
+}
+
+body.page-leadership .section-leadership .team-grid-cofounders .team-info h3,
+body.page-leadership .section-leadership .team-grid-staff-trio .team-info h3 {
+  margin: 0;
+  line-height: 1.25;
+  font-size: 1.15rem;
+}
+
+body.page-leadership .section-leadership .team-grid-cofounders .team-role,
+body.page-leadership .section-leadership .team-grid-staff-trio .team-role {
+  margin: 0;
+  line-height: 1.35;
 }
 
 body.page-leadership .section-leadership .team-grid-cofounders .team-credentials,
 body.page-leadership .section-leadership .team-grid-cofounders .team-info p:last-child,
 body.page-leadership .section-leadership .team-grid-staff-trio .team-info p:last-child {
-  margin-top: 0.65rem;
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@media (min-width: 961px) {
+  body.page-leadership .section-leadership .team-grid-cofounders,
+  body.page-leadership .section-leadership .team-grid-staff-trio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  body.page-leadership .section-leadership .team-grid-cofounders > .team-card,
+  body.page-leadership .section-leadership .team-grid-staff-trio > .team-card {
+    height: auto;
+  }
 }
