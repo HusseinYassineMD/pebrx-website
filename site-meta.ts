@@ -82,7 +82,7 @@ const PUBLICATIONS: Record<string, unknown>[] = [
     '@type': 'ScholarlyArticle',
     headline:
       'Eicosanoid Lipidome Activation in Post-Mortem Brain Tissues of Individuals with APOE4 and Alzheimer\'s Dementia',
-    author: 'Ebright B, Assante I, Poblete RA, Wang S, Duro MV, et al.',
+    author: 'Ebright B, Asante I, Poblete RA, Wang S, Duro MV, et al.',
     datePublished: '2022',
     isPartOf: { '@type': 'Periodical', name: 'Alzheimer\'s Research & Therapy' },
   },
@@ -221,7 +221,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'leadership.html': {
       path: '/leadership.html',
       title: 'Leadership | PebRx',
-      description: 'PebRx leadership team and advisors.',
+      description: 'PebRx leadership and management team.',
       ogType: 'profile',
       jsonLd: [
         { '@context': 'https://schema.org', ...org },
@@ -250,7 +250,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
         itemListElement: PUBLICATIONS.map((article, index) => ({
           '@type': 'ListItem',
           position: index + 1,
-          item: { ...article, publisher: org },
+          item: article,
         })),
       },
     },
@@ -301,6 +301,8 @@ export function buildSeoTags(filename: string): string {
   const jsonLdBlock = meta.jsonLd ? formatJsonLd(meta.jsonLd) : '';
 
   return `
+  <link rel="icon" href="/images/logo-icon-dark.png?v=4" type="image/png">
+  <link rel="apple-touch-icon" href="/images/logo-icon-dark.png?v=4">
   <link rel="canonical" href="${canonical}">
   <meta property="og:site_name" content="${SITE_NAME}">
   <meta property="og:title" content="${escapeAttr(meta.title)}">
