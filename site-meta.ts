@@ -96,9 +96,38 @@ const PUBLICATIONS: Record<string, unknown>[] = [
   },
   {
     '@type': 'ScholarlyArticle',
+    headline: 'Uncovering Mechanisms of Brain Inflammation in Alzheimer\'s Disease with APOE4',
+    author: 'Asante I, Louie SG, Yassine HN',
+    datePublished: '2022',
+    isPartOf: { '@type': 'Periodical', name: 'Annals of the New York Academy of Sciences' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
+    headline: 'Lipids and Brain Inflammation in APOE4-Associated Dementia',
+    author: 'Duro MV, Ebright B, Yassine HN',
+    datePublished: '2021',
+    isPartOf: { '@type': 'Periodical', name: 'Current Opinion in Lipidology' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
     headline: 'DHA Brain Uptake and APOE4 Status: A PET Study with [1-11C]-DHA',
     author: 'Yassine HN, Croteau E, Rawat V, Hibbeln JR, Rapoport SI, Cunnane SC, Umhau JC',
     datePublished: '2017',
+    isPartOf: { '@type': 'Periodical', name: 'Alzheimer\'s Research & Therapy' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
+    headline:
+      'Association of Docosahexaenoic Acid Supplementation With Alzheimer Disease Stage in Apolipoprotein E ε4 Carriers: A Review',
+    author: 'Yassine HN, Braskie MN, Mack WJ, Castor KJ, Fonteh AN, Schneider LS, Harrington MG, Chui HC',
+    datePublished: '2017',
+    isPartOf: { '@type': 'Periodical', name: 'JAMA Neurology' },
+  },
+  {
+    '@type': 'ScholarlyArticle',
+    headline: 'The Effect of APOE Genotype on the Delivery of DHA to Cerebrospinal Fluid in Alzheimer\'s Disease',
+    author: 'Yassine HN, Rawat V, Mack WJ, Quinn JF, et al.',
+    datePublished: '2016',
     isPartOf: { '@type': 'Periodical', name: 'Alzheimer\'s Research & Therapy' },
   },
 ];

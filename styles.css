@@ -4038,8 +4038,8 @@ body:not(.page-home) main {
   align-items: center;
   align-self: stretch;
   text-align: center;
-  height: auto;
-  min-height: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .page-leadership .team-grid-cofounders .team-photo,
@@ -4388,6 +4388,15 @@ body.page-leadership .section-leadership .team-grid-staff-trio > .team-card {
   align-items: center;
   align-self: stretch;
   text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 961px) {
+  body.page-leadership .section-leadership .team-grid-cofounders,
+  body.page-leadership .section-leadership .team-grid-staff-trio {
+    align-items: stretch;
+  }
 }
 
 body.page-leadership .section-leadership .team-grid-cofounders .team-info,
