@@ -4058,22 +4058,22 @@ body:not(.page-home) main {
 
 .page-leadership .team-card-featured {
   justify-content: flex-start;
-  gap: 0.85rem;
-  padding: 1.35rem 1.25rem;
+  gap: 1.1rem;
+  padding: 1.65rem 1.5rem;
 }
 
 .page-leadership .team-card-featured .team-info h3 {
-  margin: 0;
+  margin: 0 0 0.2rem;
 }
 
 .page-leadership .team-card-featured .team-role {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.65rem;
 }
 
 .page-leadership .team-card .team-info > p:not(.team-role) {
   text-align: center;
   margin: 0;
-  line-height: 1.55;
+  line-height: 1.62;
 }
 
 .page-contact .contact-header {
