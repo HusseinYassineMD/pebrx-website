@@ -144,7 +144,7 @@ const TEAM: Record<string, unknown>[] = [
     name: 'Hussein Yassine',
     jobTitle: 'Co-Founder, Scientific Lead',
     honorificPrefix: 'Dr',
-    description: 'MD — Professor of Medicine and Neurology. Leads lipidomics and translational medicine strategy for APOE4 biology.',
+    description: 'MD, Professor of Medicine and Neurology. Leads lipidomics and translational medicine strategy for APOE4 biology.',
     affiliation: { '@type': 'Organization', name: 'Keck School of Medicine of USC' },
   },
   {
@@ -158,7 +158,7 @@ const TEAM: Record<string, unknown>[] = [
     '@type': 'Person',
     name: 'Vsevolod "Seva" Katritch',
     jobTitle: 'Co-Founder, Drug Discovery',
-    description: 'PhD — Biophysics and Molecular Biology. Leads small molecule and computational drug discovery.',
+    description: 'PhD, Biophysics and Molecular Biology. Leads small molecule and computational drug discovery.',
   },
   {
     '@type': 'Person',
@@ -213,12 +213,12 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'science.html': {
       path: '/science.html',
       title: 'Science | PebRx',
-      description: 'PebRx science — neuroinflammation platform and APOE4 research.',
+      description: 'PebRx science: neuroinflammation platform and APOE4 research.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'MedicalWebPage',
-        name: 'Science — PebRx Neuroinflammation Platform',
+        name: 'Science | PebRx Neuroinflammation Platform',
         description:
           'Precision therapeutics for APOE4-driven neurovascular disease through lipid-mediated neuroinflammation research.',
         url: `${siteUrl}/science.html`,
@@ -229,12 +229,12 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
     'pipeline.html': {
       path: '/pipeline.html',
       title: 'Pipeline | PebRx',
-      description: 'PebRx pipeline — BRI-Series and diagnostic PET programs.',
+      description: 'PebRx pipeline: BRI-Series and diagnostic PET programs.',
       ogType: 'article',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'MedicalWebPage',
-        name: 'Pipeline — BRI Series & PET Programs',
+        name: 'Pipeline | BRI Series & PET Programs',
         description: 'Lead therapeutic BRI-50460 and diagnostic PET imaging programs at PebRx.',
         url: `${siteUrl}/pipeline.html`,
         isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: siteUrl },
@@ -301,7 +301,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
       path: '/about.html',
       title: 'About | PebRx',
       description:
-        'About PebRx — discovering a target through APOE4 research, brain lipid profiling, PET imaging, and translational drug development.',
+        'About PebRx: discovering a target through APOE4 research, brain lipid profiling, PET imaging, and translational drug development.',
       ogType: 'website',
       jsonLd: {
         '@context': 'https://schema.org',
