@@ -701,14 +701,24 @@ body.menu-open {
 .section-desc {
   font-size: 1.15rem;
   color: var(--text-muted);
-  line-height: 1.8;
+  line-height: 1.62;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.section-intro.centered .section-desc {
+  text-align: center;
+  max-width: 42rem;
+  margin-inline: auto;
 }
 
 .lead {
   font-size: 1.15rem;
   color: var(--text-dark);
-  line-height: 1.8;
+  line-height: 1.62;
   margin-bottom: 1.25rem;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
 }
 
 /* ─── ABOUT ─── */
@@ -1032,10 +1042,12 @@ body.menu-open {
 .science-intro-cell p {
   margin: 0;
   font-size: 0.98rem;
-  line-height: 1.6;
+  line-height: 1.62;
   color: var(--text-muted);
-  text-align: justify;
-  hyphens: auto;
+  text-align: left;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  hyphens: none;
 }
 
 .science-intro-cell strong {
@@ -3102,12 +3114,15 @@ body.menu-open {
 }
 
 .news-card-summary {
-  flex: 1;
-  margin-top: auto;
-  padding-top: 0.25rem;
+  flex: 0 1 auto;
+  margin-top: 0.35rem;
+  padding-top: 0;
   font-size: 0.95rem;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.62;
+  text-align: left;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
 }
 
 .news-card-cta {
@@ -3188,8 +3203,11 @@ body.menu-open {
 .pub-summary {
   font-size: 1.05rem;
   color: var(--text-dark);
-  line-height: 1.55;
+  line-height: 1.62;
   margin-bottom: 0.5rem;
+  text-align: left;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
 }
 
 .pub-link {
@@ -3849,11 +3867,14 @@ body.menu-open {
 }
 
 .page-home .landing-card p {
-  margin-top: auto;
-  padding-top: 0.35rem;
+  margin-top: 0.35rem;
+  padding-top: 0;
   font-size: 0.98rem;
-  line-height: 1.6;
+  line-height: 1.62;
   max-width: none;
+  text-align: left;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
 }
 
 .landing-explore {
@@ -4006,7 +4027,10 @@ body:not(.page-home) main {
 
 .page-leadership .section-intro .section-desc {
   text-align: center;
-  line-height: 1.65;
+  line-height: 1.62;
+  max-width: 42rem;
+  margin-inline: auto;
+  text-wrap: pretty;
 }
 
 .page-leadership .team-executive {
@@ -4074,6 +4098,15 @@ body:not(.page-home) main {
   text-align: center;
   margin: 0;
   line-height: 1.62;
+  max-width: 20rem;
+  margin-inline: auto;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+.page-leadership .team-card-featured .team-info > p:not(.team-role) {
+  max-width: 26rem;
 }
 
 .page-contact .contact-header {
@@ -4439,9 +4472,14 @@ body.page-leadership .section-leadership .team-grid-staff-trio .team-info p:last
   margin: 0.15rem 0 0;
   padding: 0;
   width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
   font-size: 0.92rem;
   line-height: 1.62;
   text-align: center;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  hyphens: none;
 }
 
 @media (min-width: 961px) {
@@ -4456,4 +4494,33 @@ body.page-leadership .section-leadership .team-grid-staff-trio .team-info p:last
   body.page-leadership .section-leadership .team-grid-staff-trio > .team-card {
     height: auto;
   }
+}
+
+/* Site-wide body copy: natural word spacing, no justify gaps */
+main p {
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+  word-spacing: normal;
+}
+
+.science-content-intro {
+  text-align: center;
+  max-width: 42rem;
+  margin-inline: auto;
+  line-height: 1.62;
+  text-wrap: pretty;
+}
+
+.info-card p,
+.info-card-focus .info-card-lead,
+.ip-notice p,
+.contact-form-note {
+  line-height: 1.62;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+.about-lead {
+  line-height: 1.62;
+  text-wrap: pretty;
 }
