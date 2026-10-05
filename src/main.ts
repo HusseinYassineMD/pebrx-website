@@ -8,18 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initContactForm();
 
-  const bootNeuralHero = (): void => {
-    void import('./neural-hero').then(({ initNeuralHero }) => initNeuralHero());
-  };
+  const canRunNeuralHero = window.matchMedia(
+    '(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)',
+  ).matches;
 
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const startNeuralHero = (): void => {
-    if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(bootNeuralHero, { timeout: isMobile ? 6000 : 4000 });
-    } else {
-      globalThis.setTimeout(bootNeuralHero, isMobile ? 1500 : 800);
-    }
-  };
+  if (canRunNeuralHero) {
+    const bootNeuralHero = (): void => {
+      void import('./neural-hero').then(({ initNeuralHero }) => initNeuralHero());
+    };
 
-  globalThis.addEventListener('load', startNeuralHero, { once: true });
+    const startNeuralHero = (): void => {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(bootNeuralHero, { timeout: 8000 });
+      } else {
+        globalThis.setTimeout(bootNeuralHero, 2000);
+      }
+    };
+
+    globalThis.addEventListener('load', startNeuralHero, { once: true });
+  }
 });
