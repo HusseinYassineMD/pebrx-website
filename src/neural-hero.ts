@@ -241,6 +241,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   if (!ctx) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const compactHero = host.classList.contains('page-hero-banner');
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
@@ -264,6 +265,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   host.addEventListener(
     'pointermove',
     (e) => {
+      syncHostRect();
       mouse.x = e.clientX - hostLeft;
       mouse.y = e.clientY - hostTop;
       mouse.active = true;
@@ -279,7 +281,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     const rect = host.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, compactHero ? 1.25 : 1.75);
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
     canvas.style.width = `${width}px`;
@@ -549,16 +551,55 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     for (const p of particles) {
       drawNode(p, pullRadius);
     }
-
-    if (!reducedMotion) {
-      requestAnimationFrame(draw);
-    }
   };
 
+  let rafId = 0;
+  let heroVisible = true;
+
+  const scheduleFrame = (): void => {
+    if (rafId !== 0 || reducedMotion || !heroVisible) return;
+    rafId = requestAnimationFrame(runFrame);
+  };
+
+  const runFrame = (): void => {
+    rafId = 0;
+    if (reducedMotion || !heroVisible) return;
+    draw();
+    scheduleFrame();
+  };
+
+  const visibilityObserver = new IntersectionObserver(
+    (entries) => {
+      heroVisible = entries.some((entry) => entry.isIntersecting);
+      if (heroVisible) {
+        scheduleFrame();
+      } else if (rafId !== 0) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    },
+    { threshold: 0, rootMargin: '48px' },
+  );
+
   resize();
-  draw();
+  if (reducedMotion) {
+    draw();
+  } else {
+    scheduleFrame();
+  }
   window.addEventListener('resize', resize);
-  window.addEventListener('scroll', syncHostRect, { passive: true });
+  visibilityObserver.observe(host);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (rafId !== 0) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+    } else {
+      scheduleFrame();
+    }
+  });
 }
 
 export function initNeuralHero(): void {

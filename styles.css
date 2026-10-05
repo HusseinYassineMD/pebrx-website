@@ -48,7 +48,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-padding-top: var(--nav-height);
   font-size: 18px;
 }
@@ -153,6 +153,7 @@ ul {
   left: 0;
   right: 0;
   z-index: 100;
+  transform: translateZ(0);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -368,9 +369,7 @@ ul {
 
 .nav.scrolled,
 .nav.nav-inner {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 2px 20px rgba(13, 21, 38, 0.06);
 }
 
@@ -466,7 +465,6 @@ body.menu-open {
   z-index: 3;
   pointer-events: none;
   opacity: 1;
-  filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
 }
 
 .hero-landing-photo .hero-photo-overlay {
@@ -1289,7 +1287,6 @@ body.menu-open {
   z-index: 3;
   pointer-events: none;
   opacity: 1;
-  filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 14px rgba(78, 205, 196, 0.28));
 }
 
 .page-hero-overlay {
@@ -1353,14 +1350,12 @@ body.menu-open {
 
 .page-hero-about .page-hero-photo {
   object-position: center 42%;
-  filter: grayscale(0.42) saturate(0.28) brightness(0.68) contrast(1.06);
-  opacity: 0.48;
+  opacity: 0.46;
 }
 
 .page-hero-contact .page-hero-photo {
   object-position: center 42%;
-  filter: grayscale(0.22) saturate(0.46) brightness(0.84) contrast(1.04);
-  opacity: 0.68;
+  opacity: 0.66;
 }
 
 .page-hero-about .page-hero-overlay {
@@ -1387,7 +1382,7 @@ body.menu-open {
 .page-hero-pipeline .page-hero-photo { object-position: center 55%; }
 .page-hero-leadership .page-hero-photo {
   object-position: center 52%;
-  filter: brightness(0.96) contrast(1.05);
+  opacity: 0.95;
 }
 
 .page-hero-leadership .page-hero-overlay {
