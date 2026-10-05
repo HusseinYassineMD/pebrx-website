@@ -1,3 +1,5 @@
+import { onUserScroll } from './scroll-sync';
+
 type NodeRole = 'corner' | 'hub' | 'satellite';
 
 interface Particle {
@@ -333,8 +335,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     if (!(a.spark || b.spark) || pulse <= 0.56) return;
     const sparkAlpha = (pulse - 0.56) * 1.4;
     ctx.save();
-    ctx.shadowBlur = 4;
-    ctx.shadowColor = 'rgba(255, 130, 70, 0.65)';
     ctx.fillStyle = `rgba(255, 150, 85, ${Math.min(0.72, sparkAlpha * 0.52)})`;
     ctx.beginPath();
     ctx.arc(mx, my, 0.65, 0, Math.PI * 2);
@@ -352,8 +352,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
 
     if (p.role === 'corner' || p.role === 'hub') {
       ctx.save();
-      if (!liteGraphics) ctx.shadowBlur = p.role === 'corner' ? 14 : 9;
-      ctx.shadowColor = 'rgba(78, 205, 196, 0.55)';
       ctx.fillStyle = `rgba(78, 205, 196, ${0.14 * nodeAlpha})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 2.4, 0, Math.PI * 2);
@@ -377,8 +375,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         const pulse = 0.5 + Math.sin(frame * 0.05 + p.pulse) * 0.5;
         if (pulse > 0.55) {
           ctx.save();
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = 'rgba(255, 130, 70, 0.55)';
           ctx.fillStyle = `rgba(255, 145, 80, ${(pulse - 0.55) * 0.7})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 0.55, 0, Math.PI * 2);
@@ -390,10 +386,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     }
 
     ctx.save();
-    if (!liteGraphics) {
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = `rgba(210, 250, 255, ${Math.min(0.45, nodeAlpha * 0.35)})`;
-    }
     ctx.fillStyle = `rgba(225, 250, 255, ${Math.min(0.72, nodeAlpha * 0.78)})`;
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -531,8 +523,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
 
       ctx.save();
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgba(255, 140, 75, 0.55)';
       ctx.fillStyle = 'rgba(255, 160, 95, 0.55)';
       ctx.beginPath();
       ctx.arc(smoothMouse.x, smoothMouse.y, 1.1, 0, Math.PI * 2);
@@ -548,17 +538,18 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
 
   let rafId = 0;
   let heroVisible = true;
+  let scrollPaused = false;
   let lastFrameTime = 0;
-  const minFrameMs = liteGraphics ? 33 : 0;
+  const minFrameMs = liteGraphics ? 33 : 20;
 
   const scheduleFrame = (): void => {
-    if (rafId !== 0 || reducedMotion || !heroVisible) return;
+    if (rafId !== 0 || reducedMotion || !heroVisible || scrollPaused) return;
     rafId = requestAnimationFrame(runFrame);
   };
 
   const runFrame = (time: number): void => {
     rafId = 0;
-    if (reducedMotion || !heroVisible) return;
+    if (reducedMotion || !heroVisible || scrollPaused) return;
     if (minFrameMs > 0 && time - lastFrameTime < minFrameMs) {
       scheduleFrame();
       return;
@@ -598,6 +589,16 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         rafId = 0;
       }
     } else {
+      scheduleFrame();
+    }
+  });
+
+  onUserScroll((scrolling) => {
+    scrollPaused = scrolling;
+    if (scrollPaused && rafId !== 0) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else if (!scrollPaused) {
       scheduleFrame();
     }
   });

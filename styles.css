@@ -48,7 +48,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-padding-top: var(--nav-height);
   font-size: 18px;
 }
@@ -432,6 +432,15 @@ body.menu-open {
 
 .hero-landing-photo {
   background: var(--navy);
+  contain: layout paint;
+}
+
+html.is-scrolling .nav {
+  transition: none;
+}
+
+html.is-scrolling .neural-canvas {
+  visibility: hidden;
 }
 
 .hero-landing-photo picture,
@@ -1249,6 +1258,7 @@ body.menu-open {
   overflow: hidden;
   text-align: center;
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  contain: layout paint;
 }
 
 .page-hero-banner::after {
@@ -1347,14 +1357,12 @@ body.menu-open {
 
 .page-hero-about .page-hero-photo {
   object-position: center 42%;
-  filter: grayscale(0.42) saturate(0.28) brightness(0.68) contrast(1.06);
-  opacity: 0.48;
+  opacity: 0.44;
 }
 
 .page-hero-contact .page-hero-photo {
   object-position: center 42%;
-  filter: grayscale(0.22) saturate(0.46) brightness(0.84) contrast(1.04);
-  opacity: 0.68;
+  opacity: 0.64;
 }
 
 .page-hero-about .page-hero-overlay {
@@ -1381,7 +1389,7 @@ body.menu-open {
 .page-hero-pipeline .page-hero-photo { object-position: center 55%; }
 .page-hero-leadership .page-hero-photo {
   object-position: center 52%;
-  filter: brightness(0.96) contrast(1.05);
+  opacity: 0.94;
 }
 
 .page-hero-leadership .page-hero-overlay {
@@ -3804,23 +3812,11 @@ body.menu-open {
 }
 
 /* ─── SCROLL ANIMATIONS ─── */
-.fade-section {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-
-@media (max-width: 960px) {
-  .fade-section {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
+.fade-section,
 .fade-section.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
