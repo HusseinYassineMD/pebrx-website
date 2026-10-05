@@ -48,7 +48,7 @@
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   scroll-padding-top: var(--nav-height);
   font-size: 18px;
 }
@@ -61,14 +61,6 @@ body {
   background: var(--white);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-main > .section,
-main > .landing-explore,
-main > .page-section,
-main > .discovery-band {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 480px;
 }
 
 .skip-link {
@@ -472,13 +464,6 @@ body.menu-open {
   z-index: 3;
   pointer-events: none;
   opacity: 1;
-  contain: strict;
-}
-
-@media (pointer: coarse), (max-width: 960px) {
-  .neural-canvas {
-    display: none !important;
-  }
 }
 
 .hero-landing-photo .hero-photo-overlay {
@@ -1362,12 +1347,14 @@ body.menu-open {
 
 .page-hero-about .page-hero-photo {
   object-position: center 42%;
-  opacity: 0.42;
+  filter: grayscale(0.42) saturate(0.28) brightness(0.68) contrast(1.06);
+  opacity: 0.48;
 }
 
 .page-hero-contact .page-hero-photo {
   object-position: center 42%;
-  opacity: 0.62;
+  filter: grayscale(0.22) saturate(0.46) brightness(0.84) contrast(1.04);
+  opacity: 0.68;
 }
 
 .page-hero-about .page-hero-overlay {
@@ -1394,7 +1381,7 @@ body.menu-open {
 .page-hero-pipeline .page-hero-photo { object-position: center 55%; }
 .page-hero-leadership .page-hero-photo {
   object-position: center 52%;
-  opacity: 0.92;
+  filter: brightness(0.96) contrast(1.05);
 }
 
 .page-hero-leadership .page-hero-overlay {
@@ -3277,7 +3264,8 @@ body.menu-open {
 .contact-blob {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.45;
+  filter: blur(80px);
+  opacity: 0.55;
 }
 
 .contact-blob-1 {
@@ -3816,11 +3804,23 @@ body.menu-open {
 }
 
 /* ─── SCROLL ANIMATIONS ─── */
-.fade-section,
+.fade-section {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+@media (max-width: 960px) {
+  .fade-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .fade-section.visible {
   opacity: 1;
-  transform: none;
-  transition: none;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
