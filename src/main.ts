@@ -2,6 +2,7 @@ import '../styles.css';
 import { initNavigation } from './nav';
 import { initScrollAnimations } from './animations';
 import { initContactForm } from './contact-form';
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initScrollAnimations();
@@ -14,11 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const startNeuralHero = (): void => {
     if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(bootNeuralHero, { timeout: isMobile ? 6000 : 4000 });
+      window.requestIdleCallback(bootNeuralHero, { timeout: isMobile ? 5000 : 2500 });
     } else {
-      globalThis.setTimeout(bootNeuralHero, isMobile ? 1500 : 800);
+      globalThis.setTimeout(bootNeuralHero, isMobile ? 1200 : 200);
     }
   };
 
-  globalThis.addEventListener('load', startNeuralHero, { once: true });
+  if (isMobile) {
+    globalThis.addEventListener('load', startNeuralHero, { once: true });
+  } else {
+    startNeuralHero();
+  }
 });

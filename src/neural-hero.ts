@@ -241,10 +241,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   if (!ctx) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const liteGraphics =
-    reducedMotion ||
-    window.matchMedia('(max-width: 768px)').matches ||
-    (navigator.hardwareConcurrency ?? 8) <= 4;
   let width = 0;
   let height = 0;
   let particles: Particle[] = [];
@@ -268,7 +264,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
   host.addEventListener(
     'pointermove',
     (e) => {
-      syncHostRect();
       mouse.x = e.clientX - hostLeft;
       mouse.y = e.clientY - hostTop;
       mouse.active = true;
@@ -284,7 +279,7 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     const rect = host.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
-    const dpr = Math.min(window.devicePixelRatio || 1, liteGraphics ? 1.25 : 1.75);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
     canvas.style.width = `${width}px`;
@@ -320,19 +315,36 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     const cy = my + ny * curve;
 
     ctx.lineCap = 'round';
-    ctx.strokeStyle = `rgba(195, 245, 250, ${Math.min(0.72, alpha * 0.48)})`;
-    ctx.lineWidth = Math.max(0.4, widthPx * 0.78);
+
+    ctx.save();
+    ctx.shadowBlur = 16;
+    ctx.shadowColor = `rgba(190, 245, 250, ${alpha * 0.42})`;
+    ctx.strokeStyle = `rgba(175, 235, 245, ${alpha * 0.18})`;
+    ctx.lineWidth = widthPx + 3;
     ctx.beginPath();
     ctx.moveTo(ax, ay);
     ctx.quadraticCurveTo(cx, cy, bx, by);
     ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = `rgba(210, 250, 255, ${alpha * 0.3})`;
+    ctx.strokeStyle = `rgba(205, 245, 252, ${alpha * 0.52})`;
+    ctx.lineWidth = Math.max(0.35, widthPx * 0.82);
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.quadraticCurveTo(cx, cy, bx, by);
+    ctx.stroke();
+    ctx.restore();
   };
 
   const drawSpark = (mx: number, my: number, pulse: number, a: Particle, b: Particle): void => {
-    if (liteGraphics) return;
     if (!(a.spark || b.spark) || pulse <= 0.56) return;
     const sparkAlpha = (pulse - 0.56) * 1.4;
     ctx.save();
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = 'rgba(255, 130, 70, 0.65)';
     ctx.fillStyle = `rgba(255, 150, 85, ${Math.min(0.72, sparkAlpha * 0.52)})`;
     ctx.beginPath();
     ctx.arc(mx, my, 0.65, 0, Math.PI * 2);
@@ -350,6 +362,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
 
     if (p.role === 'corner' || p.role === 'hub') {
       ctx.save();
+      ctx.shadowBlur = p.role === 'corner' ? 14 : 9;
+      ctx.shadowColor = 'rgba(78, 205, 196, 0.55)';
       ctx.fillStyle = `rgba(78, 205, 196, ${0.14 * nodeAlpha})`;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * 2.4, 0, Math.PI * 2);
@@ -373,6 +387,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         const pulse = 0.5 + Math.sin(frame * 0.05 + p.pulse) * 0.5;
         if (pulse > 0.55) {
           ctx.save();
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = 'rgba(255, 130, 70, 0.55)';
           ctx.fillStyle = `rgba(255, 145, 80, ${(pulse - 0.55) * 0.7})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 0.55, 0, Math.PI * 2);
@@ -384,6 +400,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     }
 
     ctx.save();
+    ctx.shadowBlur = 6;
+    ctx.shadowColor = `rgba(210, 250, 255, ${Math.min(0.45, nodeAlpha * 0.35)})`;
     ctx.fillStyle = `rgba(225, 250, 255, ${Math.min(0.72, nodeAlpha * 0.78)})`;
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -427,10 +445,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
         p.vx += (p.restX - p.x) * spring;
         p.vy += (p.restY - p.y) * spring;
 
-        if (!liteGraphics) {
-          p.vx += (Math.random() - 0.5) * 0.012;
-          p.vy += (Math.random() - 0.5) * 0.012;
-        }
+        p.vx += (Math.random() - 0.5) * 0.012;
+        p.vy += (Math.random() - 0.5) * 0.012;
 
         p.vx *= smoothMouse.active ? 0.988 : 0.985;
         p.vy *= smoothMouse.active ? 0.988 : 0.985;
@@ -521,6 +537,8 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       }
 
       ctx.save();
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(255, 140, 75, 0.55)';
       ctx.fillStyle = 'rgba(255, 160, 95, 0.55)';
       ctx.beginPath();
       ctx.arc(smoothMouse.x, smoothMouse.y, 1.1, 0, Math.PI * 2);
@@ -532,64 +550,15 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
       drawNode(p, pullRadius);
     }
 
-  };
-
-  let rafId = 0;
-  let heroVisible = true;
-  let lastFrameTime = 0;
-  const minFrameMs = liteGraphics ? 33 : 0;
-
-  const scheduleFrame = (): void => {
-    if (rafId !== 0 || reducedMotion || !heroVisible) return;
-    rafId = requestAnimationFrame(runFrame);
-  };
-
-  const runFrame = (time: number): void => {
-    rafId = 0;
-    if (reducedMotion || !heroVisible) return;
-    if (minFrameMs > 0 && time - lastFrameTime < minFrameMs) {
-      scheduleFrame();
-      return;
+    if (!reducedMotion) {
+      requestAnimationFrame(draw);
     }
-    lastFrameTime = time;
-    draw();
-    scheduleFrame();
   };
-
-  const visibilityObserver = new IntersectionObserver(
-    (entries) => {
-      heroVisible = entries.some((entry) => entry.isIntersecting);
-      if (heroVisible) {
-        scheduleFrame();
-      } else if (rafId !== 0) {
-        cancelAnimationFrame(rafId);
-        rafId = 0;
-      }
-    },
-    { threshold: 0, rootMargin: '32px' },
-  );
 
   resize();
-  syncHostRect();
-  if (reducedMotion) {
-    draw();
-  } else {
-    scheduleFrame();
-  }
+  draw();
   window.addEventListener('resize', resize);
-  visibilityObserver.observe(host);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (rafId !== 0) {
-        cancelAnimationFrame(rafId);
-        rafId = 0;
-      }
-    } else {
-      scheduleFrame();
-    }
-  });
-
+  window.addEventListener('scroll', syncHostRect, { passive: true });
 }
 
 export function initNeuralHero(): void {

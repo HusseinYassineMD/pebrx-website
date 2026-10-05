@@ -96,19 +96,7 @@ export function initNavigation(): void {
     setNavScrolled(window.scrollY > 60);
   }
 
-  let scrollScheduled = false;
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (scrollScheduled) return;
-      scrollScheduled = true;
-      requestAnimationFrame(() => {
-        onScroll();
-        scrollScheduled = false;
-      });
-    },
-    { passive: true },
-  );
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => {
     if (!isMobile()) {
       closeMenu();
