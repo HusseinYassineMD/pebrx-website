@@ -15,15 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const startNeuralHero = (): void => {
     if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(bootNeuralHero, { timeout: isMobile ? 5000 : 2500 });
+      window.requestIdleCallback(bootNeuralHero, { timeout: isMobile ? 6000 : 4000 });
     } else {
-      globalThis.setTimeout(bootNeuralHero, isMobile ? 1200 : 200);
+      globalThis.setTimeout(bootNeuralHero, isMobile ? 1500 : 800);
     }
   };
 
-  if (isMobile) {
-    globalThis.addEventListener('load', startNeuralHero, { once: true });
-  } else {
-    startNeuralHero();
-  }
+  globalThis.addEventListener('load', startNeuralHero, { once: true });
 });
