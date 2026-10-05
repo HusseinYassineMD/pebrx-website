@@ -2,10 +2,7 @@ import '../styles.css';
 import { initNavigation } from './nav';
 import { initScrollAnimations } from './animations';
 import { initContactForm } from './contact-form';
-import { initScrollSync } from './scroll-sync';
-
 document.addEventListener('DOMContentLoaded', () => {
-  initScrollSync();
   initNavigation();
   initScrollAnimations();
   initContactForm();

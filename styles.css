@@ -435,14 +435,6 @@ body.menu-open {
   contain: layout paint;
 }
 
-html.is-scrolling .nav {
-  transition: none;
-}
-
-html.is-scrolling .neural-canvas {
-  visibility: hidden;
-}
-
 .hero-landing-photo picture,
 .page-hero-banner picture {
   position: absolute;

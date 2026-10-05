@@ -1,5 +1,3 @@
-import { onUserScroll } from './scroll-sync';
-
 type NodeRole = 'corner' | 'hub' | 'satellite';
 
 interface Particle {
@@ -538,18 +536,17 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
 
   let rafId = 0;
   let heroVisible = true;
-  let scrollPaused = false;
   let lastFrameTime = 0;
-  const minFrameMs = liteGraphics ? 33 : 20;
+  const minFrameMs = liteGraphics ? 33 : 0;
 
   const scheduleFrame = (): void => {
-    if (rafId !== 0 || reducedMotion || !heroVisible || scrollPaused) return;
+    if (rafId !== 0 || reducedMotion || !heroVisible) return;
     rafId = requestAnimationFrame(runFrame);
   };
 
   const runFrame = (time: number): void => {
     rafId = 0;
-    if (reducedMotion || !heroVisible || scrollPaused) return;
+    if (reducedMotion || !heroVisible) return;
     if (minFrameMs > 0 && time - lastFrameTime < minFrameMs) {
       scheduleFrame();
       return;
@@ -593,15 +590,6 @@ function initCanvas(canvas: HTMLCanvasElement, host: HTMLElement): void {
     }
   });
 
-  onUserScroll((scrolling) => {
-    scrollPaused = scrolling;
-    if (scrollPaused && rafId !== 0) {
-      cancelAnimationFrame(rafId);
-      rafId = 0;
-    } else if (!scrollPaused) {
-      scheduleFrame();
-    }
-  });
 }
 
 export function initNeuralHero(): void {
