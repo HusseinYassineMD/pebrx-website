@@ -1119,18 +1119,15 @@ body.menu-open {
 }
 
 .science-unified .about-cards-grid-duo .about-cards-arrow {
-  align-self: stretch;
-  flex-direction: column;
-  padding: 0.35rem;
-  min-height: 0;
+  align-self: center;
+  padding: 0 0.5rem;
 }
 
-.science-unified .about-cards-grid-duo .about-cards-arrow svg {
+.science-unified .about-cards-grid-duo .science-cards-arrow-icon {
   display: block;
-  width: 44px;
-  height: 100%;
-  min-height: 100%;
-  flex: 1 1 auto;
+  width: 3.25rem;
+  height: clamp(9rem, 28vw, 11.25rem);
+  flex-shrink: 0;
 }
 
 .science-unified .stats-row-science-top {
@@ -4364,10 +4361,10 @@ body:not(.page-home) main {
     height: 36px;
   }
 
-  .science-unified .about-cards-grid-duo .about-cards-arrow svg {
-    width: 56px;
-    height: auto;
-    min-height: 3.25rem;
+  .science-unified .about-cards-grid-duo .science-cards-arrow-icon {
+    width: clamp(5.5rem, 36vw, 8rem);
+    max-height: none;
+    aspect-ratio: 168 / 56;
   }
 
   .science-content-full {
@@ -4508,9 +4505,10 @@ body:not(.page-home) main {
     height: 28px;
   }
 
-  .science-unified .about-cards-grid-duo .about-cards-arrow svg {
-    width: 48px;
-    min-height: 2.75rem;
+  .science-unified .about-cards-grid-duo .science-cards-arrow-icon {
+    width: clamp(4.75rem, 42vw, 6.5rem);
+    max-height: none;
+    aspect-ratio: 168 / 56;
   }
 
   .science-intro-grid {
