@@ -1039,20 +1039,24 @@ body.menu-open {
 
 .science-intro-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, auto);
-  gap: 1.15rem 2.25rem;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
   max-width: 1040px;
   margin-inline: auto;
 }
 
+.science-intro-spacer {
+  width: 40px;
+  padding: 0 0.35rem;
+  flex-shrink: 0;
+}
+
 .science-intro-col {
-  display: grid;
-  grid-row: span 2;
-  grid-template-rows: subgrid;
+  display: flex;
+  flex-direction: column;
   gap: 1.15rem;
-  min-height: 100%;
+  min-width: 0;
   padding: 0 0.15rem;
 }
 
@@ -3628,6 +3632,10 @@ body.menu-open {
   .science-intro-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
+  }
+
+  .science-intro-spacer {
+    display: none;
   }
 
   .about-cards-arrow {
