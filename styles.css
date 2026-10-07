@@ -1040,26 +1040,39 @@ body.menu-open {
 .science-intro-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.35rem 2rem;
+  grid-template-rows: repeat(2, auto);
+  gap: 1.15rem 2.25rem;
   align-items: stretch;
   max-width: 1040px;
   margin-inline: auto;
 }
 
-.science-intro-cell p {
+.science-intro-col {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  gap: 1.15rem;
+  min-height: 100%;
+  padding: 0 0.15rem;
+}
+
+.science-intro-col p {
   margin: 0;
   font-size: 0.98rem;
   line-height: 1.62;
   color: var(--text-muted);
-  text-align: center;
-  max-width: 26rem;
-  margin-inline: auto;
+  text-align: left;
   text-wrap: pretty;
   overflow-wrap: break-word;
   hyphens: none;
+  align-self: start;
 }
 
-.science-intro-cell strong {
+.science-intro-col p + p {
+  margin-top: 0;
+}
+
+.science-intro-col strong {
   color: var(--teal);
   font-weight: 600;
 }
