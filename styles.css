@@ -1057,7 +1057,7 @@ body.menu-open {
   flex-direction: column;
   gap: 1.15rem;
   min-width: 0;
-  padding: 0 0.15rem;
+  padding-inline: 2rem;
 }
 
 .science-intro-col p {
@@ -1084,6 +1084,38 @@ body.menu-open {
 .science-unified .about-cards-grid {
   margin-top: 0.5rem;
   margin-bottom: 2rem;
+}
+
+/* Intro copy and blue cards share the same column tracks; body text uses matching inset */
+.science-unified .about-cards-grid-duo .info-card {
+  align-items: stretch;
+  text-align: left;
+}
+
+.science-unified .about-cards-grid-duo .info-card h3 {
+  text-align: center;
+  justify-content: center;
+}
+
+.science-unified .about-cards-grid-duo .info-card ul,
+.science-unified .about-cards-grid-duo .info-card-focus .info-card-lead {
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
+  align-self: stretch;
+  text-align: left;
+}
+
+.science-unified .about-cards-grid-duo .about-cards-arrow {
+  align-self: stretch;
+  padding: 1.25rem 0.35rem;
+}
+
+.science-unified .about-cards-grid-duo .about-cards-arrow svg {
+  width: 40px;
+  height: 100%;
+  min-height: 6rem;
+  max-height: 100%;
 }
 
 .science-unified .stats-row-science-top {
@@ -4317,6 +4349,12 @@ body:not(.page-home) main {
     height: 36px;
   }
 
+  .science-unified .about-cards-grid-duo .about-cards-arrow svg {
+    width: 56px;
+    height: auto;
+    min-height: 3.25rem;
+  }
+
   .science-content-full {
     margin-bottom: 1.75rem;
   }
@@ -4453,6 +4491,11 @@ body:not(.page-home) main {
   .about-cards-arrow svg {
     width: 56px;
     height: 28px;
+  }
+
+  .science-unified .about-cards-grid-duo .about-cards-arrow svg {
+    width: 48px;
+    min-height: 2.75rem;
   }
 
   .science-intro-grid {
