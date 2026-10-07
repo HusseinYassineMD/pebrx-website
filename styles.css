@@ -1925,7 +1925,7 @@ body.menu-open {
   display: flex;
   align-items: stretch;
   gap: 2px;
-  height: 22px;
+  height: 26px;
   background: rgba(78, 205, 196, 0.06);
   border-radius: 2px;
   padding: 2px;
@@ -2001,7 +2001,7 @@ body.menu-open {
 .stage-cell-preind .progress-track-segmented {
   width: 100%;
   min-width: 280px;
-  height: 28px;
+  height: 32px;
   padding: 3px;
   gap: 3px;
 }
@@ -2015,7 +2015,7 @@ body.menu-open {
 }
 
 .stage-cell-preind .stage-bar {
-  height: 28px;
+  height: 32px;
 }
 
 .stage-cell-phase {
@@ -2050,7 +2050,7 @@ body.menu-open {
 .stage-bar {
   display: block;
   width: 100%;
-  height: 22px;
+  height: 26px;
   border-radius: 2px;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
 }
@@ -2159,8 +2159,8 @@ body.menu-open {
 
 .pipeline-strategy-intro p {
   color: rgba(255, 255, 255, 0.88);
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: 1.2rem;
+  line-height: 1.8;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -2177,10 +2177,10 @@ body.menu-open {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1.25rem 2rem;
+  gap: 1.35rem 2.25rem;
   margin-top: 0.5rem;
   margin-bottom: 0;
-  font-size: 0.82rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.85);
 }
 
@@ -2191,8 +2191,8 @@ body.menu-open {
 }
 
 .pipeline-legend-swatch {
-  width: 2.75rem;
-  height: 0.65rem;
+  width: 3.25rem;
+  height: 0.75rem;
   border-radius: 2px;
 }
 
@@ -2249,15 +2249,15 @@ body.menu-open {
 
 .pipeline-table {
   width: 100%;
-  min-width: 880px;
+  min-width: 960px;
   border-collapse: collapse;
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: 1.05rem;
+  line-height: 1.55;
 }
 
 .pipeline-table th,
 .pipeline-table td {
-  padding: 0.85rem 1rem;
+  padding: 1.05rem 1.2rem;
   border: 1px solid rgba(78, 205, 196, 0.15);
   vertical-align: middle;
   text-align: left;
@@ -2278,7 +2278,7 @@ body.menu-open {
   letter-spacing: 0.03em;
   color: rgba(126, 207, 196, 0.9);
   background: rgba(42, 157, 143, 0.08);
-  font-size: 0.78rem;
+  font-size: 0.98rem;
 }
 
 .pipeline-table tbody td {
@@ -2298,7 +2298,7 @@ body.menu-open {
 
 .program-target {
   color: var(--white) !important;
-  font-size: 0.78rem;
+  font-size: 0.98rem;
 }
 
 .progress-cell {
@@ -2437,7 +2437,7 @@ body.menu-open {
 
 .pipeline-badge {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2450,7 +2450,7 @@ body.menu-open {
 
 .pipeline-hero h3 {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 500;
   margin-bottom: 1rem;
   color: var(--text-dark);
@@ -2458,7 +2458,7 @@ body.menu-open {
 
 .pipeline-lead-desc {
   color: var(--text-muted);
-  font-size: 0.98rem;
+  font-size: 1.125rem;
   line-height: 1.75;
   margin-bottom: 1.25rem;
 }
@@ -2474,7 +2474,7 @@ body.menu-open {
   position: relative;
   padding-left: 1.5rem;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
 }
 
 .pipeline-indications li::before {
@@ -2617,7 +2617,7 @@ body.menu-open {
 
 .clinical-strategy h3 {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: var(--text-dark);
   margin-bottom: 0.75rem;
@@ -2625,7 +2625,7 @@ body.menu-open {
 
 .clinical-strategy-desc {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.7;
   margin-bottom: 1.75rem;
 }
@@ -2647,16 +2647,21 @@ body.menu-open {
 .market-value {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 500;
   color: var(--teal);
   margin-bottom: 0.35rem;
 }
 
 .market-label {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
+}
+
+.pipeline-legend-swatch {
+  width: 3.25rem;
+  height: 0.75rem;
 }
 
 .pipeline-timeline {
