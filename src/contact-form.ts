@@ -60,7 +60,7 @@ export function initContactForm(): void {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
     }
-    setFormStatus(statusEl, 'loading', 'Sending your message…');
+    setFormStatus(statusEl, 'loading', 'Submitting your inquiry…');
 
     const payload = {
       access_key: accessKey,
@@ -89,12 +89,16 @@ export function initContactForm(): void {
       }
 
       form.reset();
-      setFormStatus(statusEl, 'success', 'Thank you — your message was sent. We will get back to you soon.');
+      setFormStatus(
+        statusEl,
+        'success',
+        'Thank you for contacting PebRx. Your inquiry has been received; our team will respond shortly.'
+      );
     } catch {
       setFormStatus(
         statusEl,
         'error',
-        'Something went wrong. Please try again or email contact@pebrx.co directly.'
+        'We were unable to submit your inquiry. Please try again or contact us at contact@pebrx.co.'
       );
     } finally {
       if (submitBtn) {
