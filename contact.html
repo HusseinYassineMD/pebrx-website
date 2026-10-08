@@ -110,9 +110,15 @@
                   <label for="message">How can we help you?</label>
                   <textarea id="message" name="message" rows="4" required></textarea>
                 </div>
+
+                <div class="form-field contact-honeypot" aria-hidden="true">
+                  <label for="contact-honeypot">Leave this field empty</label>
+                  <input type="text" id="contact-honeypot" name="botcheck" tabindex="-1" autocomplete="off">
+                </div>
     
-                <button type="submit" class="contact-submit">Send via email</button>
-                <p class="contact-form-note">Submit opens your email app with your message addressed to <a href="mailto:contact@pebrx.co">contact@pebrx.co</a>. You can also email us directly at any time.</p>
+                <button type="submit" class="contact-submit">Send message</button>
+                <p id="contact-form-status" class="contact-form-status" role="status" aria-live="polite" hidden></p>
+                <p class="contact-form-note">Messages are sent securely to our team. You can also reach us at <a href="mailto:contact@pebrx.co">contact@pebrx.co</a>.</p>
               </form>
             </div>
           </div>

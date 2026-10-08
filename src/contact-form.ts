@@ -1,9 +1,45 @@
+const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
+
+type Web3FormsResponse = {
+  success: boolean;
+  message?: string;
+};
+
+function getAccessKey(): string {
+  return (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? '').trim();
+}
+
+function setFormStatus(
+  statusEl: HTMLElement | null,
+  type: 'idle' | 'loading' | 'success' | 'error',
+  message: string
+): void {
+  if (!statusEl) return;
+  statusEl.hidden = type === 'idle';
+  statusEl.className = `contact-form-status contact-form-status--${type}`;
+  statusEl.textContent = message;
+}
+
 export function initContactForm(): void {
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   if (!form) return;
 
-  form.addEventListener('submit', (event) => {
+  const submitBtn = form.querySelector('.contact-submit') as HTMLButtonElement | null;
+  const statusEl = document.getElementById('contact-form-status');
+  const defaultBtnLabel = submitBtn?.textContent?.trim() ?? 'Send message';
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const accessKey = getAccessKey();
+    if (!accessKey) {
+      setFormStatus(
+        statusEl,
+        'error',
+        'The contact form is not configured yet. Please email us at contact@pebrx.co.'
+      );
+      return;
+    }
 
     const data = new FormData(form);
     const firstName = String(data.get('firstName') ?? '').trim();
@@ -11,17 +47,60 @@ export function initContactForm(): void {
     const email = String(data.get('email') ?? '').trim();
     const phone = String(data.get('phone') ?? '').trim();
     const message = String(data.get('message') ?? '').trim();
+    const botcheck = String(data.get('botcheck') ?? '').trim();
+
+    if (botcheck) return;
 
     if (!firstName || !lastName || !email || !message) {
       form.reportValidity();
       return;
     }
 
-    const subject = encodeURIComponent(`PebRx Contact: ${firstName} ${lastName}`);
-    const body = encodeURIComponent(
-      `Name: ${firstName} ${lastName}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`
-    );
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+    setFormStatus(statusEl, 'loading', 'Sending your message…');
 
-    window.location.href = `mailto:contact@pebrx.co?subject=${subject}&body=${body}`;
+    const payload = {
+      access_key: accessKey,
+      subject: `PebRx website: ${firstName} ${lastName}`,
+      from_name: `${firstName} ${lastName}`,
+      name: `${firstName} ${lastName}`,
+      email,
+      phone: phone || 'Not provided',
+      message,
+    };
+
+    try {
+      const response = await fetch(WEB3FORMS_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as Web3FormsResponse;
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message ?? 'Unable to send message.');
+      }
+
+      form.reset();
+      setFormStatus(statusEl, 'success', 'Thank you — your message was sent. We will get back to you soon.');
+    } catch {
+      setFormStatus(
+        statusEl,
+        'error',
+        'Something went wrong. Please try again or email contact@pebrx.co directly.'
+      );
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = defaultBtnLabel;
+      }
+    }
   });
 }
