@@ -92,7 +92,7 @@ export function initContactForm(): void {
       setFormStatus(
         statusEl,
         'success',
-        'Thank you for contacting PebRx. Your inquiry has been received; our team will respond shortly.'
+        'Thank you for contacting PebRx. Your inquiry has been received, and our team will respond shortly.'
       );
     } catch {
       setFormStatus(
