@@ -3556,21 +3556,23 @@ body.menu-open {
 }
 
 .contact-form-status--loading {
-  color: var(--text-muted);
-  background: rgba(42, 157, 143, 0.08);
+  color: #ffffff;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .contact-form-status--success {
-  color: #ffffff;
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.6;
-  background: linear-gradient(135deg, #1a8f82 0%, var(--teal) 55%, #3db8a8 100%);
-  border: 2px solid rgba(255, 255, 255, 0.45);
+  color: #0c4a42;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.65;
+  background: #ffffff;
+  border: 2px solid var(--teal-light);
   box-shadow:
-    0 10px 28px rgba(0, 0, 0, 0.22),
-    0 0 0 1px rgba(78, 205, 196, 0.35);
-  padding: 1.15rem 1.35rem;
+    0 14px 36px rgba(0, 0, 0, 0.28),
+    0 0 0 4px rgba(78, 205, 196, 0.35);
+  padding: 1.25rem 1.5rem;
 }
 
 .contact-form-status--error {
@@ -3583,7 +3585,7 @@ body.menu-open {
   margin: 1rem 0 0;
   font-size: 0.85rem;
   line-height: 1.55;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.78);
   text-align: center;
 }
 
