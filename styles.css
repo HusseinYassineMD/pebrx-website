@@ -1037,55 +1037,39 @@ body.menu-open {
   padding-bottom: 0;
 }
 
-.science-intro-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: 1.25rem;
-  row-gap: 1.75rem;
-  align-items: start;
+.science-intro-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
   max-width: 1040px;
   margin-inline: auto;
 }
 
-.science-intro-spacer {
-  grid-column: 2;
-  grid-row: 1 / -1;
-  width: 40px;
-  padding: 0 0.35rem;
+.science-intro-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem 2.25rem;
+  align-items: start;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(42, 157, 143, 0.14);
+}
+
+.science-intro-row:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .science-intro-cell {
   margin: 0;
   min-width: 0;
-  padding-inline: 2rem;
+  padding-inline: 0.25rem;
   font-size: 0.98rem;
-  line-height: 1.62;
+  line-height: 1.68;
   color: var(--text-muted);
   text-align: left;
   text-wrap: pretty;
   overflow-wrap: break-word;
   hyphens: none;
-}
-
-.science-intro-cell:nth-child(1) {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.science-intro-cell:nth-child(2) {
-  grid-column: 3;
-  grid-row: 1;
-}
-
-.science-intro-cell:nth-child(4) {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.science-intro-cell:nth-child(5) {
-  grid-column: 3;
-  grid-row: 2;
 }
 
 .science-intro-cell strong {
@@ -3730,21 +3714,14 @@ body.menu-open {
     max-width: none;
   }
 
-  .science-intro-grid {
+  .science-intro-rows {
+    gap: 1.75rem;
+  }
+
+  .science-intro-row {
     grid-template-columns: 1fr;
-    row-gap: 1.15rem;
-  }
-
-  .science-intro-cell:nth-child(1),
-  .science-intro-cell:nth-child(2),
-  .science-intro-cell:nth-child(4),
-  .science-intro-cell:nth-child(5) {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .science-intro-spacer {
-    display: none;
+    gap: 1.15rem;
+    padding-bottom: 1.75rem;
   }
 
   .about-cards-arrow {
@@ -4576,8 +4553,8 @@ body:not(.page-home) main {
     aspect-ratio: 168 / 56;
   }
 
-  .science-intro-grid {
-    gap: 1rem;
+  .science-intro-rows {
+    gap: 1.25rem;
   }
 
   .science-content-full .check-list {
