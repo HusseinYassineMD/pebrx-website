@@ -1037,32 +1037,17 @@ body.menu-open {
   padding-bottom: 0;
 }
 
-.science-intro-rows {
+.science-intro-stack {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-  max-width: 1040px;
+  gap: 1.35rem;
+  max-width: 720px;
   margin-inline: auto;
-}
-
-.science-intro-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem 2.25rem;
-  align-items: start;
-  padding-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(42, 157, 143, 0.14);
-}
-
-.science-intro-row:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
 }
 
 .science-intro-cell {
   margin: 0;
   min-width: 0;
-  padding-inline: 0.25rem;
   font-size: 0.98rem;
   line-height: 1.68;
   color: var(--text-muted);
@@ -3714,14 +3699,8 @@ body.menu-open {
     max-width: none;
   }
 
-  .science-intro-rows {
-    gap: 1.75rem;
-  }
-
-  .science-intro-row {
-    grid-template-columns: 1fr;
+  .science-intro-stack {
     gap: 1.15rem;
-    padding-bottom: 1.75rem;
   }
 
   .about-cards-arrow {
