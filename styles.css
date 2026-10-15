@@ -1040,28 +1040,25 @@ body.menu-open {
 .science-intro-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 1.25rem;
+  grid-template-rows: auto auto;
+  column-gap: 1.25rem;
+  row-gap: 1.75rem;
   align-items: start;
   max-width: 1040px;
   margin-inline: auto;
 }
 
 .science-intro-spacer {
+  grid-column: 2;
+  grid-row: 1 / -1;
   width: 40px;
   padding: 0 0.35rem;
-  flex-shrink: 0;
 }
 
-.science-intro-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
+.science-intro-cell {
+  margin: 0;
   min-width: 0;
   padding-inline: 2rem;
-}
-
-.science-intro-col p {
-  margin: 0;
   font-size: 0.98rem;
   line-height: 1.62;
   color: var(--text-muted);
@@ -1069,28 +1066,31 @@ body.menu-open {
   text-wrap: pretty;
   overflow-wrap: break-word;
   hyphens: none;
-  align-self: start;
 }
 
-.science-intro-col p + p {
-  margin-top: 0;
+.science-intro-cell:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.science-intro-col strong {
+.science-intro-cell:nth-child(2) {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.science-intro-cell:nth-child(4) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.science-intro-cell:nth-child(5) {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.science-intro-cell strong {
   color: var(--teal);
   font-weight: 600;
-}
-
-.science-intro-grid > .science-intro-col:first-child {
-  align-items: center;
-  text-align: center;
-}
-
-.science-intro-grid > .science-intro-col:first-child p {
-  text-align: center;
-  align-self: center;
-  width: 100%;
-  max-width: 22rem;
 }
 
 .science-unified .about-cards-grid {
@@ -3732,7 +3732,15 @@ body.menu-open {
 
   .science-intro-grid {
     grid-template-columns: 1fr;
-    gap: 1.15rem;
+    row-gap: 1.15rem;
+  }
+
+  .science-intro-cell:nth-child(1),
+  .science-intro-cell:nth-child(2),
+  .science-intro-cell:nth-child(4),
+  .science-intro-cell:nth-child(5) {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .science-intro-spacer {
