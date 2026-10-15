@@ -1032,7 +1032,8 @@ body.menu-open {
 
 .science-intro-block {
   width: 100%;
-  max-width: none;
+  max-width: 1040px;
+  margin-inline: auto;
   margin-bottom: 2.5rem;
   padding-bottom: 0;
 }
@@ -1041,8 +1042,8 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   gap: 1.35rem;
-  max-width: 720px;
-  margin-inline: auto;
+  width: 100%;
+  max-width: none;
 }
 
 .science-intro-cell {
@@ -4532,8 +4533,8 @@ body:not(.page-home) main {
     aspect-ratio: 168 / 56;
   }
 
-  .science-intro-rows {
-    gap: 1.25rem;
+  .science-intro-stack {
+    gap: 1rem;
   }
 
   .science-content-full .check-list {
