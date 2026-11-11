@@ -1,6 +1,6 @@
 # PebRx Website
 
-A multi-page marketing site for PebRx — precision therapeutics for APOE4-driven neurovascular disease.
+A multi-page marketing site for PebRx — precision therapeutics for APOE4 neurovascular disease.
 
 Built with **HTML**, **CSS**, **TypeScript**, and **Vite**.
 

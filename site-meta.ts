@@ -194,7 +194,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
   const pages: Record<string, PageMeta> = {
     'index.html': {
       path: '/',
-      title: 'PebRx | Precision Medicine for APOE4-Driven Brain Health',
+      title: 'PebRx | Precision Medicine for APOE4 Brain Health',
       description:
         'PebRx develops precision therapeutics and diagnostics targeting neurovascular inflammation in Alzheimer\'s disease and related neurodegenerative disorders.',
       ogType: 'website',
@@ -220,7 +220,7 @@ export function getPageMeta(filename: string, siteUrl: string): PageMeta | null 
         '@type': 'MedicalWebPage',
         name: 'Science | PebRx Neuroinflammation Platform',
         description:
-          'Precision therapeutics for APOE4-driven neurovascular disease through lipid-mediated neuroinflammation research.',
+          'Precision therapeutics for APOE4 neurovascular disease through lipid-mediated neuroinflammation research.',
         url: `${siteUrl}/science.html`,
         isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: siteUrl },
         about: org,
