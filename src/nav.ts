@@ -31,7 +31,7 @@ export function initNavigation(): void {
     }
   });
 
-  const isHome = currentPage === 'home';
+  const overlayNav = currentPage === 'home' || currentPage === 'about';
   const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
   function setNavScrolled(scrolled: boolean): void {
@@ -89,11 +89,11 @@ export function initNavigation(): void {
   });
 
   function onScroll(): void {
-    if (!isHome) {
+    if (!overlayNav) {
       setNavScrolled(true);
       return;
     }
-    setNavScrolled(window.scrollY > 60);
+    setNavScrolled(window.scrollY > 40);
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -106,7 +106,7 @@ export function initNavigation(): void {
     }
   });
 
-  if (!isHome) {
+  if (!overlayNav) {
     navEl.classList.add('nav-inner');
     setNavScrolled(true);
   } else {
