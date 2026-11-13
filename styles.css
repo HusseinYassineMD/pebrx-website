@@ -1394,8 +1394,7 @@ body.menu-open {
 }
 
 .page-hero-about .page-hero-photo {
-  object-position: center 42%;
-  opacity: 0.46;
+  object-position: 30% 45%;
 }
 
 .page-hero-contact .page-hero-photo {
@@ -1403,20 +1402,10 @@ body.menu-open {
   opacity: 0.66;
 }
 
-.page-hero-about .page-hero-overlay {
-  background:
-    radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.55) 0%, transparent 72%),
-    linear-gradient(135deg, rgba(10, 22, 40, 0.72) 0%, rgba(15, 34, 56, 0.82) 100%);
-}
-
 .page-hero-contact .page-hero-overlay {
   background:
     radial-gradient(ellipse 88% 82% at 50% 46%, rgba(10, 22, 40, 0.22) 0%, transparent 72%),
     linear-gradient(135deg, rgba(10, 22, 40, 0.38) 0%, rgba(21, 42, 66, 0.48) 100%);
-}
-
-.page-hero-about.page-hero-banner {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-light) 100%);
 }
 
 .page-hero-contact.page-hero-banner {
